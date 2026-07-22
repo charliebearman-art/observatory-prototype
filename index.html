@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en" data-concept="b" data-palette="cosmos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Цвет, которым Safari заливает полосу со статус-баром. Эта полоса принадлежит
+     браузеру, а не странице — нарисовать в ней ничего нельзя, можно только задать
+     цвет. Значение синхронизируется с --color-bg текущей палитры скриптом ниже. -->
+<meta name="theme-color" content="#ffffff">
+<title>Observatory — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=5">
+<link rel="stylesheet" href="styles/base.css?v=5">
+</head>
+<body>
+
+<!-- demo-only control: lets the client feel both axes live -->
+<div class="switch">
+  <div class="switch__panel">
+    <div class="switch__group">
+    <span class="switch__label">Concept</span>
+    <button data-set="concept" data-val="a">A</button>
+    <button data-set="concept" data-val="b" aria-pressed="true">B</button>
+    <button data-set="concept" data-val="c">C</button>
+  </div>
+  <div class="switch__group">
+    <span class="switch__label">Place</span>
+    <button data-set="palette" data-val="cosmos" aria-pressed="true">Cosmos</button>
+    <button data-set="palette" data-val="santorini">Santorini</button>
+    <button data-set="palette" data-val="terracotta">Rome</button>
+    <button data-set="palette" data-val="krem">Krem</button>
+    <button data-set="palette" data-val="duomo">Duomo</button>
+    <button data-set="palette" data-val="night">Night</button>
+  </div>
+  </div>
+  <button class="switch__toggle" aria-expanded="false" aria-label="Показать переключатель темы">
+    <svg class="icon"><use href="assets/icons.svg#i-grid"></use></svg>
+  </button>
+</div>
+
+<main class="screen">
+
+  <!-- menu -->
+  <header class="menu">
+    <a class="logo logo--short" href="#" aria-label="Observatory TS"></a>
+    <div class="menu__actions">
+      <a class="btn btn--primary btn--compact" href="#">Log in</a>
+      <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language">
+        <svg class="icon"><use href="assets/icons.svg#i-globe"></use></svg>
+      </button>
+      <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Menu">
+        <svg class="icon"><use href="assets/icons.svg#i-burger"></use></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero__anim" aria-hidden="true">
+      <div class="ring ring--outer">
+        <div class="ring__item" style="transform:rotate(0deg) translateY(-314.6px)"><img src="assets/img/hero-ring-1.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(45deg) translateY(-314.6px)"><img src="assets/img/hero-ring-2.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(90deg) translateY(-314.6px)"><img src="assets/img/hero-ring-3.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(135deg) translateY(-314.6px)"><img src="assets/img/hero-ring-4.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(180deg) translateY(-314.6px)"><img src="assets/img/hero-ring-5.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(225deg) translateY(-314.6px)"><img src="assets/img/hero-ring-6.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(270deg) translateY(-314.6px)"><img src="assets/img/hero-ring-7.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(315deg) translateY(-314.6px)"><img src="assets/img/hero-ring-8.jpg" alt=""></div>
+      </div>
+      <div class="ring ring--inner">
+        <div class="ring__item" style="transform:rotate(0deg) translateY(-169.3px)"><img src="assets/img/hero-inner-1.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(60deg) translateY(-169.3px)"><img src="assets/img/hero-inner-2.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(120deg) translateY(-169.3px)"><img src="assets/img/hero-inner-3.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(180deg) translateY(-169.3px)"><img src="assets/img/hero-inner-4.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(240deg) translateY(-169.3px)"><img src="assets/img/hero-inner-5.jpg" alt=""></div>
+        <div class="ring__item" style="transform:rotate(300deg) translateY(-169.3px)"><img src="assets/img/hero-inner-6.jpg" alt=""></div>
+      </div>
+    </div>
+    <div class="hero__fade" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <div class="hero__head">
+        <div class="logo logo--short" role="img" aria-label="Observatory TS"></div>
+        <p class="t-label t-muted t-center">EVERY PLACE HAS ITS STORY</p>
+        <h1 class="t-h1 t-center">Explore.<br>Observe.<br>Understand.</h1>
+      </div>
+      <a class="btn btn--primary btn--large" href="#">Start a New Journey</a>
+    </div>
+  </section>
+
+  <!-- what is observatory -->
+  <section class="block">
+    <div class="block__title">
+      <p class="t-label t-muted">HOW IT WORKS</p>
+      <h2 class="t-h2">What is Observatory?</h2>
+      <p class="t-body t-muted">Observatory turns a city into a story you can walk through — curated routes, real places, and the context that makes them matter.</p>
+      <a class="text-btn" href="#"><span>Learn more</span>
+        <svg class="icon icon--20"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+      </a>
+    </div>
+
+    <div class="rail">
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="orbit" aria-hidden="true">
+            <div class="orbit__wheel">
+              <img class="orbit__track" src="assets/img/anim-dashed.png" alt="">
+              <span class="orbit__stop" style="--station:180deg;--phase:0ms"><span class="orbit__ring"><img src="assets/img/orbit-milan.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:270deg;--phase:calc(var(--orbit-cycle) * -0.75)"><span class="orbit__ring"><img src="assets/img/orbit-istanbul.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:0deg;--phase:calc(var(--orbit-cycle) * -0.5)"><span class="orbit__ring"><img src="assets/img/orbit-prague.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:90deg;--phase:calc(var(--orbit-cycle) * -0.25)"><span class="orbit__ring"><img src="assets/img/orbit-santorini.jpg" alt=""></span></span>
+            </div>
+          </div>
+          <span class="anim-label t-body t-muted" style="--phase:0ms">MILAN</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.75)">ISTANBUL</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.5)">PRAGUE</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.25)">SANTORINI</span>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Explore.</h3>
+          <p class="t-body t-muted">Pick a travel guide crafted by people who know it — every route curated, never auto-generated.</p>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="obs" aria-hidden="true">
+            <img class="obs__route" src="assets/img/obs-path.svg" alt="">
+            <span class="obs__pin" style="--obs-track:obs-follow-a"><img src="assets/img/obs-galleria.png" alt=""></span>
+            <span class="obs__pin" style="--obs-track:obs-follow-b"><img src="assets/img/obs-scala.png" alt=""></span>
+            <span class="obs__pin" style="--obs-track:obs-follow-c"><img src="assets/img/obs-castello.png" alt=""></span>
+            <span class="obs__pin obs__pin--lead" style="--obs-track:obs-lead"><img src="assets/img/obs-duomo.jpg" alt=""></span>
+          </div>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Observe.</h3>
+          <p class="t-body t-muted">Follow it at your own pace and notice the streets, corners and details you'd usually walk past.</p>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="und" aria-hidden="true">
+            <span class="und__hero"><img src="assets/img/und-duomo.jpg" alt=""></span>
+            <span class="und__spot" style="--spot-track:und-spot-1;--open-track:und-open-1">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-1.png" alt="">
+            </span>
+            <span class="und__spot" style="--spot-track:und-spot-2;--open-track:und-open-2">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-2.png" alt="">
+            </span>
+            <span class="und__spot" style="--spot-track:und-spot-3;--open-track:und-open-3">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-3.png" alt="">
+            </span>
+          </div>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Understand.</h3>
+          <p class="t-body t-muted">Hear the story behind each place — the history and the meaning. Leave knowing the city, not just seeing it.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- featured guides -->
+  <section class="block">
+    <div class="block__head">
+      <p class="t-label t-muted">FEATURED GUIDES</p>
+      <div class="row row--between row--baseline">
+        <h2 class="t-h3">Popular in Italy</h2>
+        <a class="text-btn" href="#"><span>All</span>
+          <svg class="icon icon--20"><use href="assets/icons.svg#i-chevron-right"></use></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="rail">
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-quarter.jpg" alt="">
+        <div class="excursion__top"><span class="badge">MILAN</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">The Quarter<br>Behind the Galleries</h3>
+            <p class="excursion__teaser">Slip past the galleries into the hidden cortili where Milan still paints</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">210 $</span>
+            <span class="icon-btn icon-btn--media">
+              <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-disappear.jpg" alt="">
+        <div class="excursion__top"><span class="badge">MILAN</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">Where Milan Goes to Disappear</h3>
+            <p class="excursion__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">180 $</span>
+            <span class="icon-btn icon-btn--media">
+              <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-ritual.jpg" alt="">
+        <div class="excursion__top"><span class="badge">MILAN</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">The Six O'Clock Ritual</h3>
+            <p class="excursion__teaser">Follow Milan's evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">80 $</span>
+            <span class="icon-btn icon-btn--media">
+              <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-rooftops.jpg" alt="">
+        <div class="excursion__top"><span class="badge">ROME</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">Rome from the Rooftops</h3>
+            <p class="excursion__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">190 $</span>
+            <span class="icon-btn icon-btn--media">
+              <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- cities -->
+  <section class="block">
+    <div class="block__title">
+      <p class="t-label t-muted">GUIDES AROUND THE WORLD</p>
+      <h2 class="t-h2">The World, City by City</h2>
+    </div>
+
+    <div class="tags">
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-milan.jpg" alt=""></span><span class="t-body">Milan</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-rome.jpg" alt=""></span><span class="t-body">Rome</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-lisbon.jpg" alt=""></span><span class="t-body">Lisbon</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-paris.jpg" alt=""></span><span class="t-body">Paris</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-tokyo.jpg" alt=""></span><span class="t-body">Tokyo</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-athens.jpg" alt=""></span><span class="t-body">Athens</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-porto.jpg" alt=""></span><span class="t-body">Porto</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-vienna.jpg" alt=""></span><span class="t-body">Vienna</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-seville.jpg" alt=""></span><span class="t-body">Seville</span></a>
+      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-oslo.jpg" alt=""></span><span class="t-body">Oslo</span></a>
+      <a class="chip chip--more" href="#"><span class="t-body">+24 more</span></a>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="divider"></div>
+
+    <div class="footer__group">
+      <div class="footer__promo">
+        <a class="logo logo--full" href="#" aria-label="Observatory TS"></a>
+        <h2 class="t-h3 t-center t-balance">Ready to Start a New Journey?</h2>
+        <a class="btn btn--primary btn--large" href="#">Let’s go
+          <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+        </a>
+      </div>
+
+      <nav class="footer__nav">
+        <a class="t-body" href="#">About</a>
+        <a class="t-body" href="#">Guides</a>
+        <a class="t-body" href="#">How it works</a>
+        <a class="t-body" href="#">Contact</a>
+      </nav>
+
+      <a class="btn btn--secondary btn--compact" href="#">Log in
+        <svg class="icon icon--16"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+      </a>
+    </div>
+
+    <div class="footer__group" style="gap:var(--space-5)">
+      <div class="divider"></div>
+
+      <div class="row row--between" style="width:100%">
+        <span class="row" style="gap:var(--space-2)">
+          <svg class="icon"><use href="assets/icons.svg#i-globe"></use></svg>
+          <span class="t-body">English</span>
+        </span>
+        <span class="row" style="gap:var(--space-2)">
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg#i-telegram"></use></svg></a>
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg#i-instagram"></use></svg></a>
+        </span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="footer__legal">
+        <span class="t-caption t-muted">© 2026 Observatory</span>
+        <span class="row" style="gap:var(--space-3)">
+          <a class="t-caption t-muted" href="#">Terms</a>
+          <a class="t-caption t-muted" href="#">Privacy</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // The header only frosts once content scrolls under it. A sentinel avoids a
+  // scroll handler firing on every frame.
+  (function () {
+    var menu = document.querySelector('.menu');
+    var mark = document.createElement('div');
+    menu.parentNode.insertBefore(mark, menu);
+    new IntersectionObserver(function (e) {
+      menu.classList.toggle('menu--stuck', !e[0].isIntersecting);
+    }).observe(mark);
+  })();
+
+  // Reveal on scroll. The observer watches the container, not the cards: a card
+  // parked off-screen to the right of a rail never intersects on its own, so it
+  // would otherwise stay invisible until you swiped it in. Elements are hidden
+  // only once this runs, so a script failure leaves the page fully readable.
+  (function () {
+    var groups = [
+      ['.block__title', ':scope > *', 60],
+      ['.block__head', ':scope > *', 60],
+      ['.rail', ':scope > *', 80],
+      ['.tags', ':scope > *', 55, 'pop'],
+      ['.footer__promo', ':scope > *', 60],
+      ['.footer__nav', ':scope > a', 40],
+      ['.footer__legal', ':scope > *', 60]
+    ];
+
+    groups.forEach(function (group) {
+      document.querySelectorAll(group[0]).forEach(function (container) {
+        var kids = container.querySelectorAll(group[1]);
+        if (!kids.length) return;
+        container.setAttribute('data-reveal-group', '');
+        // Chips are asked to arrive in a scattered order, so the delay slots are
+        // shuffled rather than handed out left to right.
+        var slots = Array.from(kids, function (_, i) { return i; });
+        if (group[3] === 'pop') {
+          for (var j = slots.length - 1; j > 0; j--) {
+            var k = Math.floor(Math.random() * (j + 1));
+            var tmp = slots[j]; slots[j] = slots[k]; slots[k] = tmp;
+          }
+        }
+        kids.forEach(function (el, i) {
+          el.style.setProperty('--reveal-delay', slots[i] * group[2] + 'ms');
+          el.setAttribute('data-reveal', group[3] || '');
+        });
+      });
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        io.unobserve(entry.target);   // reveal once; never replay on scroll back
+      });
+      // A threshold, not a negative rootMargin: the last rows of the footer sit
+      // within any bottom inset and could never be scrolled past it, so they would
+      // stay hidden for good.
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+
+    // When a reveal finishes, retire the animation so no filter/transform stays
+    // pinned on the element — a lingering blur(0) renders soft on iOS. Finalise on
+    // the LAST-ending track only (chips run a scale after the fade), so the settle
+    // never cuts a still-running animation short.
+    var LAST = { 'reveal-rise': 1, 'reveal-pop-scale': 1, 'reveal-fade': 1 };
+    document.addEventListener('animationend', function (e) {
+      if (LAST[e.animationName] && e.target.hasAttribute('data-reveal')) {
+        e.target.classList.add('is-settled');
+      }
+    });
+  })();
+
+  // Touch swipes the rails natively; this adds the same gesture for a mouse, so the
+  // carousels are demonstrable on a laptop without a horizontal wheel.
+  document.querySelectorAll('.rail').forEach(function (rail) {
+    var dragging = false, startX = 0, startLeft = 0, travel = 0;
+    rail.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      dragging = true; travel = 0; startX = e.clientX; startLeft = rail.scrollLeft;
+      rail.setPointerCapture(e.pointerId);
+      rail.classList.add('rail--dragging');
+    });
+    rail.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      travel = Math.max(travel, Math.abs(dx));
+      rail.scrollLeft = startLeft - dx;
+    });
+    ['pointerup', 'pointercancel'].forEach(function (type) {
+      rail.addEventListener(type, function () {
+        if (!dragging) return;
+        dragging = false;
+        rail.classList.remove('rail--dragging');
+      });
+    });
+    // a drag must not fire the link underneath
+    rail.addEventListener('click', function (e) {
+      if (travel > 4) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+  });
+
+  // The hero rings only turn while the hero is on screen. The three card
+  // animations deliberately do NOT pause: freezing them desynchronised the layers
+  // inside a card, and a resumed card no longer matched itself.
+  (function () {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('is-playing', entry.isIntersecting);
+      });
+    }, { rootMargin: '100px 0px' });
+    document.querySelectorAll('.hero').forEach(function (el) {
+      el.setAttribute('data-anim', '');
+      io.observe(el);
+    });
+  })();
+
+  // Safari tints its own status-bar strip with theme-color. Nothing can be painted
+  // into that strip — it is browser chrome, not page — so the only lever is to keep
+  // its colour in step with the palette, which makes the seam disappear.
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function syncThemeColor() {
+    var bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim();
+    if (bg) themeMeta.setAttribute('content', bg);
+  }
+  syncThemeColor();
+
+  // the panel is collapsed on phones; the button reveals it
+  (function () {
+    var box = document.querySelector('.switch');
+    var toggle = box.querySelector('.switch__toggle');
+    toggle.addEventListener('click', function () {
+      var open = box.classList.toggle('switch--open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  })();
+
+  document.querySelectorAll('.switch__panel button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var axis = b.dataset.set, val = b.dataset.val;
+      document.documentElement.setAttribute('data-' + axis, val);
+      syncThemeColor();
+      document.querySelectorAll('.switch__panel button[data-set="' + axis + '"]').forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+    });
+  });
+</script>
+</body>
+</html>

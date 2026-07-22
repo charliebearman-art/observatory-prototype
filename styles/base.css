@@ -1,0 +1,728 @@
+/* Observatory — base + components. Everything reads from tokens.css.
+   Screen: «Главная · Mobile» (Figma Showcase, node 525:3), 390 pt wide. */
+
+:root {
+  /* Figma's spring easings, solved and written out as linear() so the curve is the
+     real thing rather than a bezier that looks about right.
+
+     These two are for TRANSITIONS only. Inside @keyframes the curves are written
+     out in full instead, because Chrome does not substitute var() into
+     animation-timing-function there — it silently falls back to the default ease
+     and every spring quietly disappears. Do not fold those literals back into a
+     variable.
+       Slow   — k=80,  c=20, m=1  -> damping ratio 1.118, settles without overshoot
+       Bouncy — k=600, c=20, m=1  -> damping ratio 0.408, overshoots to 1.24
+     Each is normalised over its own settle time, so applying it with Figma's stated
+     duration stretches the same shape to fit. */
+  --ease-slow: linear(0, 0.0222 2.6%, 0.0755 5.1%, 0.1453 7.7%, 0.2222 10.3%, 0.3002 12.8%, 0.3757 15.4%, 0.4467 17.9%, 0.512 20.5%, 0.5713 23.1%, 0.6246 25.6%, 0.6721 28.2%, 0.7142 30.8%, 0.7514 33.3%, 0.784 35.9%, 0.8127 38.5%, 0.8378 41%, 0.8597 43.6%, 0.8788 46.2%, 0.8955 48.7%, 0.91 51.3%, 0.9227 53.8%, 0.9337 56.4%, 0.9432 59%, 0.9515 61.5%, 0.9588 64.1%, 0.9651 66.7%, 0.9705 69.2%, 0.9753 71.8%, 0.9794 74.4%, 0.983 76.9%, 0.9861 79.5%, 0.9888 82.1%, 0.9911 84.6%, 0.9932 87.2%, 0.995 89.7%, 0.9965 92.3%, 0.9978 94.9%, 0.999 97.4%, 1);
+  --ease-bouncy: linear(0, 0.0449 2.6%, 0.1619 5.1%, 0.3246 7.7%, 0.5086 10.3%, 0.6933 12.8%, 0.8625 15.4%, 1.0051 17.9%, 1.1149 20.5%, 1.1898 23.1%, 1.2313 25.6%, 1.2432 28.2%, 1.2313 30.8%, 1.202 33.3%, 1.1618 35.9%, 1.1165 38.5%, 1.0713 41%, 1.03 43.6%, 0.9953 46.2%, 0.9687 48.7%, 0.9507 51.3%, 0.9409 53.8%, 0.9382 56.4%, 0.9413 59%, 0.9486 61.5%, 0.9586 64.1%, 0.9697 66.7%, 0.9808 69.2%, 0.9909 71.8%, 0.9993 74.4%, 1.0058 76.9%, 1.0101 79.5%, 1.0124 82.1%, 1.013 84.6%, 1.0122 87.2%, 1.0104 89.7%, 1.0079 92.3%, 1.0052 94.9%, 1.0025 97.4%, 1);
+
+  /* Card animations. The cycle lengths are Figma's own numbers; the tempo scales
+     all three together. Because every keyframe is a percentage of its cycle, this
+     stretches holds and moves by the same factor — the rhythm of the file is kept,
+     it just runs calmer. Set the tempo to 1 to get the file's literal speed. */
+  --orbit-tempo: 1.5;
+  --obs-tempo: 1.2;
+  --und-tempo: 1.5;
+  --orbit-cycle: calc(5200ms * var(--orbit-tempo));  /* Explore:    4 x (700 hold + 600 move) */
+  --obs-cycle: calc(4706ms * var(--obs-tempo));      /* Observe:    801 + 802 + 1503 + 1600 */
+  --und-cycle: calc(5502ms * var(--und-tempo));      /* Understand: 800 + 801 + 801 + 1100 + 1100 + 900 */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-weight: var(--font-text-weight);
+  font-size: var(--size-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* ---------- typography ----------
+   Sizes are constant across concepts; family and leading come from the concept. */
+.t-display { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); margin: 0; }
+.t-h1 { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); margin: 0; }
+.t-h2 { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); margin: 0; }
+.t-h3 { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); margin: 0; }
+.t-title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); margin: 0; }
+.t-body { font-size: var(--size-body); line-height: var(--lh-body); margin: 0; }
+.t-caption { font-size: var(--size-caption); line-height: var(--lh-caption); margin: 0; }
+/* Label is interface chrome, so it takes --font-ui, not --font-text. */
+.t-label { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-label); line-height: var(--lh-label); margin: 0; }
+.t-muted { color: var(--color-text-muted); }
+.t-center { text-align: center; }
+.t-balance { text-wrap: balance; }
+
+/* ---------- icons ---------- */
+.icon { width: 24px; height: 24px; flex: none; }
+.icon--16 { width: 16px; height: 16px; }
+.icon--20 { width: 20px; height: 20px; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  font-family: var(--font-ui); font-weight: var(--font-ui-weight);
+  font-size: var(--size-body); line-height: var(--lh-body);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-button);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn--large { height: 56px; }
+.btn--compact { height: 36px; font-size: var(--size-caption); line-height: var(--lh-caption); padding: var(--space-2) var(--space-3); }
+.btn--primary { background: var(--color-accent); color: var(--color-on-accent); }
+.btn--secondary { border: 1.5px solid var(--color-accent); color: var(--color-accent); }
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); }
+.btn[disabled] { opacity: 0.4; pointer-events: none; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: none;
+  border-radius: var(--radius-button);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn--36 { width: 36px; height: 36px; }
+.icon-btn--outline { border: 1.5px solid var(--color-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); }
+.icon-btn--filled { background: var(--color-accent); color: var(--color-on-accent); }
+/* Outline variant sitting on top of a photograph — borders come from the media set. */
+.icon-btn--media { border: 1.5px solid var(--on-media-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); color: var(--on-media); }
+
+.text-btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-ui); font-weight: var(--font-ui-weight);
+  font-size: var(--size-body); line-height: var(--lh-body);
+  color: var(--color-accent);
+}
+/* Figma trims the label to cap height, so the 20 icon — not the leading — sets the row. */
+.text-btn > span { text-box: trim-both cap alphabetic; }
+.text-btn .icon { transition: transform var(--dur-fast) var(--ease); }
+.text-btn:active { transform: scale(0.97); }
+
+/* ---------- logo ----------
+   Single-file lockups exported from the source file (Logo/), used as masks so the
+   mark can be painted with a token instead of the black baked into the SVG.
+   Assembling it from separate mark/wordmark/TS pieces clipped the TS glyph. */
+.logo {
+  display: block; flex: none; height: 36px;
+  color: var(--color-accent); background: currentColor;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+}
+.logo--short { width: 72px; -webkit-mask-image: url(../assets/img/logo-short.svg); mask-image: url(../assets/img/logo-short.svg); }
+.logo--full { width: 227px; -webkit-mask-image: url(../assets/img/logo-full.svg); mask-image: url(../assets/img/logo-full.svg); }
+
+/* ---------- screen shell ---------- */
+.screen {
+  /* 390 is the Figma frame. The clamp only engages on phones narrower than that
+     (many Androids are 360), where a fixed width would scroll the page sideways. */
+  width: 390px; max-width: 100%; margin: 0 auto;
+  background: var(--color-bg);
+  overflow-x: clip;
+}
+/* 64 pt block inset — expressed through the 4-grid, not as a literal. */
+.block {
+  display: flex; flex-direction: column; gap: var(--space-6);
+  padding: calc(var(--space-6) * 2) var(--space-4) 0;
+}
+.block__title { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); width: 100%; text-align: center; }
+.block__head { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; }
+.row { display: flex; align-items: center; gap: var(--space-3); }
+.row--between { justify-content: space-between; }
+.row--baseline { align-items: baseline; }
+.divider { height: 1px; width: 100%; background: var(--color-border); flex: none; }
+
+/* Edge-to-edge horizontal rail inside a 16-inset block. Cards snap to the block
+   inset, so a swipe lands on a card edge rather than mid-gap. */
+.rail {
+  display: flex; align-items: stretch; gap: var(--space-4);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  margin-inline: calc(var(--space-4) * -1);
+  padding-inline: var(--space-4);
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--space-4);
+  scrollbar-width: none;
+  cursor: grab;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; }
+/* while dragging with a mouse, snapping would fight the pointer */
+.rail--dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+.rail--dragging * { pointer-events: none; }
+
+/* ---------- menu ---------- */
+/* Sticky and see-through. Figma paints a 1%-opacity fill only because a Figma
+   backdrop-blur needs a fill to attach to; CSS does not, so just the blur remains —
+   the "System Material" effect from the file. At rest the header is plain glass;
+   the blur fades in once the page scrolls under it (see .menu--stuck). */
+.menu {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  /* The top inset swallows the iOS status bar strip. Without it the header sticks
+     below the safe area and leaves a band of bare page under the clock. */
+  padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) var(--space-4) var(--space-4);
+  background: transparent;
+}
+/* The frost sits on a pseudo-element, not on .menu itself. A backdrop-filter on the
+   header makes it a backdrop root, and the icon buttons inside then have nothing
+   left to sample — their own 4px blur goes dead. On the pseudo it only affects the
+   pseudo, and the buttons keep blurring the page.
+   No negative z-index this time: down there the pseudo sits inside the header's own
+   stacking context with nothing painted beneath it, which is why the first attempt
+   blurred nothing. At auto it samples the page and fades in cleanly. */
+.menu::before {
+  content: "";
+  /* ЗНАЙТЕ, ПРЕЖДЕ ЧЕМ ЧИНИТЬ: на iOS над прижатой шапкой остаётся полоса
+     неразмытого контента под статус-баром. Это не лечится отсюда. Проверено и
+     отброшено: env(safe-area-inset-top) — на устройстве отдаёт 0; viewport-fit=cover
+     — не меняет картину; вылет инея вверх на 140px — Safari обрезает всё, что
+     липкий элемент рисует выше точки прилипания; position: fixed вместо sticky —
+     тот же результат. Работает только theme-color (см. мету в index.html), он
+     задаёт цвет полосы, но сплошной, а не стеклянный. */
+  position: absolute; inset: 0;
+  backdrop-filter: blur(24px);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+  pointer-events: none;
+}
+.menu--stuck::before { opacity: 1; }
+/* lift the content into the same paint layer as the frost, above it by DOM order */
+.menu > * { position: relative; }
+.menu__actions { display: flex; align-items: center; gap: var(--space-2); }
+
+/* ---------- hero ---------- */
+.hero {
+  /* Figma draws the hero as a flat 720, but a phone's visible area is rarely 788
+     (720 + the menu). Anything shorter pushed the whole composition below the
+     optical centre — up to 108px on a 640 screen. Tying the height to the visible
+     viewport centres it everywhere; the rings are absolutely centred on this box,
+     so they follow the text rather than drifting away from it.
+     svh, not dvh: dvh re-resolves as the address bar hides and the rings would
+     shift under the reader mid-scroll. The plain 720 above stays as the fallback.
+
+     The hero takes the whole screen and slides up under the menu rather than
+     starting below it. Sized to the area under the menu, its centre sits half a
+     menu-height low — and the header is transparent glass the rings already bleed
+     through, so there is nothing to sit below. */
+  --menu-h: calc(var(--space-4) * 2 + 36px + env(safe-area-inset-top, 0px));
+  position: relative;
+  height: 720px;
+  height: clamp(628px, 100svh, 948px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding-inline: var(--space-4);
+  /* Clip sideways only. In Figma the ring bleeds ~18 past the top and bottom of the
+     720 frame and stays visible over the neighbouring blocks — hiding overflow on
+     both axes chopped the bottom card off flat. */
+  overflow-x: clip;
+  overflow-y: visible;
+  /* slides up under the transparent header so the composition centres on the screen,
+     not on the strip below the header */
+  margin-top: calc(var(--menu-h) * -1);
+}
+.hero__anim { position: absolute; left: 50%; top: 50%; width: 724.43px; height: 724px; transform: translate(-50%, -50%); }
+/* Two concentric photo rings; each card is rotated to face outward.
+   Spinning the ring is a rigid rotation, so a card reaching the top is always
+   upright — the arrangement Figma drew, just in motion. Both rings turn the same
+   way; the inner one is faster, so the two never repeat the same pairing. */
+.ring {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0;
+  animation: ring-orbit var(--ring-dur) linear infinite;
+  will-change: transform;
+}
+.ring--outer { --ring-dur: 60s; }
+.ring--inner { --ring-dur: 45s; }
+@keyframes ring-orbit { to { transform: rotate(360deg); } }
+
+.ring__item { position: absolute; left: 0; top: 0; overflow: hidden; }
+.ring__item img { width: 100%; height: 100%; object-fit: cover; }
+.ring--outer .ring__item { width: 83.928px; height: 125.892px; margin: -62.946px 0 0 -41.964px; border-radius: 6.098px; }
+.ring--inner .ring__item { width: 60.03px; height: 90.05px; margin: -45.025px 0 0 -30.015px; border-radius: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring { animation: none; }
+}
+/* The blurred ellipse from Figma, rebuilt on --color-bg so it follows the palette.
+   Figma: 595x395 ellipse, feGaussianBlur stdDeviation="28". CSS blur() takes the
+   standard deviation too, so blur(28px) is the same curve — a radial-gradient is
+   not, because its falloff would scale with the ellipse aspect instead of staying
+   isotropic. */
+.hero__fade {
+  position: absolute; left: 50%; top: 50%; width: 595px; height: 395px;
+  transform: translate(-50%, -50%); pointer-events: none;
+  border-radius: 50%;
+  background: var(--color-bg);
+  filter: blur(28px);
+}
+.hero__content { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--space-5); width: 100%; }
+.hero__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); width: 100%; }
+
+/* ---------- benefit card ---------- */
+.benefit {
+  width: 260px; flex: none;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+/* The stroke rides on an overlay rather than an outline: the slot inside is a
+   positioned child and painted straight over the top edge of the outline. */
+.benefit::after {
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  border: 1.5px solid var(--color-border);
+  border-radius: inherit; pointer-events: none;
+}
+.benefit__slot { position: relative; height: 207px; width: 100%; overflow: hidden; background: var(--color-surface); }
+.benefit__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5); }
+.anim-label { position: absolute; left: 130px; top: 29px; transform: translateX(-50%); white-space: nowrap; }
+
+/* ---- Explore: the orbit carousel ----
+   Figma «Frame 13» (562:359), four variants on a loop. Every transition is the
+   same: 700ms hold, then 600ms Smart animate on the "Slow" easing, so one full
+   turn takes 4 x 1300 = 5200ms. The wheel steps a quarter turn per beat and the
+   bubble arriving at the bottom grows. The three sizes Figma states for that
+   bubble (80/124 box, 63.729/98.78 photo, 8.136/12.61 padding) are all the same
+   ratio, so it is one scale rather than three separate animations. The base box is
+   the LARGE state and the small one scales down: laying a photo out small and
+   blowing it up with transform rasterises it at the small size, which is what made
+   the enlarged bubbles soft. */
+.orbit { position: absolute; left: -83px; top: -236px; width: 427px; height: 427px; }
+.orbit__wheel {
+  position: absolute; inset: 0;
+  animation: orbit-spin var(--orbit-cycle) infinite;
+  will-change: transform;
+}
+.orbit__track { position: absolute; left: 62px; top: 62px; width: 303px; height: 303px; }
+/* Rigid wheel, placed exactly like the hero rings: rotate to the station, then push
+   out along the radius. The photo carries a half-turn of its own so that the bubble
+   reaching the bottom reads upright — the same per-bubble facing Figma draws. */
+.orbit__stop {
+  position: absolute; left: 50%; top: 50%;
+  width: 124px; height: 124px; margin: -62px 0 0 -62px;
+  transform: rotate(var(--station)) translateY(-151.5px);
+}
+.orbit__ring {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: transparent;
+  border: 1.051px solid transparent;
+  animation: orbit-focus var(--orbit-cycle) infinite;
+  animation-delay: var(--phase);
+}
+.orbit__ring img {
+  width: 98.78px; height: 98.78px; border-radius: var(--radius-pill); object-fit: cover;
+  transform: rotate(180deg);   /* net rotation at the bottom station is a full turn */
+}
+
+.orbit ~ .anim-label {
+  opacity: 0;
+  animation: orbit-label var(--orbit-cycle) infinite;
+  animation-delay: var(--phase);
+}
+
+@keyframes orbit-spin {
+  0%, 13.4615% { transform: rotate(0deg); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  25%, 38.4615% { transform: rotate(-90deg); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  50%, 63.4615% { transform: rotate(-180deg); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  75%, 88.4615% { transform: rotate(-270deg); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: rotate(-360deg); }
+}
+@keyframes orbit-focus {
+  0%, 13.4615% {
+    transform: scale(1);
+    background-color: var(--color-bg); border-color: var(--color-border);
+    animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1);
+  }
+  25%, 88.4615% {
+    transform: scale(0.645161);
+    background-color: transparent; border-color: transparent;
+    animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1);
+  }
+  100% { transform: scale(1); background-color: var(--color-bg); border-color: var(--color-border); }
+}
+@keyframes orbit-label {
+  0%, 13.4615% { opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  25%, 88.4615% { opacity: 0; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { opacity: 1; }
+}
+/* Photo in a ring: outer radius = inner radius + padding, both pill. */
+.anim-ring {
+  position: absolute; display: flex; padding: 12.61px;
+  background: var(--color-bg);
+  border-radius: var(--radius-pill);
+  outline: 1.051px solid var(--color-border); outline-offset: -1.051px;
+}
+.anim-ring img { width: 98.78px; height: 98.78px; border-radius: var(--radius-inner-4); object-fit: cover; }
+
+/* ---------- excursion card (text over media) ---------- */
+.excursion {
+  position: relative; width: 318px; height: 500px; flex: none;
+  transition: transform var(--dur-fast) var(--ease);
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-radius: var(--radius-card); overflow: hidden; isolation: isolate;
+}
+.excursion__media {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.excursion__top { position: relative; padding: var(--space-5); }
+.excursion__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 310px; background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 55%, var(--scrim) 100%); }
+.excursion__body { position: relative; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); }
+.excursion__text { display: flex; flex-direction: column; gap: var(--space-2); }
+.excursion__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--on-media); margin: 0; }
+.excursion__teaser { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--on-media-muted); margin: 0; }
+.excursion__foot { display: flex; align-items: center; justify-content: space-between; }
+.excursion__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--on-media); }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: var(--space-1) var(--space-4);
+  background: var(--scrim); color: var(--on-media);
+  border-radius: var(--radius-button);
+  outline: 1px solid var(--on-media-border); outline-offset: -1px;
+  backdrop-filter: blur(4px);
+  font-size: var(--size-body); line-height: var(--lh-body);
+}
+
+/* ---------- city chip ---------- */
+.tags { display: flex; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: var(--space-2); width: 100%; }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  /* right inset is 20 = --space-5 minus one 4-step, so the photo stays optically centred */
+  padding: var(--space-1) calc(var(--space-5) - var(--space-1)) var(--space-1) var(--space-1);
+  background: var(--color-surface);
+  border-radius: var(--radius-button);
+  outline: 1.5px solid var(--color-border); outline-offset: -1.5px;
+  transition: outline-color var(--dur-fast) var(--ease);
+}
+.chip:active { transform: scale(0.97); }
+.chip:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+/* The circle is a fixed frame that clips; only the photo inside it moves, so the
+   chip keeps its size on hover. isolation forces a stacking context, which is what
+   stops iOS letting a transformed child bleed past a rounded overflow. */
+.chip__photo {
+  width: 48px; height: 48px; flex: none; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius-inner-4);
+}
+.chip__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--dur) var(--ease);
+}
+.chip--more { height: 56px; padding-left: calc(var(--space-5) - var(--space-1)); color: var(--color-text-muted); }
+
+/* ---------- footer ---------- */
+.footer {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-6);
+  padding: calc(var(--space-6) * 2) calc(var(--space-5) - var(--space-1)) var(--space-6);
+}
+.footer__group { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); width: 100%; }
+.footer__promo { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); width: 100%; }
+.footer__nav { display: flex; flex-wrap: wrap; justify-content: center; column-gap: var(--space-4); row-gap: 0; width: 100%; }
+.footer__nav a { display: inline-flex; align-items: center; padding-block: var(--space-2); }
+.footer__legal { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+
+/* ---------- theme switcher (demo only, not part of the product) ---------- */
+.switch {
+  position: fixed; bottom: var(--space-3); left: var(--space-3); z-index: 50;
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2);
+}
+.switch__panel {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); background: var(--color-surface);
+  border: 1px solid var(--color-border); border-radius: var(--radius-card);
+}
+.switch__toggle { display: none; }
+.switch__group { display: flex; gap: var(--space-1); align-items: center; flex-wrap: wrap; }
+.switch__label { font-family: var(--font-ui); font-size: var(--size-caption); color: var(--color-text-muted); margin-right: var(--space-1); }
+.switch button {
+  font-family: var(--font-ui); font-size: var(--size-caption); line-height: var(--lh-caption);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text-muted);
+}
+.switch button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-on-accent); border-color: var(--color-accent); }
+
+/* On a phone the panel would cover the screen it is meant to demonstrate, so it
+   collapses to a button and opens on tap. */
+@media (max-width: 760px) {
+  .switch__toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: var(--color-surface); color: var(--color-text);
+    border: 1.5px solid var(--color-border); border-radius: var(--radius-pill);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+  }
+  .switch__panel { display: none; max-width: calc(100vw - var(--space-5)); }
+  .switch--open .switch__panel { display: flex; }
+}
+
+/* ============================================================
+   MOTION — hover, press, reveal
+   Durations and the easing curve come from tokens.css. Everything animated is
+   transform / opacity only, so it stays off the layout and paint path.
+   ============================================================ */
+
+/* Hover is gated: on touch, :hover latches after a tap and the state sticks. */
+/* 300ms is a client-set figure, not a token — the agreed feel for a hover, a shade
+   slower than the 160ms press it sits next to. The states themselves are the ones
+   written down in CLAUDE.md section 6, not a blanket fade. */
+.btn, .icon-btn, .text-btn, .chip {
+  transition: background-color 300ms var(--ease), border-color 300ms var(--ease),
+              outline-color 300ms var(--ease), color 300ms var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover { background: var(--color-accent-hover); }
+  .btn--secondary:hover { background: var(--color-accent-subtle); }
+  .icon-btn--ghost:hover { background: var(--color-accent-subtle); }
+  .icon-btn--outline:hover { background: var(--color-accent-subtle); border-color: var(--color-accent); }
+  .icon-btn--filled:hover { background: var(--color-accent-hover); }
+  /* over a photograph there is no palette surface to fall back on, so this one
+     thickens the glass instead */
+  .icon-btn--media:hover { background: var(--glass); border-color: var(--on-media); }
+
+  .text-btn:hover { color: var(--color-accent-hover); }
+  /* the arrow leads the eye in the direction the link goes */
+  .text-btn:hover .icon { transform: translateX(3px); }
+
+  .chip:hover { outline-color: var(--color-text); }
+  .chip:hover .chip__photo img { transform: scale(1.12); }
+
+  .excursion:hover .excursion__media { transform: scale(1.04); }
+  .excursion:active { transform: scale(0.99); }
+
+  /* underline grows from the side the text starts on */
+  .footer__nav a, .footer__legal a { position: relative; }
+  .footer__nav a::after, .footer__legal a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: var(--space-1); height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: left;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .footer__nav a:hover::after, .footer__legal a:hover::after { transform: scaleX(1); }
+}
+
+.chip__photo img { transform-origin: center; }
+
+/* Reveal on scroll. The hidden state is keyed off an attribute that JS adds, so
+   the page still renders fully if the script never runs.
+
+   Long and blurred on purpose. A short fade over a small offset reads as content
+   popping in late — the eye catches two discrete states and calls it a jump. Blur
+   removes the second edge: there is nothing crisp to compare against, so it reads
+   as one thing coming into focus. This is decorative motion, not a UI response, so
+   it is allowed to take its time.
+
+   Keyframes rather than a transition: a reveal target that also has its own hover
+   transition (the text buttons do) would otherwise inherit the 700ms reveal timing
+   for its hover as well, since both want the same `transition` property. */
+[data-reveal] { opacity: 0; }
+[data-reveal-group].is-revealed [data-reveal] {
+  animation: reveal-rise 700ms var(--ease-slow) var(--reveal-delay, 0ms) both;
+}
+/* Once the animation has run, JS drops it and hands the element back to this static
+   state. `both` keeps the final keyframe applied forever, and a persisted filter —
+   even blur(0) — keeps the element on an offscreen buffer that iOS rasterises at CSS
+   resolution, so it renders permanently soft. Clearing filter to none, not blur(0),
+   frees that buffer; the !important is to beat the animated-group selectors above. */
+[data-reveal].is-settled {
+  opacity: 1 !important;
+  animation: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+/* the `to` has to be spelled out: an implicit one resolves against the element's
+   own style, which here is the opacity: 0 of the hidden state */
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(16px); filter: blur(8px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* City chips pop instead of rising, on the Bouncy spring, in a shuffled order.
+   Scale starts at 0.8 rather than 0: nothing real appears out of nothing, and the
+   spring overshoot carries it to ~1.04 before settling. Opacity and blur resolve
+   faster than the bounce, so the chip is legible while it is still springing —
+   hence two tracks rather than one. */
+[data-reveal-group].is-revealed [data-reveal="pop"] {
+  animation: reveal-pop-fade 320ms var(--ease) var(--reveal-delay, 0ms) both,
+             reveal-pop-scale 620ms var(--ease-bouncy) var(--reveal-delay, 0ms) both;
+}
+@keyframes reveal-pop-fade { from { opacity: 0; filter: blur(6px); } to { opacity: 1; filter: blur(0); } }
+@keyframes reveal-pop-scale { from { transform: scale(0.8); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Reduced motion means gentler, not none — the fade stays, the travel goes. */
+  [data-reveal-group].is-revealed [data-reveal] { animation: reveal-fade 300ms var(--ease) var(--reveal-delay, 0ms) both; }
+  .text-btn:hover .icon, .chip:hover .chip__photo img, .excursion:hover .excursion__media { transform: none; }
+  .btn:active, .icon-btn:active, .chip:active, .excursion:active { transform: none; }
+}
+@keyframes reveal-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============================================================
+   OBSERVE — Figma «Anim 2» (564:444), 4 frames
+   1->2 Bouncy 800 (1ms hold) · 2->3 Bouncy 800 (2ms) ·
+   3->4 Bouncy 1500 (3ms) · 4->1 Slow 600 (1000ms hold)  =  4706ms
+   One ringed photo shrinks and steps aside while three more slide out from behind
+   it into a row, then all four scatter along a dotted route.
+   ============================================================ */
+.obs { position: absolute; inset: 0; }
+.obs__pin {
+  position: absolute; left: 0; top: 0;
+  width: 98.78px; height: 98.78px; margin: -49.39px 0 0 -49.39px;
+  animation: var(--obs-track) var(--obs-cycle) infinite;
+}
+.obs__pin img { width: 100%; height: 100%; border-radius: var(--radius-pill); object-fit: cover; }
+/* the lead keeps Figma's ring; base box 146 = photo 116.305 + 2 x 14.847 padding,
+   the largest state, so every other size is a scale down rather than a blow-up */
+.obs__pin--lead {
+  width: 146px; height: 146px; margin: -73px 0 0 -73px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1.237px solid transparent;
+}
+.obs__pin--lead img { width: 116.305px; height: 116.305px; }
+.obs__route {
+  position: absolute; left: -4px; top: -3px; width: 206.5px; height: 176px;
+  opacity: 0; animation: obs-route var(--obs-cycle) infinite;
+}
+
+@keyframes obs-lead {
+  0%, 0.02% { transform: translate(130px, 104px) scale(0.849315); background-color: var(--color-bg); border-color: var(--color-border); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  17.02%, 17.06% { transform: translate(130px, 104px) scale(1); background-color: var(--color-bg); border-color: var(--color-border); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  34.06%, 34.13% { transform: translate(41px, 104px) scale(0.438356); background-color: transparent; border-color: transparent; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  66%, 87.25% { transform: translate(43px, 156px) scale(0.438356); background-color: transparent; border-color: transparent; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(130px, 104px) scale(0.849315); background-color: var(--color-bg); border-color: var(--color-border); }
+}
+/* the three followers start stacked behind the lead, hidden by its opaque ring */
+@keyframes obs-follow-a {
+  0%, 0.02% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  17.02%, 17.06% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  34.06%, 34.13% { transform: translate(219.5px, 104.5px) scale(0.516096); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  66%, 87.25% { transform: translate(135.5px, 130.5px) scale(0.516096); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(130px, 104px) scale(1); }
+}
+@keyframes obs-follow-b {
+  0%, 0.02% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  17.02%, 17.06% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  34.06%, 34.13% { transform: translate(160px, 104.5px) scale(0.516096); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  66%, 87.25% { transform: translate(211.5px, 95.5px) scale(0.516096); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(130px, 104px) scale(1); }
+}
+@keyframes obs-follow-c {
+  0%, 0.02% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  17.02%, 17.06% { transform: translate(130px, 104px) scale(1); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  34.06%, 34.13% { transform: translate(100.5px, 104.5px) scale(0.516096); animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  66%, 87.25% { transform: translate(121.5px, 44.5px) scale(0.516096); animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(130px, 104px) scale(1); }
+}
+@keyframes obs-route {
+  0%, 34.13% { opacity: 0; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  66%, 87.25% { opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { opacity: 0; }
+}
+
+/* ============================================================
+   UNDERSTAND — Figma «Anim 3» (566:572), 6 frames
+   1->2 Ease out 300 (500ms hold) · 2->3 Bouncy 800 (1ms) · 3->4 Bouncy 800 (1ms) ·
+   4->5 Bouncy 800 (300ms) · 5->6 Bouncy 800 (300ms) · 6->1 Slow 600 (300ms) = 5502ms
+   The photo opens out to fill the card, three markers surface, and each one in turn
+   blooms into a detail shot before settling back.
+   ============================================================ */
+.und { position: absolute; inset: 0; }
+/* Base box is the opened-out state (353), so the photo is laid out at the size it
+   is actually seen at and the small state scales down. Laid out at 124 and blown up
+   2.85x it was rasterised at 124 and stretched — that was the mush. */
+.und__hero {
+  position: absolute; left: 0; top: 0;
+  width: 353px; height: 353px; margin: -176.5px 0 0 -176.5px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 2.992px solid var(--color-border);   /* renders as 1.051 at the 0.3513 scale */
+  background: var(--color-bg);
+  animation: und-hero var(--und-cycle) infinite;
+}
+.und__hero img {
+  position: absolute; width: 281.203px; height: 281.203px;
+  border-radius: var(--radius-pill); object-fit: cover;
+}
+/* likewise: base box is the opened 120, the pin and the dormant speck scale down */
+.und__spot {
+  position: absolute; left: 0; top: 0;
+  width: 120px; height: 120px; margin: -60px 0 0 -60px;
+  animation: var(--spot-track) var(--und-cycle) infinite;
+}
+.und__spot img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.und__spot img + img { opacity: 0; animation: var(--open-track) var(--und-cycle) infinite; }
+
+@keyframes und-hero {
+  0%, 9.087% { transform: translate(130px, 103px) scale(0.351275); background-color: var(--color-bg); border-color: var(--color-border); animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+  14.54%, 89.095% { transform: translate(130px, 54.5px) scale(1); background-color: transparent; border-color: transparent; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(130px, 103px) scale(0.351275); background-color: var(--color-bg); border-color: var(--color-border); }
+}
+/* Each marker sits at a fixed point and only changes size: a speck while dormant,
+   30 as a pin, 120 when it opens. Figma's dormant state is 1px — kept, but paired
+   with opacity so it does not appear out of nothing. */
+@keyframes und-spot-1 {
+  0%, 9.087% { transform: translate(36px, 98px) scale(0.008333); opacity: 0; animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+  14.54%, 14.558% { transform: translate(36px, 98px) scale(0.008333); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  29.099%, 29.117% { transform: translate(36px, 98px) scale(0.25); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  43.657%, 49.109% { transform: translate(36px, 98px) scale(1); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  63.65%, 89.095% { transform: translate(36px, 98px) scale(0.25); opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(36px, 98px) scale(0.008333); opacity: 0; }
+}
+@keyframes und-spot-2 {
+  0%, 9.087% { transform: translate(220px, 114px) scale(0.008333); opacity: 0; animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+  14.54%, 14.558% { transform: translate(220px, 114px) scale(0.008333); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  29.099%, 69.102% { transform: translate(220px, 114px) scale(0.25); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  83.642%, 89.095% { transform: translate(220px, 114px) scale(1); opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(220px, 114px) scale(0.008333); opacity: 0; }
+}
+@keyframes und-spot-3 {
+  0%, 9.087% { transform: translate(129px, 34px) scale(0.008333); opacity: 0; animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+  14.54%, 14.558% { transform: translate(129px, 34px) scale(0.008333); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  29.099%, 49.109% { transform: translate(129px, 34px) scale(0.25); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  63.65%, 69.102% { transform: translate(129px, 34px) scale(1); opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  83.642%, 89.095% { transform: translate(129px, 34px) scale(0.25); opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { transform: translate(129px, 34px) scale(0.008333); opacity: 0; }
+}
+/* the detail photo cross-fades in only while its own marker is open */
+@keyframes und-open-1 {
+  0%, 29.117% { opacity: 0; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  43.657%, 49.109% { opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  63.65%, 100% { opacity: 0; }
+}
+@keyframes und-open-3 {
+  0%, 49.109% { opacity: 0; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  63.65%, 69.102% { opacity: 1; animation-timing-function: linear(0, 0.1203 4.3%, 0.3953 8.7%, 0.7088 13%, 0.9768 17.4%, 1.1551 21.7%, 1.2353 26.1%, 1.234 30.4%, 1.1802 34.8%, 1.1045 39.1%, 1.0317 43.5%, 0.977 47.8%, 0.9464 52.2%, 0.9382 56.5%, 0.9464 60.9%, 0.9634 65.2%, 0.9822 69.6%, 0.998 73.9%, 1.0083 78.3%, 1.0127 82.6%, 1.0123 87%, 1.0089 91.3%, 1.0043 95.7%, 1); }
+  83.642%, 100% { opacity: 0; }
+}
+@keyframes und-open-2 {
+  0%, 69.102% { opacity: 0; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  83.642%, 89.095% { opacity: 1; animation-timing-function: linear(0, 0.0569 4.3%, 0.1749 8.7%, 0.3069 13%, 0.4317 17.4%, 0.5411 21.7%, 0.6333 26.1%, 0.709 30.4%, 0.7704 34.8%, 0.8196 39.1%, 0.8588 43.5%, 0.8899 47.8%, 0.9146 52.2%, 0.9341 56.5%, 0.9495 60.9%, 0.9616 65.2%, 0.9712 69.6%, 0.9787 73.9%, 0.9847 78.3%, 0.9893 82.6%, 0.993 87%, 0.9959 91.3%, 0.9982 95.7%, 1); }
+  100% { opacity: 0; }
+}
+
+/* Only the hero carries this. The card animations are left running: pausing them
+   froze some layers and not others — the `animation` shorthand on a heavier
+   selector resets play-state to running — so scale and opacity drifted apart and a
+   card came back out of step with itself. If this is ever extended to the cards
+   again, every animated layer has to stop together or not at all.
+   The attribute is added by JS, so without the script nothing freezes. */
+[data-anim] * { animation-play-state: paused !important; }
+[data-anim].is-playing * { animation-play-state: running !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .obs__pin, .obs__route, .und__hero, .und__hero img + img, .und__spot, .und__spot img + img,
+  .orbit__wheel, .orbit__ring, .orbit ~ .anim-label { animation: none; }
+}

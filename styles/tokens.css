@@ -1,0 +1,211 @@
+/* ============================================================
+   Observatory — design tokens
+   Auto-generated from Figma (Showcase, NESk9YjJiyTbstAl1uW3Yt)
+
+   Two independent axes:
+     data-concept="a|b|c"   -> fonts, radii, line-heights
+     data-palette="duomo|santorini|krem|terracotta|night|cosmos"
+                            -> colours (place-based identity)
+
+   Example: <html data-concept="b" data-palette="cosmos">
+   ============================================================ */
+
+:root {
+  /* ---- spacing (multiples of 4 — never invent values) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+
+  /* ---- type sizes (constant across concepts) ---- */
+  --size-display: 48px;
+  --size-h1: 40px;
+  --size-h2: 32px;
+  --size-h3: 24px;
+  --size-title: 20px;
+  --size-body: 16px;
+  --size-caption: 12px;
+  --size-label: 12px;
+
+  /* ---- static radii ---- */
+  --radius-pill: 999px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  /* ---- static colours: foreground over images ----
+     Never themed. Text over a photo must stay legible in any
+     concept/palette, so these sit outside both axes. */
+  --on-media: #ffffff;
+  --on-media-muted: rgba(255, 255, 255, 0.72);
+  --on-media-border: rgba(255, 255, 255, 0.30);
+  --glass: rgba(255, 255, 255, 0.14);
+  --scrim: rgba(0, 0, 0, 0.55);
+
+  /* ---- semantic constants ---- */
+  --color-danger: #c94a3f;
+  --color-success: #3e8e5a;
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur: 260ms;
+  --dur-slow: 420ms;
+}
+
+/* ============================================================
+   CONCEPT AXIS — typography + shape
+   ============================================================ */
+
+[data-concept="a"] {
+  --concept-name: "A — Архивный";
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display-weight: 600;
+  --font-text: "Jost", system-ui, sans-serif;
+  --font-text-weight: 400;
+  --font-ui: "Jost", system-ui, sans-serif;
+  --font-ui-weight: 400;
+
+  --radius-card: 6px;
+  --radius-button: 4px;
+  --radius-input: 8px;
+  --radius-inner-4: 0px;   /* outer − 4px padding */
+
+  --lh-display: 53px;
+  --lh-h1: 45px;
+  --lh-h2: 37px;
+  --lh-h3: 29px;
+  --lh-title: 26px;
+  --lh-body: 25px;
+  --lh-caption: 18px;
+  --lh-label: 15px;
+}
+
+[data-concept="b"] {
+  --concept-name: "B — Светлый";
+
+  --font-display: "Golos Text", system-ui, sans-serif;
+  --font-display-weight: 600;
+  --font-text: "Golos Text", system-ui, sans-serif;
+  --font-text-weight: 400;
+  --font-ui: "Golos Text", system-ui, sans-serif;
+  --font-ui-weight: 500;
+
+  --radius-card: 16px;
+  --radius-button: 999px;
+  --radius-input: 12px;
+  --radius-inner-4: 999px;
+
+  --lh-display: 53px;
+  --lh-h1: 45px;
+  --lh-h2: 37px;
+  --lh-h3: 29px;
+  --lh-title: 26px;
+  --lh-body: 24px;
+  --lh-caption: 18px;
+  --lh-label: 15px;
+}
+
+[data-concept="c"] {
+  --concept-name: "C — Кинематографичный";
+
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-display-weight: 700;
+  --font-text: "EB Garamond", Georgia, serif;
+  --font-text-weight: 500;
+  --font-ui: "Manrope", system-ui, sans-serif;
+  --font-ui-weight: 500;
+
+  --radius-card: 14px;
+  --radius-button: 12px;
+  --radius-input: 12px;
+  --radius-inner-4: 8px;
+
+  --lh-display: 54px;
+  --lh-h1: 46px;
+  --lh-h2: 38px;
+  --lh-h3: 29px;
+  --lh-title: 27px;
+  --lh-body: 26px;
+  --lh-caption: 19px;
+  --lh-label: 15px;
+}
+
+/* ============================================================
+   PALETTE AXIS — colour comes from the place
+   ============================================================ */
+
+[data-palette="duomo"] {
+  --color-bg: #14110c;
+  --color-surface: #211c15;
+  --color-text: #f3ecdd;
+  --color-text-muted: #a99c82;
+  --color-accent: #c8a24c;
+  --color-on-accent: #1a1509;
+  --color-border: #3a3423;
+  --color-accent-hover: #b0893b;
+  --color-accent-subtle: #2a2416;
+}
+
+[data-palette="santorini"] {
+  --color-bg: #fbfcfe;
+  --color-surface: #ffffff;
+  --color-text: #14243a;
+  --color-text-muted: #5e6e82;
+  --color-accent: #2e6fb0;
+  --color-on-accent: #ffffff;
+  --color-border: #dce4ec;
+  --color-accent-hover: #275e97;
+  --color-accent-subtle: #e6eef6;
+}
+
+[data-palette="krem"] {
+  --color-bg: #f1e9d2;
+  --color-surface: #faf4e4;
+  --color-text: #2e2b22;
+  --color-text-muted: #8a7f68;
+  --color-accent: #6e6047;
+  --color-on-accent: #faf4e4;
+  --color-border: #cfc6ac;
+  --color-accent-hover: #5c5039;
+  --color-accent-subtle: #eae3d6;
+}
+
+[data-palette="terracotta"] {
+  --color-bg: #f4f0e8;
+  --color-surface: #ffffff;
+  --color-text: #23201b;
+  --color-text-muted: #7a7568;
+  --color-accent: #c0613b;
+  --color-on-accent: #ffffff;
+  --color-border: #e4decf;
+  --color-accent-hover: #a65330;
+  --color-accent-subtle: #f2e3db;
+}
+
+[data-palette="night"] {
+  --color-bg: #1a1a1c;
+  --color-surface: #262625;
+  --color-text: #f2f0ec;
+  --color-text-muted: #9b9791;
+  --color-accent: #cbb68c;
+  --color-on-accent: #1a1a1c;
+  --color-border: #3a3a38;
+  --color-accent-hover: #b39e76;
+  --color-accent-subtle: #2a271f;
+}
+
+[data-palette="cosmos"] {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-text: #131211;
+  --color-text-muted: #6f6d69;
+  --color-accent: #131211;
+  --color-on-accent: #ffffff;
+  --color-border: #e8e7e4;
+  --color-accent-hover: #333230;
+  --color-accent-subtle: #efeeeb;
+}
