@@ -31,6 +31,10 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+/* bg on <html> too: the .screen column is centred, and without this the browser
+   canvas (white) shows beside it on viewports wider than the column / during
+   overscroll — the "white strip". */
+html { background: var(--color-bg); }
 
 body {
   background: var(--color-bg);
@@ -58,6 +62,14 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .t-caption { font-size: var(--size-caption); line-height: var(--lh-caption); margin: 0; }
 /* Label is interface chrome, so it takes --font-ui, not --font-text. */
 .t-label { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-label); line-height: var(--lh-label); margin: 0; }
+/* Figma «Travel Guide/Eyebrow»: Jost 12/18, трекинг +14%, UPPERCASE. Отличается от
+   Label лидингом 18 и трекингом. Лидинг берём из --lh-caption (тоже 18) — отдельного
+   --lh-eyebrow в токенах пока нет; трекинг 0.14em — константа стиля, не токен. */
+.t-eyebrow {
+  font-family: var(--font-ui); font-weight: var(--font-ui-weight);
+  font-size: var(--size-label); line-height: var(--lh-caption);
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0;
+}
 .t-muted { color: var(--color-text-muted); }
 .t-center { text-align: center; }
 .t-balance { text-wrap: balance; }
@@ -94,7 +106,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .icon-btn:active { transform: scale(0.94); }
 .icon-btn--36 { width: 36px; height: 36px; }
-.icon-btn--outline { border: 1.5px solid var(--color-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); }
+/* Outline IconButton: icon is accent per the Figma component (on Cosmos accent≈text
+   so it reads the same there, but on coloured palettes like Duomo it's the accent). */
+.icon-btn--outline { border: 1.5px solid var(--color-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); color: var(--color-accent); }
 .icon-btn--filled { background: var(--color-accent); color: var(--color-on-accent); }
 /* Outline variant sitting on top of a photograph — borders come from the media set. */
 .icon-btn--media { border: 1.5px solid var(--on-media-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); color: var(--on-media); }

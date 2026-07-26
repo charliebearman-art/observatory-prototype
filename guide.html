@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en" data-concept="b" data-palette="duomo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14110c">
+<title>The City You Don’t Understand at First — Observatory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=9">
+<link rel="stylesheet" href="styles/guide.css?v=24">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+</head>
+<body>
+
+<!-- demo-only control: preview both theme axes on the guide page -->
+<div class="switch">
+  <div class="switch__panel">
+    <div class="switch__group">
+      <span class="switch__label">Concept</span>
+      <button data-set="concept" data-val="a">A</button>
+      <button data-set="concept" data-val="b" aria-pressed="true">B</button>
+      <button data-set="concept" data-val="c">C</button>
+    </div>
+    <div class="switch__group">
+      <span class="switch__label">Place</span>
+      <button data-set="palette" data-val="cosmos">Cosmos</button>
+      <button data-set="palette" data-val="santorini">Santorini</button>
+      <button data-set="palette" data-val="terracotta">Rome</button>
+      <button data-set="palette" data-val="krem">Krem</button>
+      <button data-set="palette" data-val="duomo" aria-pressed="true">Duomo</button>
+      <button data-set="palette" data-val="night">Night</button>
+    </div>
+  </div>
+  <button class="switch__toggle" aria-expanded="false" aria-label="Показать переключатель темы">
+    <svg class="icon"><use href="assets/icons.svg#i-grid"></use></svg>
+  </button>
+</div>
+
+<main class="screen guide-screen">
+
+  <!-- menu -->
+  <header class="menu">
+    <a class="logo logo--short" href="index.html" aria-label="Observatory TS"></a>
+    <div class="menu__btns">
+      <a class="btn btn--primary btn--compact" href="#">Log in</a>
+      <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language">
+        <svg class="icon"><use href="assets/icons.svg#i-globe"></use></svg>
+      </button>
+      <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Menu">
+        <svg class="icon"><use href="assets/icons.svg#i-burger"></use></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- cover -->
+  <section class="cover">
+    <div class="cover__media" aria-hidden="true"><img class="cover__bg" src="assets/img/guide/guide-cover.jpg?v=2" alt=""></div>
+    <div class="cover__scrim" aria-hidden="true"></div>
+    <div class="cover__fade" aria-hidden="true"></div>
+    <div class="cover__top">
+      <a class="icon-btn icon-btn--scrim" href="index.html" aria-label="Back">
+        <svg class="icon"><use href="assets/icons.svg#i-arrow-left"></use></svg>
+      </a>
+      <button class="lang-picker" aria-label="Language: English">ENGLISH
+        <svg class="icon"><use href="assets/icons.svg#i-chevron-down"></use></svg>
+      </button>
+    </div>
+    <div class="cover__panel">
+      <div class="cover__head">
+        <div class="cover__badges">
+          <span class="cover__mark" aria-hidden="true"></span>
+          <span class="badge--city">MILAN</span>
+        </div>
+        <h1 class="cover__title t-h2">The City You Don’t Understand at First</h1>
+        <p class="cover__sub t-body">Seven landmarks, one square mile, six hundred years. Milan’s centre — slowed down until it finally makes sense.</p>
+      </div>
+      <button class="cover__more icon-btn icon-btn--outline" id="coverDown" aria-label="Scroll down">
+        <svg class="icon"><use href="assets/icons.svg#i-chevron-down"></use></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- guide base info -->
+  <section class="ginfo" id="ginfo">
+    <div class="ginfo__card">
+      <div class="ginfo__top">
+        <div class="ginfo__price">
+          <span class="t-h3">210 $</span>
+          <span class="t-caption t-muted">one-time · lifetime access</span>
+        </div>
+        <a class="btn btn--primary btn--large" href="#">Buy guide
+          <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+        </a>
+      </div>
+      <div class="ginfo__metrics">
+        <div class="metric">
+          <span class="metric__value">1h 40m</span>
+          <span class="metric__label">Duration</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">2.4 km</span>
+          <span class="metric__label">Distance</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">9</span>
+          <span class="metric__label">Stops</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">Easy</span>
+          <span class="metric__label">Level</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="about">
+    <p class="t-eyebrow t-muted">About</p>
+    <h2 class="t-h3">A Journey to Experience</h2>
+    <p class="about__body about__body--clamp t-body" id="aboutBody">Milan hides its greatness in plain sight — behind a plain façade, under an arcade, inside a church that fakes its own depth. This walk slows the centre down: six hundred years of cathedral, gallery, opera house, medieval square and Bramante’s impossible apse, in a few hundred metres. Seven stops, one afternoon — and by the end the city reads differently, because now you know what you’re looking at.</p>
+    <button class="about__toggle text-btn" aria-expanded="false" aria-controls="aboutBody">
+      <span>More</span>
+      <svg class="icon icon--20"><use href="assets/icons.svg#i-chevron-down"></use></svg>
+    </button>
+  </section>
+
+  <!-- gallery (looping) -->
+  <section class="gallery" aria-label="Gallery">
+    <div class="gallery__track" id="galleryTrack">
+      <!-- items are duplicated once by JS for a seamless loop -->
+      <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-1.jpg" alt=""></span>
+      <span class="gallery__item gallery__item--w"><img src="assets/img/guide/gal-2.jpg" alt=""></span>
+      <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-3.jpg" alt=""></span>
+      <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-4.jpg" alt=""></span>
+      <span class="gallery__item gallery__item--w"><img src="assets/img/guide/gal-5.jpg" alt=""></span>
+      <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-6.jpg" alt=""></span>
+    </div>
+  </section>
+
+  <!-- the route -->
+  <section class="route">
+    <div class="route__head">
+      <p class="t-eyebrow t-muted">The route</p>
+      <h2 class="route__title t-h3"><b>9 stops</b>, one afternoon</h2>
+    </div>
+
+    <!-- real map (MapLibre + OpenFreeMap vector tiles); the CSS grid on .route__map
+         stays behind it as an offline/failure fallback. Markers are built in JS. -->
+    <div class="route__map" id="routeMap"></div>
+
+    <div class="route__cards" id="routeCards">
+      <article class="rcard" data-stop="1"><img class="rcard__img" src="assets/img/guide/poi-1.jpg" alt=""><div class="rcard__text"><span class="rcard__num">01</span><h3 class="rcard__title">Duomo di Milano</h3><p class="rcard__desc">Six hundred years of marble, and a roof you can walk.</p></div></article>
+      <article class="rcard" data-stop="2"><img class="rcard__img" src="assets/img/guide/poi-2.jpg" alt=""><div class="rcard__text"><span class="rcard__num">02</span><h3 class="rcard__title">Galleria Vittorio Emanuele II</h3><p class="rcard__desc">Glass, iron and mosaic — the oldest shopping arcade in Italy.</p></div></article>
+      <article class="rcard" data-stop="3"><img class="rcard__img" src="assets/img/guide/poi-3.jpg" alt=""><div class="rcard__text"><span class="rcard__num">03</span><h3 class="rcard__title">Palazzo Marino</h3><p class="rcard__desc">The city hall Milan almost never lets you inside.</p></div></article>
+      <article class="rcard" data-stop="4"><img class="rcard__img" src="assets/img/guide/poi-4.jpg" alt=""><div class="rcard__text"><span class="rcard__num">04</span><h3 class="rcard__title">Teatro alla Scala</h3><p class="rcard__desc">The plainest façade in Milan hides its loudest room.</p></div></article>
+      <article class="rcard" data-stop="5"><img class="rcard__img" src="assets/img/guide/poi-5.jpg" alt=""><div class="rcard__text"><span class="rcard__num">05</span><h3 class="rcard__title">Piazza dei Mercanti</h3><p class="rcard__desc">The medieval heart, from when the city was a handful of streets.</p></div></article>
+      <article class="rcard" data-stop="6"><img class="rcard__img" src="assets/img/guide/poi-6.jpg" alt=""><div class="rcard__text"><span class="rcard__num">06</span><h3 class="rcard__title">Santa Maria presso San Satiro</h3><p class="rcard__desc">Step in and the church runs deep — except it doesn’t.</p></div></article>
+      <article class="rcard" data-stop="7"><img class="rcard__img" src="assets/img/guide/poi-7.jpg" alt=""><div class="rcard__text"><span class="rcard__num">07</span><h3 class="rcard__title">Pinacoteca Ambrosiana</h3><p class="rcard__desc">A courtyard, and Leonardo’s notebooks in the rooms beyond.</p></div></article>
+    </div>
+  </section>
+
+  <!-- formats -->
+  <section class="formats">
+    <div class="formats__head">
+      <p class="t-eyebrow t-muted">Formats</p>
+      <h2 class="t-h3">How you’ll experience it</h2>
+    </div>
+    <div class="formats__rail">
+      <div class="format"><span class="format__icon"><svg class="icon"><use href="assets/icons.svg#i-interactive"></use></svg></span><div class="format__text"><div class="format__title">Interactive</div><div class="format__sub">Tap the details to dig in</div></div></div>
+      <div class="format"><span class="format__icon"><svg class="icon"><use href="assets/icons.svg#i-headphones"></use></svg></span><div class="format__text"><div class="format__title">Audio</div><div class="format__sub">Narrated as you walk</div></div></div>
+      <div class="format"><span class="format__icon"><svg class="icon"><use href="assets/icons.svg#i-play"></use></svg></span><div class="format__text"><div class="format__title">Video</div><div class="format__sub">Short scenes on site</div></div></div>
+      <div class="format"><span class="format__icon"><svg class="icon"><use href="assets/icons.svg#i-text"></use></svg></span><div class="format__text"><div class="format__title">Text</div><div class="format__sub">Read at your own pace</div></div></div>
+    </div>
+  </section>
+
+  <!-- featured guides (reused) -->
+  <section class="block">
+    <div class="block__head">
+      <p class="t-eyebrow t-muted">You might also like</p>
+      <div class="row row--between row--baseline">
+        <h2 class="t-h3">Popular in Italy</h2>
+        <a class="text-btn" href="index.html"><span>All</span>
+          <svg class="icon icon--20"><use href="assets/icons.svg#i-chevron-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <div class="rail">
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-disappear.jpg" alt="">
+        <div class="excursion__top"><span class="badge">MILAN</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">Where Milan Goes to Disappear</h3>
+            <p class="excursion__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">180 $</span>
+            <span class="icon-btn icon-btn--media"><svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg></span>
+          </div>
+        </div>
+      </a>
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-ritual.jpg" alt="">
+        <div class="excursion__top"><span class="badge">MILAN</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">The Six O'Clock Ritual</h3>
+            <p class="excursion__teaser">Follow Milan's evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">80 $</span>
+            <span class="icon-btn icon-btn--media"><svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg></span>
+          </div>
+        </div>
+      </a>
+      <a class="excursion" href="#">
+        <img class="excursion__media" src="assets/img/guide-rooftops.jpg" alt="">
+        <div class="excursion__top"><span class="badge">ROME</span></div>
+        <div class="excursion__scrim"></div>
+        <div class="excursion__body">
+          <div class="excursion__text">
+            <h3 class="excursion__title">Rome from the Rooftops</h3>
+            <p class="excursion__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta</p>
+          </div>
+          <div class="excursion__foot">
+            <span class="excursion__price">190 $</span>
+            <span class="icon-btn icon-btn--media"><svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg></span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- footer (reused) -->
+  <footer class="footer">
+    <div class="divider"></div>
+    <div class="footer__group">
+      <div class="footer__promo">
+        <a class="logo logo--full" href="index.html" aria-label="Observatory TS"></a>
+        <h2 class="t-h3 t-center t-balance">Ready to Start a New Journey?</h2>
+        <a class="btn btn--primary btn--large" href="index.html">Let’s go
+          <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+        </a>
+      </div>
+      <nav class="footer__nav">
+        <a class="t-body" href="#">About</a>
+        <a class="t-body" href="#">Guides</a>
+        <a class="t-body" href="#">How it works</a>
+        <a class="t-body" href="#">Contact</a>
+      </nav>
+      <a class="btn btn--secondary btn--compact" href="#">Log in
+        <svg class="icon icon--16"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+      </a>
+    </div>
+    <div class="footer__group" style="gap:var(--space-5)">
+      <div class="divider"></div>
+      <div class="row row--between" style="width:100%">
+        <span class="row" style="gap:var(--space-2)">
+          <svg class="icon"><use href="assets/icons.svg#i-globe"></use></svg>
+          <span class="t-body">English</span>
+        </span>
+        <span class="row" style="gap:var(--space-2)">
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg#i-telegram"></use></svg></a>
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg#i-instagram"></use></svg></a>
+        </span>
+      </div>
+      <div class="divider"></div>
+      <div class="footer__legal">
+        <span class="t-caption t-muted">© 2026 Observatory</span>
+        <span class="row" style="gap:var(--space-3)">
+          <a class="t-caption t-muted" href="#">Terms</a>
+          <a class="t-caption t-muted" href="#">Privacy</a>
+        </span>
+      </div>
+    </div>
+    <span class="foot-end" id="footEnd" aria-hidden="true"></span>
+  </footer>
+
+</main>
+
+<!-- sticky purchase bar -->
+<div class="buybar" id="buybar" aria-hidden="true">
+  <div class="buybar__price">
+    <span class="t-h3">210 $</span>
+    <span class="t-caption t-muted">one-time · lifetime access</span>
+  </div>
+  <a class="btn btn--primary btn--large" href="#">Buy guide
+    <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+  </a>
+</div>
+
+<script>
+  // hero photo parallax — the img lags the scroll while the cover is in view
+  (function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var img = document.querySelector('.cover__bg');
+    var cover = document.querySelector('.cover');
+    if (!img || !cover) return;
+    var ticking = false;
+    function upd() {
+      ticking = false;
+      var y = window.scrollY;
+      if (y > cover.offsetHeight) return;
+      img.style.setProperty('--parallax', Math.min(y * 0.16, 24) + 'px');
+    }
+    addEventListener('scroll', function () {
+      if (!ticking) { requestAnimationFrame(upd); ticking = true; }
+    }, { passive: true });
+    upd();
+  })();
+
+  // hero chevron scrolls to the first content block
+  (function () {
+    var btn = document.getElementById('coverDown');
+    var target = document.getElementById('ginfo');
+    var menuH = 76;
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: target.offsetTop - menuH, behavior: 'smooth' });
+    });
+  })();
+
+  // menu is hidden on load and slides in (frosted) once the page is scrolled
+  (function () {
+    var menu = document.querySelector('.menu');
+    function onScroll() {
+      var show = window.scrollY > 80;
+      menu.classList.toggle('menu--show', show);
+      menu.classList.toggle('menu--stuck', show);
+    }
+    onScroll();
+    addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // about: expand / collapse with an animated height reveal
+  (function () {
+    var btn = document.querySelector('.about__toggle');
+    var body = document.getElementById('aboutBody');
+    var label = btn.querySelector('span');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var open = false, busy = false;
+
+    function collapsedHeight() {
+      return Math.round(parseFloat(getComputedStyle(body).lineHeight) * 3);
+    }
+    btn.addEventListener('click', function () {
+      if (busy) return;
+      open = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Less' : 'More';
+
+      if (reduce) { body.classList.toggle('about__body--clamp', !open); return; }
+
+      busy = true;
+      body.classList.add('about__body--anim');
+      if (open) {
+        var from = body.clientHeight;             // current 3-line clamp height
+        body.classList.remove('about__body--clamp');
+        var to = body.scrollHeight;               // full height
+        body.style.maxHeight = from + 'px';
+        body.getBoundingClientRect();             // reflow so the start sticks
+        body.style.maxHeight = to + 'px';
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.style.maxHeight = 'none';          // let it reflow freely afterwards
+          body.classList.remove('about__body--anim');
+          busy = false;
+        });
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';   // pin full height
+        body.getBoundingClientRect();
+        body.style.maxHeight = collapsedHeight() + 'px';   // animate down to 3 lines
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.classList.add('about__body--clamp');        // restore exact clamp
+          body.style.maxHeight = '';
+          body.classList.remove('about__body--anim');
+          busy = false;
+        });
+      }
+    });
+  })();
+
+  // gallery: duplicate the strip once so the marquee loops seamlessly
+  (function () {
+    var track = document.getElementById('galleryTrack');
+    track.innerHTML += track.innerHTML;
+  })();
+
+  // route: real MapLibre map + markers <-> cards
+  (function () {
+    var cards = document.getElementById('routeCards');
+    var rcards = [].slice.call(cards.querySelectorAll('.rcard'));
+
+    // real coordinates of the seven stops in central Milan (lng, lat)
+    var STOPS = [
+      { stop: '1', lngLat: [9.19193, 45.46418], photo: 'assets/img/guide/poi-1.jpg' }, // Duomo
+      { stop: '2', lngLat: [9.18997, 45.46560], photo: 'assets/img/guide/poi-2.jpg' }, // Galleria
+      { stop: '3', lngLat: [9.19012, 45.46690], photo: 'assets/img/guide/poi-3.jpg' }, // Palazzo Marino
+      { stop: '4', lngLat: [9.18954, 45.46743], photo: 'assets/img/guide/poi-4.jpg' }, // Teatro alla Scala
+      { stop: '5', lngLat: [9.18800, 45.46476], photo: 'assets/img/guide/poi-5.jpg' }, // Piazza dei Mercanti
+      { stop: '6', lngLat: [9.18662, 45.46312], photo: 'assets/img/guide/poi-6.jpg' }, // S. M. presso S. Satiro
+      { stop: '7', lngLat: [9.18606, 45.46285], photo: 'assets/img/guide/poi-7.jpg' }  // Pinacoteca Ambrosiana
+    ];
+    var lngLatFor = {}, markerEls = {};
+    STOPS.forEach(function (s) { lngLatFor[s.stop] = s.lngLat; });
+    var map = null;
+
+    function activate(stop, scrollCard, pan) {
+      Object.keys(markerEls).forEach(function (k) {
+        markerEls[k].classList.toggle('is-active', k === stop);
+      });
+      rcards.forEach(function (c) {
+        var on = c.dataset.stop === stop;
+        c.classList.toggle('is-active', on);
+        if (on && scrollCard) c.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      });
+      if (pan && map && lngLatFor[stop]) map.easeTo({ center: lngLatFor[stop], duration: 500 });
+    }
+    rcards.forEach(function (c) {
+      c.addEventListener('click', function () { activate(c.dataset.stop, true, true); });
+    });
+    activate('1', false, false); // initial highlight, independent of the map
+
+    // resolve any palette token / color-mix expression to a concrete rgb() string.
+    // The map style engine can't parse var()/color-mix, AND getComputedStyle returns
+    // our tokens as oklab() which it also rejects — so we bounce the resolved colour
+    // through a 1x1 canvas, which always reads back as plain rgb.
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;left:-9999px;visibility:hidden';
+    document.body.appendChild(probe);
+    var cctx = document.createElement('canvas').getContext('2d');
+    function res(expr) {
+      probe.style.color = ''; probe.style.color = expr;
+      cctx.fillStyle = '#000';
+      cctx.fillStyle = getComputedStyle(probe).color;   // oklab(...) or rgb(...)
+      cctx.fillRect(0, 0, 1, 1);
+      var d = cctx.getImageData(0, 0, 1, 1).data;
+      return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
+    }
+    function palette() {
+      return {
+        land:      res('var(--color-bg)'),
+        water:     res('color-mix(in oklab, var(--color-accent), var(--color-bg) 76%)'),
+        park:      res('color-mix(in oklab, var(--color-accent), var(--color-bg) 88%)'),
+        building:  res('color-mix(in oklab, var(--color-border), var(--color-bg) 45%)'),
+        roadMinor: res('color-mix(in oklab, var(--color-border), var(--color-bg) 20%)'),
+        roadMajor: res('color-mix(in oklab, var(--color-border), var(--color-text-muted) 40%)'),
+        label:     res('var(--color-text-muted)'),
+        halo:      res('var(--color-bg)'),
+        accent:    res('var(--color-accent)')
+      };
+    }
+    function buildStyle(c) {
+      var TILES = 'https://tiles.openfreemap.org/planet';
+      return {
+        version: 8,
+        glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
+        sources: { omt: { type: 'vector', url: TILES } },
+        layers: [
+          { id: 'bg', type: 'background', paint: { 'background-color': c.land } },
+          { id: 'water', type: 'fill', source: 'omt', 'source-layer': 'water', paint: { 'fill-color': c.water } },
+          { id: 'park', type: 'fill', source: 'omt', 'source-layer': 'park', paint: { 'fill-color': c.park, 'fill-opacity': 0.7 } },
+          { id: 'landuse', type: 'fill', source: 'omt', 'source-layer': 'landuse', filter: ['in', 'class', 'residential', 'commercial', 'retail'], paint: { 'fill-color': c.land } },
+          { id: 'building', type: 'fill', source: 'omt', 'source-layer': 'building', minzoom: 13, paint: { 'fill-color': c.building, 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0, 14.5, 0.75] } },
+          { id: 'road-minor', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['!', ['in', ['get', 'class'], ['literal', ['motorway', 'trunk', 'primary', 'secondary']]]], layout: { 'line-cap': 'round' }, paint: { 'line-color': c.roadMinor, 'line-width': ['interpolate', ['linear'], ['zoom'], 12, 0.5, 16, 4] } },
+          { id: 'road-major', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['in', ['get', 'class'], ['literal', ['motorway', 'trunk', 'primary', 'secondary']]], layout: { 'line-cap': 'round' }, paint: { 'line-color': c.roadMajor, 'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 16, 6] } },
+          { id: 'place', type: 'symbol', source: 'omt', 'source-layer': 'place', filter: ['in', ['get', 'class'], ['literal', ['suburb', 'neighbourhood', 'quarter']]], layout: { 'text-field': ['get', 'name'], 'text-font': ['Noto Sans Regular'], 'text-size': 11, 'text-transform': 'uppercase', 'text-letter-spacing': 0.12 }, paint: { 'text-color': c.label, 'text-halo-color': c.halo, 'text-halo-width': 1.2 } }
+        ]
+      };
+    }
+
+    // loading indicator over the map; removed on load, or on failure (grid shows through)
+    var statusEl = document.createElement('div');
+    statusEl.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--on-media);font:12px/1.4 var(--font-ui);z-index:1;pointer-events:none';
+    statusEl.textContent = 'Loading map…';
+    document.getElementById('routeMap').appendChild(statusEl);
+    function setStatus(show) { if (!show) statusEl.remove(); }
+
+    // gated on load: the MapLibre script is deferred, so it isn't ready while this
+    // inline script runs during parse — without this we'd wrongly take the offline path
+    function boot() {
+    if (!window.maplibregl) { setStatus(false); return; }  // no lib: fall back to the grid
+
+    var C = palette();
+    try {
+    map = new maplibregl.Map({
+      container: 'routeMap',
+      style: buildStyle(C),
+      center: [9.18930, 45.46520],
+      zoom: 14.6, minZoom: 13, maxZoom: 17,
+      attributionControl: { compact: true },
+      scrollZoom: false,   // don't hijack the desktop wheel — pan by drag, zoom by pinch
+      dragRotate: false, pitchWithRotate: false
+    });
+    } catch (err) { setStatus(false); return; }  // init failed: fall back to the grid
+    map.touchZoomRotate.disableRotation();
+
+    // the map inits below the fold; resize once it's actually on screen so its
+    // canvas matches the real container size
+    var resizeIO = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) map.resize();
+    });
+    resizeIO.observe(document.getElementById('routeMap'));
+
+    map.on('load', function () {
+      setStatus(false);   // success — remove the loading overlay
+      map.resize();
+      map.addSource('route', {
+        type: 'geojson',
+        data: { type: 'Feature', geometry: { type: 'LineString', coordinates: STOPS.map(function (s) { return s.lngLat; }) } }
+      });
+      map.addLayer({
+        id: 'route-line', type: 'line', source: 'route',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': C.accent, 'line-width': 3, 'line-dasharray': [0.2, 2] }
+      });
+      STOPS.forEach(function (s) {
+        var el = document.createElement('div');
+        el.className = 'mpoi'; el.dataset.stop = s.stop;
+        el.innerHTML = '<div class="mpoi__inner"><span class="poi__glow"></span>' +
+          '<img class="poi__photo" src="' + s.photo + '" alt=""><span class="poi__num">' + s.stop + '</span></div>';
+        el.addEventListener('click', function (e) { e.stopPropagation(); activate(s.stop, true, true); });
+        markerEls[s.stop] = el;
+        new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(s.lngLat).addTo(map);
+      });
+      var b = new maplibregl.LngLatBounds();
+      STOPS.forEach(function (s) { b.extend(s.lngLat); });
+      map.fitBounds(b, { padding: 44, maxZoom: 15.4, duration: 0 });
+      activate('1', false, false);
+    });
+
+    // re-tint the map when the demo palette switch fires
+    document.addEventListener('palettechange', function () {
+      if (!map || !map.isStyleLoaded()) return;
+      var c = palette();
+      map.setPaintProperty('bg', 'background-color', c.land);
+      map.setPaintProperty('water', 'fill-color', c.water);
+      map.setPaintProperty('park', 'fill-color', c.park);
+      map.setPaintProperty('landuse', 'fill-color', c.land);
+      map.setPaintProperty('building', 'fill-color', c.building);
+      map.setPaintProperty('road-minor', 'line-color', c.roadMinor);
+      map.setPaintProperty('road-major', 'line-color', c.roadMajor);
+      map.setPaintProperty('place', 'text-color', c.label);
+      map.setPaintProperty('place', 'text-halo-color', c.halo);
+      map.setPaintProperty('route-line', 'line-color', c.accent);
+    });
+    } // boot
+    if (window.maplibregl) boot();
+    else window.addEventListener('load', boot);
+  })();
+
+  // sticky purchase bar: appears once Guide Base Info scrolls past the top, and
+  // hides again only once the END of the footer is reached (sentinel at its bottom),
+  // so it stays visible through the whole footer.
+  (function () {
+    var ginfo = document.getElementById('ginfo');
+    var footEnd = document.getElementById('footEnd');
+    var bar = document.getElementById('buybar');
+    var sw = document.querySelector('.switch');   // demo control, lift it clear of the bar
+    var pastGinfo = false, atEnd = false;
+    function update() {
+      var show = pastGinfo && !atEnd;
+      bar.classList.toggle('is-shown', show);
+      bar.setAttribute('aria-hidden', String(!show));
+      if (sw) sw.style.bottom = show ? (bar.offsetHeight + 12) + 'px' : '';
+    }
+    new IntersectionObserver(function (e) {
+      pastGinfo = !e[0].isIntersecting && e[0].boundingClientRect.top < 0;
+      update();
+    }, { threshold: 0 }).observe(ginfo);
+    new IntersectionObserver(function (e) {
+      atEnd = e[0].isIntersecting;
+      update();
+    }, { threshold: 0 }).observe(footEnd);
+  })();
+
+  // reveal-on-scroll for the sections below the hero (the hero has its own intro).
+  // Reuses the [data-reveal] system from base.css; the gallery is skipped — its
+  // marquee already owns transform, and a reveal transform would fight it.
+  (function () {
+    var groups = [
+      ['.ginfo', ':scope > *', 0],
+      ['.about', ':scope > *', 70],
+      ['.route', ':scope > *', 90],
+      ['.formats', ':scope > *', 90],
+      ['.block', ':scope > *', 80],
+      ['.footer', ':scope > *', 60]
+    ];
+    groups.forEach(function (g) {
+      document.querySelectorAll(g[0]).forEach(function (box) {
+        var kids = box.querySelectorAll(g[1]);
+        if (!kids.length) return;
+        box.setAttribute('data-reveal-group', '');
+        kids.forEach(function (el, i) {
+          el.style.setProperty('--reveal-delay', i * g[2] + 'ms');
+          el.setAttribute('data-reveal', '');
+        });
+      });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-revealed');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+  })();
+
+  // theme-color follows the palette
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function syncThemeColor() {
+    var bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim();
+    if (bg) themeMeta.setAttribute('content', bg);
+  }
+  syncThemeColor();
+
+  // demo switch: collapses to a button on phones, drives both theme axes
+  (function () {
+    var box = document.querySelector('.switch');
+    if (!box) return;
+    box.querySelector('.switch__toggle').addEventListener('click', function () {
+      var open = box.classList.toggle('switch--open');
+      this.setAttribute('aria-expanded', String(open));
+    });
+    box.querySelectorAll('.switch__panel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var axis = b.dataset.set, val = b.dataset.val;
+        document.documentElement.setAttribute('data-' + axis, val);
+        box.querySelectorAll('.switch__panel button[data-set="' + axis + '"]').forEach(function (x) {
+          x.setAttribute('aria-pressed', String(x === b));
+        });
+        syncThemeColor();
+        if (axis === 'palette') document.dispatchEvent(new Event('palettechange'));
+      });
+    });
+  })();
+</script>
+</body>
+</html>

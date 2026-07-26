@@ -1,0 +1,309 @@
+/* Observatory — guide page. Builds on tokens.css + base.css.
+   Screen: «Страница гайда · Неавторизованный · Mobile» (Figma 833:1564).
+   Palette is per-guide; this one is Duomo (set on <html data-palette>). */
+
+.guide-screen { --menu-h: calc(var(--space-4) * 2 + 36px + env(safe-area-inset-top, 0px)); }
+/* Phones fill the width (no side strip beside the full-bleed cover); on desktop the
+   whole mockup is a 390px phone column. The desktop cap lives at the end of this file
+   so it wins over the width:100% defaults on .menu / .buybar declared further down. */
+.screen.guide-screen { width: 100%; }
+
+/* ---------- menu (this page: Log in + globe + burger) ----------
+   Hidden on load so the cover photo owns the whole screen; it slides down
+   (fixed, frosted) once the page is scrolled. */
+.menu__btns { display: flex; align-items: center; gap: var(--space-2); }
+.guide-screen .menu {
+  position: fixed; top: 0; left: 50%; z-index: 20;
+  width: 100%;
+  transform: translate(-50%, -100%);
+  transition: transform var(--dur) var(--ease);
+}
+.guide-screen .menu.menu--show { transform: translate(-50%, 0); }
+
+/* ---------- cover / hero ----------
+   Fits the screen: photo fills, a dark panel carries the title at the bottom.
+   Height = viewport minus the menu, so cover + menu is one screenful. */
+.cover {
+  position: relative;
+  min-height: 100svh;              /* full screen — the menu is hidden on load */
+  overflow: hidden;
+  background: var(--color-surface);
+}
+/* .cover__media carries the intro zoom; the <img> carries parallax (separate
+   elements so the two transforms never fight). The img is scaled up to give the
+   parallax translate headroom. */
+.cover__media { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.cover__bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transform: translateY(var(--parallax, 0px)) scale(1.08); transform-origin: center;
+  will-change: transform;
+}
+.cover__scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.62) 100%);
+}
+/* top row over the photo: back button + language picker */
+.cover__top {
+  position: absolute; top: var(--space-5); left: calc(var(--space-5) - var(--space-1)); right: calc(var(--space-5) - var(--space-1)); z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.lang-picker {
+  display: inline-flex; align-items: center; gap: var(--space-2); height: 40px;
+  padding: 0 var(--space-4);
+  background: var(--scrim); color: var(--on-media);
+  border: 1px solid var(--on-media-border); border-radius: var(--radius-button);
+  backdrop-filter: blur(4px);
+  font-family: var(--font-ui); font-weight: var(--font-ui-weight);
+  font-size: var(--size-body); line-height: var(--lh-body);
+}
+.lang-picker:hover { border-color: var(--on-media); }
+/* Seamless fade into the page bg. To stay readable on every palette the text must
+   sit on ~solid --color-bg (palette text is only guaranteed to contrast its own bg,
+   not a photo), so the gradient reaches near-solid bg across the text band and melts
+   softly into the photo above — a soft-edged panel, ending exactly at --color-bg so
+   there is no seam with the section below. */
+.cover__fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 440px; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom,
+    color-mix(in oklab, var(--color-bg), transparent 100%) 0%,
+    color-mix(in oklab, var(--color-bg), transparent 55%) 38%,
+    color-mix(in oklab, var(--color-bg), transparent 8%) 62%,
+    var(--color-bg) 82%);
+}
+.cover__panel {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-5);
+  padding: var(--space-6) var(--space-4);
+  background: transparent;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+.cover__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); width: 100%; }
+.cover__sub { color: var(--color-text-muted); text-align: center; }
+.cover__badges { display: flex; align-items: center; gap: var(--space-1); }
+/* accent circle + brand mark, both from tokens so it follows the palette */
+.cover__mark { position: relative; width: 32px; height: 32px; border-radius: var(--radius-pill); background: var(--color-accent); flex: none; }
+.cover__mark::before {
+  content: ""; position: absolute; inset: 0; background: var(--color-on-accent);
+  -webkit-mask: url(../assets/img/guide/cover-mark.svg) center / 100% 100% no-repeat;
+  mask: url(../assets/img/guide/cover-mark.svg) center / 100% 100% no-repeat;
+}
+/* dark-scrim icon button that sits over media (the cover back arrow) */
+.icon-btn--scrim { background: var(--scrim); border: 1.5px solid var(--on-media-border); backdrop-filter: blur(4px); color: var(--on-media); }
+.icon-btn--scrim:hover { border-color: var(--on-media); }
+.badge--city {
+  display: inline-flex; align-items: center;
+  padding: var(--space-1) var(--space-4);
+  background: var(--color-accent); color: var(--color-on-accent);
+  border-radius: var(--radius-button);
+  font-size: var(--size-body); line-height: var(--lh-body);
+}
+/* title + chevron sit on the near-solid bg part of the fade → palette text is safe */
+.cover__title { color: var(--color-text); text-align: center; }
+.cover__more { color: var(--color-accent); }
+
+/* ---------- guide base info ---------- */
+.ginfo { padding: 0 var(--space-4); }
+.ginfo__card {
+  background: var(--color-surface);
+  border-radius: var(--radius-card); overflow: hidden;
+  outline: 1px solid var(--color-border); outline-offset: -1px;
+}
+.ginfo__top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4); }
+.ginfo__price { display: flex; flex-direction: column; gap: 2px; }
+.ginfo__metrics { display: flex; align-items: flex-start; justify-content: space-between; padding: var(--space-4); border-top: 1px solid var(--color-border); }
+.metric { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); text-align: center; }
+.metric .icon { color: var(--color-text); }
+.metric__value { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+.metric__label { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+
+/* ---------- about (collapsed / expanded) ---------- */
+.about { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); padding: var(--space-8) var(--space-4); text-align: center; }
+.about__body { color: var(--color-text-muted); overflow: hidden; }
+/* collapsed clamps to 3 lines; the class toggles off on expand */
+.about__body--clamp {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+}
+/* JS drives max-height between the clamped and full heights while this class is on */
+.about__body--anim { transition: max-height var(--dur-slow) var(--ease); }
+.about__toggle .icon { transition: transform var(--dur) var(--ease); }
+.about__toggle[aria-expanded="true"] .icon { transform: rotate(180deg); }
+
+/* ---------- gallery (looping marquee) ---------- */
+.gallery { overflow: hidden; }
+.gallery__track {
+  display: flex; gap: var(--space-2); width: max-content;
+  animation: gallery-scroll 48s linear infinite;
+}
+.gallery:hover .gallery__track { animation-play-state: paused; }
+.gallery__item { height: 260px; flex: none; overflow: hidden; }
+.gallery__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery__item--w { width: 400px; }
+.gallery__item--n { width: 180px; }
+@keyframes gallery-scroll { to { transform: translateX(calc(-50% - var(--space-2) / 2)); } }
+@media (prefers-reduced-motion: reduce) {
+  .gallery { overflow-x: auto; }
+  .gallery__track { animation: none; }
+}
+
+/* ---------- the route ---------- */
+.route { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
+.route__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); text-align: center; }
+.route__title { color: var(--color-text); }
+.route__title b { color: var(--color-accent); font-weight: inherit; }
+/* Dark, palette-aware map placeholder: a faint street grid on the surface tone.
+   The Figma basemap exported blank, and a real map (vector tiles) is the production
+   step — this stand-in keeps the section coherent and the interaction demonstrable. */
+.route__map {
+  position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden;
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(0,0,0,0.28) 100%),
+    repeating-linear-gradient(0deg, transparent 0 33px, color-mix(in oklab, var(--color-border), transparent 45%) 33px 34px),
+    repeating-linear-gradient(90deg, transparent 0 33px, color-mix(in oklab, var(--color-border), transparent 45%) 33px 34px),
+    color-mix(in oklab, var(--color-surface), var(--color-accent) 6%);
+}
+/* MapLibre canvas fills the map card; keep it flat and chromeless */
+/* MapLibre is initialised directly on .route__map (it has a real aspect-ratio height) */
+.route__map .maplibregl-canvas { outline: none; }
+.route__map .maplibregl-ctrl-attrib { font-size: 9px; background: color-mix(in oklab, var(--color-bg), transparent 25%); }
+.route__map .maplibregl-ctrl-attrib a { color: var(--color-text-muted); }
+/* map markers reuse the .poi visuals; MapLibre owns positioning of .mpoi, so the
+   active scale is applied to an inner wrapper to avoid fighting its transform */
+.mpoi { width: 36px; height: 36px; cursor: pointer; }
+.mpoi__inner { position: relative; width: 100%; height: 100%; transition: transform var(--dur) var(--ease); }
+.mpoi.is-active { z-index: 3; }
+.mpoi.is-active .mpoi__inner { transform: scale(1.28); }
+.mpoi.is-active .poi__glow { opacity: 0.55; }
+.poi__photo { width: 100%; height: 100%; border-radius: var(--radius-pill); object-fit: cover; border: 1.5px solid var(--color-accent); display: block; }
+.poi__num {
+  position: absolute; top: -8px; left: 10px;
+  min-width: 16px; height: 16px; padding: 0 3px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-accent); color: var(--color-on-accent);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui); font-size: var(--size-caption); line-height: 1;
+}
+.poi__glow { position: absolute; inset: -8px; border-radius: var(--radius-pill); box-shadow: 0 0 0 2px var(--color-accent), 0 0 16px 2px var(--color-accent); opacity: 0; transition: opacity var(--dur) var(--ease); }
+
+.route__cards { display: flex; gap: var(--space-4); overflow-x: auto; padding: 0 var(--space-4) var(--space-2); scrollbar-width: none; scroll-snap-type: x mandatory; }
+.route__cards::-webkit-scrollbar { display: none; }
+.rcard {
+  width: 210px; flex: none; scroll-snap-align: center;
+  display: flex; flex-direction: column;
+  background: var(--color-bg); overflow: hidden;
+  border-radius: var(--radius-card);
+  /* real border (not outline): with overflow:hidden it frames the flush photo
+     instead of drawing over it — matches Figma's Gallery Card */
+  border: 1.5px solid var(--color-border);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  cursor: pointer;
+}
+.rcard.is-active { border-color: var(--color-accent); background: var(--color-surface); }
+.rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }
+.rcard__text { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); }
+.rcard__num { font-family: var(--font-ui); font-size: var(--size-label); line-height: var(--lh-label); color: var(--color-accent); }
+.rcard__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); margin: 0; }
+.rcard__desc { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); margin: 0; }
+
+/* ---------- formats ---------- */
+.formats { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-8) var(--space-4) 0; }
+.formats__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); text-align: center; }
+.formats__rail { display: flex; gap: var(--space-2); overflow-x: auto; margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4); scrollbar-width: none; }
+.formats__rail::-webkit-scrollbar { display: none; }
+.format {
+  display: flex; align-items: center; gap: var(--space-3); flex: none;
+  padding: var(--space-1) var(--space-5) var(--space-1) var(--space-1);
+  background: var(--color-surface);
+  border-radius: var(--radius-button);
+  border: 1px solid var(--color-border);
+}
+/* circle, per Figma (icon container radius is pill, not the concept button radius) */
+.format__icon { width: 48px; height: 48px; flex: none; display: flex; align-items: center; justify-content: center; background: var(--color-accent); color: var(--color-on-accent); border-radius: var(--radius-pill); }
+/* fixed 36px block, bottom-aligned, title/sub kept tight — Figma trims the title's
+   line-box so the two lines sit 4px apart instead of the full line-height gap */
+.format__text { display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-1); height: 36px; }
+.format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); white-space: nowrap; text-box-trim: trim-both; text-box-edge: cap alphabetic; }
+.format__sub { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); white-space: nowrap; }
+
+/* ---------- sticky purchase bar ---------- */
+/* demo switcher animates upward when the buy bar appears (JS sets its bottom) */
+.switch { transition: bottom var(--dur) var(--ease); }
+.buybar {
+  position: fixed; left: 50%; bottom: 0; z-index: 40;
+  width: 100%; transform: translate(-50%, 120%);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  /* dark translucent, not the light --glass: a near-bg tint + blur reads as a bar
+     over dark content without brightening it, and no top hairline (Figma has none) */
+  background: color-mix(in oklab, var(--color-bg), transparent 8%);
+  backdrop-filter: blur(12px);
+  transition: transform var(--dur) var(--ease);
+}
+.buybar.is-shown { transform: translate(-50%, 0); }
+.buybar__price { display: flex; flex-direction: column; gap: 2px; }
+
+/* section wrappers reuse .block spacing where the design insets 16 */
+.gsection { padding-inline: 0; }
+
+/* ============================================================
+   HERO INTRO — one-time entrance on load
+   photo settles (slight zoom-out) → mark bounces in BIG (~2x) at screen centre →
+   mark rolls left (full, unhurried rotation) as the MILAN badge pulls in → the
+   group shrinks and drops into its slot → scrim, top UI, then title & subtitle.
+   --intro-dy lifts the group from rest (290px above cover bottom) to screen centre. */
+.cover { --intro-dy: calc(290px - 50svh); }
+
+.cover__media { animation: hero-photo 1300ms var(--ease-slow) both; }
+.cover__badges{ animation: hero-group 2650ms var(--ease) 450ms both; transform-origin: center; }
+.badge--city  { animation: hero-badge 1100ms var(--ease-slow) 450ms both; }   /* leads, in centre */
+.cover__mark  { animation: hero-mark 900ms var(--ease) 1250ms both; }         /* follows into left slot */
+.cover .cover__fade { animation: hero-fade 600ms var(--ease) 1900ms both; }
+.cover__top   { animation: hero-drop 520ms var(--ease) 2050ms both; }
+.cover__title { animation: hero-text 700ms var(--ease-slow) 2200ms both; }
+.cover__sub   { animation: hero-text 700ms var(--ease-slow) 2380ms both; }
+.cover__more  { animation: hero-fade 500ms var(--ease) 3250ms both; }
+
+@keyframes hero-photo {
+  from { opacity: 0; transform: scale(1.18); }
+  to   { opacity: 1; transform: scale(1); }
+}
+/* hold big at screen centre while the badge/mark arrange AND the text writes in
+   below, then shrink + drop into the header slot last */
+@keyframes hero-group {
+  0%   { transform: translateY(var(--intro-dy)) scale(2); }
+  79%  { transform: translateY(var(--intro-dy)) scale(2); animation-timing-function: var(--ease-slow); }
+  100% { transform: translateY(0) scale(1); }
+}
+/* leads: blurs in centred (translateX(-18px) offsets the hidden mark's slot), then
+   slides right into place. Ends sharp and stays sharp — no later blur. */
+@keyframes hero-badge {
+  0%   { opacity: 0; filter: blur(12px); transform: translateX(-18px) scale(0.82); }
+  60%  { opacity: 1; filter: blur(0);   transform: translateX(-18px) scale(1); }
+  100% { opacity: 1; filter: blur(0);   transform: translateX(0) scale(1); }
+}
+/* follows: once the badge has moved right, the mark rolls into the left slot */
+@keyframes hero-mark {
+  0%   { opacity: 0; transform: translateX(-22px) scale(0.5) rotate(-220deg); }
+  40%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+}
+@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hero-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes hero-text {
+  from { opacity: 0; transform: translateY(14px); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover__media, .cover__badges, .cover__mark, .badge--city, .cover .cover__fade,
+  .cover__top, .cover__title, .cover__sub, .cover__more { animation: none; }
+}
+
+/* ---------- desktop: whole mockup as a 390px phone column ----------
+   Placed last so it overrides the width:100% defaults on .screen/.menu/.buybar. */
+@media (min-width: 481px) {
+  .screen.guide-screen,
+  .guide-screen .menu,
+  .buybar { width: 390px; }
+}
