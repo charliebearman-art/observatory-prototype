@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=19">
-<link rel="stylesheet" href="styles/poi.css?v=2">
+<link rel="stylesheet" href="styles/object.css?v=20">
+<link rel="stylesheet" href="styles/poi.css?v=3">
 </head>
 <body>
 
@@ -198,13 +198,49 @@
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
     }
-    function close() { modal.hidden = true; document.body.style.overflow = ''; }
+    var sheet = modal.querySelector('.factmodal__sheet');
+    var scrim = modal.querySelector('.factmodal__scrim');
+    function close() {
+      modal.hidden = true; document.body.style.overflow = '';
+      sheet.style.transition = ''; sheet.style.transform = ''; scrim.style.transition = ''; scrim.style.opacity = '';
+    }
     document.querySelectorAll('.fact').forEach(function (c) {
       c.addEventListener('click', function () { open(c); });
       c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(c); } });
     });
     modal.querySelectorAll('[data-close]').forEach(function (el) { el.addEventListener('click', close); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+
+    // drag the sheet down to dismiss (the handle hints at it). engages from the
+    // grab zone, or from anywhere once the content is scrolled to the top.
+    var dragging = false, startY = 0, dy = 0, h = 0;
+    sheet.addEventListener('pointerdown', function (e) {
+      if (sheet.scrollTop > 0 && !e.target.closest('.factmodal__handle, .factmodal__head')) return;
+      dragging = true; startY = e.clientY; dy = 0; h = sheet.offsetHeight;
+      sheet.style.transition = 'none';
+      try { sheet.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    sheet.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      dy = Math.max(0, e.clientY - startY);                 // down only
+      if (dy > 0 && e.cancelable) e.preventDefault();
+      sheet.style.transform = 'translateY(' + dy + 'px)';
+      scrim.style.opacity = String(Math.max(0, 1 - dy / h));
+    });
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      sheet.style.transition = 'transform var(--dur) var(--ease)';
+      if (dy > h * 0.28) {                                   // past threshold → dismiss
+        scrim.style.transition = 'opacity var(--dur) var(--ease)'; scrim.style.opacity = '0';
+        sheet.style.transform = 'translateY(100%)';
+        sheet.addEventListener('transitionend', function te() { sheet.removeEventListener('transitionend', te); close(); });
+      } else {                                               // snap back
+        sheet.style.transform = 'translateY(0)'; scrim.style.opacity = '';
+      }
+    }
+    sheet.addEventListener('pointerup', endDrag);
+    sheet.addEventListener('pointercancel', endDrag);
   })();
 
   // demo switch

@@ -7,6 +7,18 @@
 .screen.object-screen { width: 100%; background: var(--color-bg); display: flex; flex-direction: column; }
 @media (min-width: 481px) { .screen.object-screen { width: 390px; } }
 
+/* Cross-document morph between the object and point pages (both import this file).
+   The shared-named header interpolates its box — so it stretches taller, the
+   progress bar fades in and the items cross-fade — as you move object → point.
+   Degrades to an instant navigation where the API is unsupported. */
+@view-transition { navigation: auto; }
+::view-transition-group(page-header) {
+  animation-duration: var(--dur-slow); animation-timing-function: var(--ease-slow);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
 /* ---------- header (Menu for POI): sticky bar over the hero ---------- */
 .ohead {
   position: sticky; top: 0; z-index: 30;
@@ -14,6 +26,7 @@
   height: 67px; padding: 0 var(--space-4);
   background: var(--color-surface);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
+  view-transition-name: page-header;       /* morphs into the point page's .phead */
 }
 .ohead__titles { display: flex; flex-direction: column; overflow: hidden; }
 .ohead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }

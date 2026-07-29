@@ -4,11 +4,12 @@
 @media (min-width: 481px) { .screen.poi-screen { width: 390px; } }
 
 /* ---------- header: back · "Point N of M" · language, + progress ---------- */
-.phead { position: sticky; top: 0; z-index: 30; background: var(--color-surface); border-radius: 0 0 var(--radius-card) var(--radius-card); padding-bottom: var(--space-4); }
+.phead { position: sticky; top: 0; z-index: 30; background: var(--color-surface); border-radius: 0 0 var(--radius-card) var(--radius-card); padding-bottom: var(--space-4);
+  view-transition-name: page-header; }   /* the object page's .ohead morphs into this (taller, with progress) */
 .phead__bar { display: flex; align-items: center; justify-content: space-between; height: 67px; padding: 0 var(--space-4); }
 .phead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }
 .pprogress { display: flex; gap: 3px; padding: 0 var(--space-4); }
-.pprogress__seg { flex: 1 1 0; height: 4px; background: var(--color-border); }
+.pprogress__seg { flex: 1 1 0; height: 4px; background: var(--color-border); border-radius: var(--radius-button); }
 .pprogress__seg.is-done { background: var(--color-accent); }
 
 /* ---------- hero ---------- */
@@ -47,9 +48,10 @@
   background: var(--color-surface); border-radius: var(--radius-card) var(--radius-card) 0 0;
   padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5);
   animation: fm-up var(--dur) var(--ease);
+  touch-action: none; overscroll-behavior: contain;   /* JS owns the vertical gesture (drag to dismiss) */
 }
 @media (min-width: 481px) { .factmodal__sheet { max-width: 390px; } }
-.factmodal__handle { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 48px; height: 4px; border-radius: 2px; background: var(--color-border); }
+.factmodal__handle { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 48px; height: 4px; border-radius: var(--radius-button); background: var(--color-border); cursor: grab; }
 .factmodal__head { display: flex; flex-direction: column; gap: var(--space-2); }
 .factmodal__eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.14em; }
 .factmodal__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); margin: 0; }
