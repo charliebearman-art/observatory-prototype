@@ -7,17 +7,6 @@
 .screen.object-screen { width: 100%; background: var(--color-bg); display: flex; flex-direction: column; }
 @media (min-width: 481px) { .screen.object-screen { width: 390px; } }
 
-/* Cross-document morph between the object and point pages (both import this file).
-   The shared-named header interpolates its box — so it stretches taller, the
-   progress bar fades in and the items cross-fade — as you move object → point.
-   Degrades to an instant navigation where the API is unsupported. */
-@view-transition { navigation: auto; }
-::view-transition-group(page-header) {
-  animation-duration: var(--dur-slow); animation-timing-function: var(--ease-slow);
-}
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
-}
 
 /* ---------- header (Menu for POI): sticky bar over the hero ---------- */
 .ohead {
@@ -26,7 +15,6 @@
   height: 67px; padding: 0 var(--space-4);
   background: var(--color-surface);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
-  view-transition-name: page-header;       /* morphs into the point page's .phead */
 }
 .ohead__titles { display: flex; flex-direction: column; overflow: hidden; }
 .ohead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }
@@ -349,3 +337,75 @@
 .audio__ico--pause { display: none; }
 .audio.is-playing .audio__ico--play { display: none; }
 .audio.is-playing .audio__ico--pause { display: block; }
+
+/* ---------- in-page point (POI) view + object → point morph transition ----------
+   The point view lives in this document (no navigation). Crucially it does NOT
+   fade in as a whole (parent opacity would cap every child, fading the backing).
+   Instead it appears at once with its header + description surfaces OPAQUE — a
+   constant backing — while the point background stays transparent so the object
+   hero shows through and crossfades. Only contents animate in. */
+.poiov {
+  position: fixed; inset: 0; z-index: 45;
+  display: none; justify-content: center; align-items: flex-start;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  opacity: 1;
+}
+.poiov.is-in { display: flex; }
+/* transparent point background (higher specificity than poi.css .screen.poi-screen)
+   so only the opaque cards paint; the object hero shows through during the morph */
+.poiov .screen.poi-screen { background: transparent; }
+
+/* ENTER — the header bar and description card surfaces are opaque from the first
+   frame = the constant backing; only their contents (and the hero) animate in */
+.poiov.is-in .phero__media img { animation: poi-hero-in calc(var(--dur-slow) * 1.6) var(--ease-slow) both; }
+/* the header itself STRETCHES: it starts at the object header's height (bar only,
+   no progress, no bottom padding) and grows to the taller point header */
+.poiov.is-in .phead            { animation: poi-head-grow calc(var(--dur-slow) * 1.3) var(--ease-slow) both; }
+.poiov.is-in .pprogress        { animation: poi-prog-in calc(var(--dur-slow) * 1.1) var(--ease) 140ms both; }
+.poiov.is-in .pdesc > *        { animation: poi-text-in calc(var(--dur-slow) * 1.4) var(--ease) 90ms both; }
+.poiov.is-in .phead__bar       { animation: poi-text-in var(--dur-slow) var(--ease) 120ms both; }
+.poiov.is-in .pswitch          { animation: poi-text-in var(--dur-slow) var(--ease) 160ms both; }
+@keyframes poi-hero-in { from { opacity: 0; filter: blur(22px); transform: scale(1.28); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes poi-text-in { from { opacity: 0; filter: blur(10px); transform: translateY(10px); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes poi-head-grow { from { padding-bottom: 0; } to { padding-bottom: var(--space-4); } }
+@keyframes poi-prog-in { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 12px; } }
+
+/* EXIT (point → object) — reverse of the enter: contents blur/scale OUT on the same
+   constant backing while the object hero focuses back in (see .is-returning). Placed
+   AFTER the enter rules ON PURPOSE: during exit both is-in (kept for display:flex) and
+   is-out are present, so — equal specificity — the later rule must be the exit one.
+   Distinct keyframe names so the finished enter animation actually restarts. */
+.poiov.is-in.is-out .phero__media img { animation: poi-hero-out calc(var(--dur-slow) * 1.3) var(--ease-slow) both; }
+.poiov.is-in.is-out .phead            { animation: poi-head-shrink var(--dur-slow) var(--ease-slow) both; }
+.poiov.is-in.is-out .pprogress        { animation: poi-prog-out var(--dur-slow) var(--ease) both; }
+.poiov.is-in.is-out .pdesc > *        { animation: poi-fade-out var(--dur-slow) var(--ease) both; }
+.poiov.is-in.is-out .phead__bar       { animation: poi-fade-out var(--dur-slow) var(--ease) both; }
+.poiov.is-in.is-out .pswitch          { animation: poi-fade-out var(--dur-slow) var(--ease) both; }
+@keyframes poi-hero-out { from { opacity: 1; filter: blur(0); transform: none; } to { opacity: 0; filter: blur(22px); transform: scale(1.28); } }
+@keyframes poi-fade-out { from { opacity: 1; filter: blur(0); transform: none; } to { opacity: 0; filter: blur(10px); transform: translateY(8px); } }
+@keyframes poi-head-shrink { from { padding-bottom: var(--space-4); } to { padding-bottom: 0; } }
+@keyframes poi-prog-out { from { opacity: 1; max-height: 12px; } to { opacity: 0; max-height: 0; } }
+
+/* the object hero is the only object element visible behind the transparent point
+   background (header + description are covered by the opaque point cards); it blurs
+   and enlarges away as the point hero focuses in over it. */
+.object-screen.is-leaving .ohero   { animation: obj-hero-out calc(var(--dur-slow) * 1.4) var(--ease) both; }
+.object-screen.is-returning .ohero { animation: obj-hero-in calc(var(--dur-slow) * 1.3) var(--ease) both; }
+/* on the way back the object header's items fade in through blur (not a pop); the
+   delay lets the point header shrink/clear first so this is visible, not covered */
+.object-screen.is-returning .ohead__titles,
+.object-screen.is-returning .ohead__btns { animation: obj-head-in var(--dur-slow) var(--ease) 240ms both; }
+@keyframes obj-hero-out { from { filter: blur(0); transform: scale(1); opacity: 1; } to { filter: blur(20px); transform: scale(1.16); opacity: 0; } }
+@keyframes obj-hero-in  { from { filter: blur(20px); transform: scale(1.16); opacity: 0; } to { filter: blur(0); transform: scale(1); opacity: 1; } }
+@keyframes obj-head-in  { from { opacity: 0; filter: blur(8px); } to { opacity: 1; filter: blur(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .poiov.is-in .phero__media img, .poiov.is-in .pdesc > *, .poiov.is-in .phead, .poiov.is-in .phead__bar,
+  .poiov.is-in .pprogress, .poiov.is-in .pswitch,
+  .poiov.is-in.is-out .phero__media img, .poiov.is-in.is-out .pdesc > *, .poiov.is-in.is-out .phead, .poiov.is-in.is-out .phead__bar,
+  .poiov.is-in.is-out .pprogress, .poiov.is-in.is-out .pswitch,
+  .object-screen.is-leaving .ohero, .object-screen.is-returning .ohero,
+  .object-screen.is-returning .ohead__titles, .object-screen.is-returning .ohead__btns {
+    animation: none !important;
+  }
+}

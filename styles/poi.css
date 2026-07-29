@@ -4,11 +4,14 @@
 @media (min-width: 481px) { .screen.poi-screen { width: 390px; } }
 
 /* ---------- header: back · "Point N of M" · language, + progress ---------- */
-.phead { position: sticky; top: 0; z-index: 30; background: var(--color-surface); border-radius: 0 0 var(--radius-card) var(--radius-card); padding-bottom: var(--space-4);
-  view-transition-name: page-header; }   /* the object page's .ohead morphs into this (taller, with progress) */
+.phead { position: sticky; top: 0; z-index: 30; background: var(--color-surface); border-radius: 0 0 var(--radius-card) var(--radius-card); padding-bottom: var(--space-4); }
 .phead__bar { display: flex; align-items: center; justify-content: space-between; height: 67px; padding: 0 var(--space-4); }
+/* centred title + zone stack (Point 1 of 8 / EXTERIOR) */
+.phead__center { display: flex; flex-direction: column; align-items: center; }
 .phead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }
-.pprogress { display: flex; gap: 3px; padding: 0 var(--space-4); }
+/* zone the point sits in (Exterior / Interior / Terraces) — matches the object header sub */
+.phead__zone { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.14em; }
+.pprogress { display: flex; gap: 3px; padding: 0 var(--space-4); overflow: hidden; }
 .pprogress__seg { flex: 1 1 0; height: 4px; background: var(--color-border); border-radius: var(--radius-button); }
 .pprogress__seg.is-done { background: var(--color-accent); }
 

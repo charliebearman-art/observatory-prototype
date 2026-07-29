@@ -10,7 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=20">
+<link rel="stylesheet" href="styles/object.css?v=27">
+<link rel="stylesheet" href="styles/poi.css?v=6">
 </head>
 <body>
 
@@ -341,6 +342,106 @@
 
 </main>
 
+<!-- point-of-interest view: shown in-page (no navigation) with a morph transition -->
+<div class="poiov" id="poiOverlay" aria-hidden="true">
+  <main class="screen poi-screen">
+    <header class="phead">
+      <div class="phead__bar">
+        <button class="icon-btn icon-btn--ghost-b" id="poiBack" aria-label="Back to object">
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-left"></use></svg>
+        </button>
+        <div class="phead__center">
+          <span class="phead__title">Point 1 of 8</span>
+          <span class="phead__zone">Exterior</span>
+        </div>
+        <button class="icon-btn icon-btn--ghost-b" aria-label="Language">
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
+        </button>
+      </div>
+      <div class="pprogress" aria-hidden="true">
+        <span class="pprogress__seg is-done"></span><span class="pprogress__seg"></span><span class="pprogress__seg"></span><span class="pprogress__seg"></span>
+        <span class="pprogress__seg"></span><span class="pprogress__seg"></span><span class="pprogress__seg"></span><span class="pprogress__seg"></span>
+      </div>
+    </header>
+
+    <section class="phero">
+      <div class="phero__media"><img src="assets/img/poi/poi1-hero.jpg" alt="The main façade of the Duomo"></div>
+    </section>
+
+    <section class="pdesc">
+      <div class="pdesc__block">
+        <div class="pdesc__head">
+          <div class="pdesc__headtop">
+            <span class="poi-eyebrow">01</span>
+            <h1 class="pdesc__title">The Main Façade of the Duomo — history in stone</h1>
+          </div>
+          <p class="pdesc__text">Duomo di Milano. One of the largest Gothic cathedrals in Europe and the foremost symbol of Milan. Construction began in 1386 and continued for almost six centuries.</p>
+        </div>
+        <div class="audio">
+          <button class="audio__play" aria-label="Play">
+            <svg class="icon audio__ico audio__ico--play"><use href="assets/icons.svg?v=3#i-play"></use></svg>
+            <svg class="icon audio__ico audio__ico--pause"><use href="assets/icons.svg?v=3#i-pause"></use></svg>
+          </button>
+          <div class="audio__body">
+            <div class="audio__row"><span class="audio__label">The Main Façade</span><span class="audio__time">0:55</span></div>
+            <div class="audio__track"><span class="audio__rail"></span><span class="audio__fill"></span><span class="audio__thumb"></span></div>
+          </div>
+        </div>
+        <div class="wherecard">
+          <span class="wherecard__k">Where is It?</span>
+          <span class="wherecard__v">In front of the main façade, Piazza del Duomo.</span>
+        </div>
+      </div>
+
+      <div class="facts pdesc__block">
+        <h2 class="facts__title">Interesting Facts</h2>
+        <div class="facts__row">
+          <article class="fact" role="button" tabindex="0"
+            data-title="The Madonnina — symbol of Milan"
+            data-img="assets/img/poi/poi1-fact-1.jpg"
+            data-text="On the Duomo’s main spire stands a golden statue of the Virgin Mary, about 4 metres tall. Since the 19th century there has been a tradition: no building in Milan was to rise higher than the Madonnina. Later this rule became symbolic — the city’s new high-rises still keep a connection to this image.">
+            <img class="fact__img" src="assets/img/poi/poi1-fact-1.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Open fact" tabindex="-1"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body"><h3 class="fact__title">The Madonnina — symbol of Milan</h3></div>
+          </article>
+          <article class="fact" role="button" tabindex="0"
+            data-title="An “astronaut” on a 14th-century cathedral"
+            data-img="assets/img/poi/poi1-fact-2.jpg"
+            data-text="Among the reliefs of the main portal, restored in the 20th century, one figure looks strikingly like an astronaut in a spacesuit — carved long before spaceflight. Spotting it has become a small ritual for visitors standing before the façade.">
+            <img class="fact__img" src="assets/img/poi/poi1-fact-2.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Open fact" tabindex="-1"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body"><h3 class="fact__title">An “astronaut” on a 14th-century cathedral</h3></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <nav class="pswitch" aria-label="Points">
+      <a class="pswitch__next" href="nav.html">Next
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+      </a>
+    </nav>
+  </main>
+
+  <!-- fact modal (bottom sheet) -->
+  <div class="factmodal" id="factModal" hidden role="dialog" aria-modal="true" aria-labelledby="fmTitle">
+    <div class="factmodal__scrim" data-close></div>
+    <div class="factmodal__sheet">
+      <span class="factmodal__handle" data-close></span>
+      <div class="factmodal__head">
+        <span class="factmodal__eyebrow">Interesting fact</span>
+        <h2 class="factmodal__title" id="fmTitle"></h2>
+      </div>
+      <div class="factmodal__figure">
+        <img class="factmodal__img" id="fmImg" src="" alt="">
+        <p class="factmodal__text" id="fmText"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // audio players: play/pause toggle with an animated progress bar (demo — no real file)
   (function () {
@@ -522,14 +623,94 @@
     });
   })();
 
-  // interesting facts: expand the card in place (not a modal)
+  // interesting facts (object tabs): expand the card in place (not a modal)
   (function () {
-    document.querySelectorAll('.fact').forEach(function (card) {
+    document.querySelectorAll('.otabs .fact').forEach(function (card) {
       var toggle = card.querySelector('.fact__toggle');
       function flip(e) { e.preventDefault(); e.stopPropagation(); card.classList.toggle('is-open'); }
       toggle.addEventListener('click', flip);
       card.addEventListener('click', function (e) { if (e.target === card || e.target.classList.contains('fact__img') || e.target.classList.contains('fact__scrim')) card.classList.toggle('is-open'); });
     });
+  })();
+
+  // ============ in-page point (POI) view: morph transition + its interactions ============
+  (function () {
+    var poiov = document.getElementById('poiOverlay');
+    var objScreen = document.querySelector('.object-screen');
+    if (!poiov || !objScreen) return;
+    var open = false, retTimer = null, retTimer2 = null, hideTimer = null;
+
+    function enterPOI(e) {
+      if (e) e.preventDefault();
+      if (open) return;
+      open = true;
+      clearTimeout(retTimer); clearTimeout(retTimer2); clearTimeout(hideTimer);
+      objScreen.classList.remove('is-returning');
+      objScreen.style.visibility = '';
+      objScreen.classList.add('is-leaving');       // object hero blurs + enlarges away
+      poiov.classList.remove('is-out');
+      poiov.scrollTop = 0;
+      poiov.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      poiov.classList.add('is-in');                // point view appears; header stretches, contents build in
+      // once the point view fully covers, hide the object so it can't show through gaps
+      hideTimer = setTimeout(function () { objScreen.style.visibility = 'hidden'; }, 900);
+    }
+    function exitPOI() {
+      if (!open) return;
+      open = false;
+      clearTimeout(hideTimer); clearTimeout(retTimer); clearTimeout(retTimer2);
+      objScreen.style.visibility = '';             // reveal the object for the return
+      objScreen.classList.remove('is-leaving');
+      objScreen.classList.add('is-returning');     // object hero + header items focus/fade back in
+      poiov.classList.add('is-out');               // point contents blur out, header shrinks
+      poiov.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // remove the overlay once its exit is ~done so the object header's fade-in shows,
+      // but keep is-returning until the object animations finish (else they snap)
+      retTimer = setTimeout(function () { poiov.classList.remove('is-in', 'is-out'); }, 500);
+      retTimer2 = setTimeout(function () { objScreen.classList.remove('is-returning'); }, 780);
+    }
+
+    // hotspots and "Step by Step" open the point in place instead of navigating
+    document.querySelectorAll('.hotspot, .btn-step').forEach(function (el) {
+      el.addEventListener('click', enterPOI);
+    });
+    document.getElementById('poiBack').addEventListener('click', exitPOI);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) exitPOI(); });
+
+    // facts inside the point view open the bottom-sheet modal (with drag to dismiss)
+    var modal = poiov.querySelector('#factModal');
+    var t = modal.querySelector('#fmTitle'), im = modal.querySelector('#fmImg'), tx = modal.querySelector('#fmText');
+    var sheet = modal.querySelector('.factmodal__sheet'), scrim = modal.querySelector('.factmodal__scrim');
+    function mOpen(card) { t.textContent = card.dataset.title; im.src = card.dataset.img; tx.textContent = card.dataset.text; modal.hidden = false; }
+    function mClose() { modal.hidden = true; sheet.style.transition = ''; sheet.style.transform = ''; scrim.style.transition = ''; scrim.style.opacity = ''; }
+    poiov.querySelectorAll('.fact').forEach(function (c) {
+      c.addEventListener('click', function () { mOpen(c); });
+      c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mOpen(c); } });
+    });
+    modal.querySelectorAll('[data-close]').forEach(function (el) { el.addEventListener('click', mClose); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) mClose(); });
+    var dg = false, sy = 0, dy = 0, h = 0;
+    sheet.addEventListener('pointerdown', function (e) {
+      if (sheet.scrollTop > 0 && !e.target.closest('.factmodal__handle, .factmodal__head')) return;
+      dg = true; sy = e.clientY; dy = 0; h = sheet.offsetHeight; sheet.style.transition = 'none';
+      try { sheet.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    sheet.addEventListener('pointermove', function (e) {
+      if (!dg) return;
+      dy = Math.max(0, e.clientY - sy);
+      if (dy > 0 && e.cancelable) e.preventDefault();
+      sheet.style.transform = 'translateY(' + dy + 'px)'; scrim.style.opacity = String(Math.max(0, 1 - dy / h));
+    });
+    function endDrag() {
+      if (!dg) return; dg = false;
+      sheet.style.transition = 'transform var(--dur) var(--ease)';
+      if (dy > h * 0.28) { scrim.style.transition = 'opacity var(--dur) var(--ease)'; scrim.style.opacity = '0'; sheet.style.transform = 'translateY(100%)'; sheet.addEventListener('transitionend', function te() { sheet.removeEventListener('transitionend', te); mClose(); }); }
+      else { sheet.style.transform = 'translateY(0)'; scrim.style.opacity = ''; }
+    }
+    sheet.addEventListener('pointerup', endDrag);
+    sheet.addEventListener('pointercancel', endDrag);
   })();
 
   // demo switch
