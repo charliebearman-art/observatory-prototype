@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=9">
-<link rel="stylesheet" href="styles/object.css?v=6">
+<link rel="stylesheet" href="styles/object.css?v=7">
 </head>
 <body>
 
@@ -96,11 +96,11 @@
       </button>
     </div>
     <div class="odesc__audiowrap">
-      <div class="audio" id="audioIntro" role="button" tabindex="0" aria-label="Play intro">
-        <span class="audio__play"><svg class="icon"><use href="assets/icons.svg#i-play"></use></svg></span>
+      <div class="audio">
+        <button class="audio__play" aria-label="Play"><svg class="icon"><use href="assets/icons.svg#i-play"></use></svg></button>
         <div class="audio__body">
           <div class="audio__row"><span class="audio__label">Play Intro</span><span class="audio__time">0:55</span></div>
-          <div class="audio__track"><i></i></div>
+          <div class="audio__track"><span class="audio__rail"></span><span class="audio__fill"></span><span class="audio__thumb"></span></div>
         </div>
       </div>
       <a class="btn-step" href="poi.html">Step by Step
@@ -331,6 +331,35 @@
 </main>
 
 <script>
+  // audio players: play/pause toggle with an animated progress bar (demo — no real file)
+  (function () {
+    document.querySelectorAll('.audio').forEach(function (audio) {
+      var btn = audio.querySelector('.audio__play');
+      var fill = audio.querySelector('.audio__fill'), thumb = audio.querySelector('.audio__thumb');
+      var use = btn.querySelector('use'), timeEl = audio.querySelector('.audio__time');
+      var parts = (timeEl ? timeEl.textContent : '0:55').split(':');
+      var dur = (+parts[0]) * 60 + (+parts[1]) || 55;
+      var playing = false, elapsed = 0, last = 0, raf;
+      function render() {
+        var pct = Math.min(elapsed / dur, 1) * 100; fill.style.width = pct + '%'; thumb.style.left = pct + '%';
+        var rem = Math.max(0, Math.ceil(dur - elapsed));            // time left, counts down
+        if (timeEl) timeEl.textContent = Math.floor(rem / 60) + ':' + ('0' + (rem % 60)).slice(-2);
+      }
+      function icon(id) { use.setAttribute('href', 'assets/icons.svg#' + id); }
+      function pause() { playing = false; audio.classList.remove('is-playing'); icon('i-play'); btn.setAttribute('aria-label', 'Play'); cancelAnimationFrame(raf); }
+      function tick(ts) {
+        if (!last) last = ts;
+        elapsed += (ts - last) / 1000; last = ts; render();
+        if (elapsed >= dur) { pause(); elapsed = 0; render(); return; }
+        raf = requestAnimationFrame(tick);
+      }
+      btn.addEventListener('click', function () {
+        if (playing) { pause(); return; }
+        playing = true; audio.classList.add('is-playing'); icon('i-pause'); btn.setAttribute('aria-label', 'Pause'); last = 0; raf = requestAnimationFrame(tick);
+      });
+    });
+  })();
+
   // hero gallery: prev/next arrows scroll the slide track; arrows hide at the ends
   (function () {
     var track = document.getElementById('heroTrack');

@@ -12,7 +12,9 @@
 .pprogress__seg.is-done { background: var(--color-accent); }
 
 /* ---------- hero ---------- */
-.phero { position: relative; width: 100%; margin-top: -67px; }
+/* image sits at y=52 like the object page; the 87px header (bar+progress+pad)
+   overlaps only its top ~35px */
+.phero { position: relative; width: 100%; margin-top: -35px; }
 .phero__media { position: relative; width: 100%; aspect-ratio: 390 / 440; overflow: hidden; }
 .phero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 

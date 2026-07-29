@@ -81,17 +81,22 @@
 /* ---------- audio player ---------- */
 .audio {
   display: flex; align-items: center; gap: var(--space-3);
-  height: 60px; padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
-  background: var(--color-accent-subtle); border-radius: var(--radius-button);
+  padding: var(--space-1) var(--space-5) var(--space-1) var(--space-1);
+  background: var(--color-bg); border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
 }
-.audio__play { flex: none; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-on-accent); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.audio__play .icon { width: 20px; height: 20px; }
+.audio__play { flex: none; width: 48px; height: 48px; border: 0; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-on-accent); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.audio__play .icon { width: 24px; height: 24px; }
 .audio__body { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .audio__row { display: flex; align-items: center; justify-content: space-between; font-size: var(--size-caption); line-height: var(--lh-caption); }
 .audio__label { color: var(--color-text); }
 .audio__time { color: var(--color-text-muted); }
-.audio__track { height: 4px; border-radius: 2px; background: var(--color-border); overflow: hidden; }
-.audio__track > i { display: block; height: 100%; width: 0; background: var(--color-accent); border-radius: 2px; }
+/* progress: rail + fill + a thumb that appears while playing */
+.audio__track { position: relative; height: 4px; }
+.audio__rail { position: absolute; inset: 0; background: var(--color-border); border-radius: 2px; }
+.audio__fill { position: absolute; left: 0; top: 0; height: 4px; width: 0; background: var(--color-accent); border-radius: 2px; }
+.audio__thumb { position: absolute; top: 50%; left: 0; width: 12px; height: 12px; border-radius: var(--radius-pill); background: var(--color-accent); transform: translate(-50%, -50%); opacity: 0; transition: opacity var(--dur) var(--ease); }
+.audio.is-playing .audio__thumb { opacity: 1; }
 
 /* ---------- primary big button (Step by Step) ---------- */
 .btn-step {
