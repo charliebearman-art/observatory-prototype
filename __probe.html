@@ -1,0 +1,11 @@
+<!doctype html><html lang="en" data-concept="b" data-palette="duomo"><head><meta charset="utf-8">
+<link rel="stylesheet" href="styles/tokens.css?v=7"><link rel="stylesheet" href="styles/base.css?v=10"><link rel="stylesheet" href="styles/object.css?v=17"></head>
+<body><main class="screen object-screen">
+<section class="ohero"><div class="ohero__track"><div class="ohero__slide ohero__slide--facade"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw="><a class="hotspot" style="--x:50%;--y:40%">1</a></div></div></section>
+<div class="osheet"><section class="odesc"><h1 class="odesc__title">T</h1></section><section class="otabs"></section></div>
+</main>
+<script>
+var o=document.querySelector('.ohero'),sh=document.querySelector('.osheet'),hs=document.querySelector('.hotspot'),img=document.querySelector('.ohero__slide img');
+var co=getComputedStyle(o),cs=getComputedStyle(sh),ch=getComputedStyle(hs),ci=getComputedStyle(img);
+document.title=JSON.stringify({heroPos:co.position,heroTop:co.top,heroZ:co.zIndex,sheetBg:cs.backgroundColor,sheetZ:cs.zIndex,sheetMt:cs.marginTop,hsOpacity:ch.opacity,imgAnim:ci.animationName});
+</script></body></html>

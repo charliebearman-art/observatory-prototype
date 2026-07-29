@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=10">
-<link rel="stylesheet" href="styles/object.css?v=16">
+<link rel="stylesheet" href="styles/object.css?v=17">
 </head>
 <body>
 
@@ -84,6 +84,9 @@
       <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
     </button>
   </section>
+
+  <!-- content sheet: slides up over the pinned hero on scroll -->
+  <div class="osheet">
 
   <!-- description + audio + step-by-step -->
   <section class="odesc">
@@ -334,6 +337,8 @@
     </a>
   </div>
 
+  </div><!-- /.osheet -->
+
 </main>
 
 <script>
@@ -380,20 +385,42 @@
     });
   })();
 
-  // hero gallery: prev/next arrows scroll the slide track; arrows hide at the ends
+  // hero gallery: prev/next arrows scroll the slide track; arrows hide at the ends.
+  // also pops each slide's POI points in, ordered by their number.
   (function () {
     var track = document.getElementById('heroTrack');
     var back = document.getElementById('heroBack'), next = document.getElementById('heroNext');
     var sub = document.getElementById('oheadSub');
     var SUBS = ['Exterior', 'Interior', 'Terraces'];   // per slide, matches Figma
     if (!track) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     function slideW() { return track.querySelector('.ohero__slide').getBoundingClientRect().width; }
+
+    // points pop in with a soft bounce, ordered by their number, staggered
+    var lit = [];
+    function lightSpots(slide, base) {
+      var spots = [].slice.call(slide.querySelectorAll('.hotspot'));
+      spots.sort(function (a, b) { return (+a.textContent || 0) - (+b.textContent || 0); });
+      spots.forEach(function (el, k) { el.style.setProperty('--hs-delay', (base + k * 90) + 'ms'); el.classList.add('is-in'); });
+    }
+    function litSlide(slide, base) {
+      if (!slide || lit.indexOf(slide) >= 0) return;
+      lit.push(slide); lightSpots(slide, base);
+    }
+    // first slide: wait for the hero focus-in to settle, then pop its points
+    if (track.children[0]) {
+      lit.push(track.children[0]);
+      if (reduce) lightSpots(track.children[0], 0);
+      else setTimeout(function () { lightSpots(track.children[0], 0); }, 780);
+    }
+
     function update() {
       var i = Math.round(track.scrollLeft / slideW());
       var last = track.children.length - 1;
       back.hidden = i <= 0;
       next.hidden = i >= last;
       if (sub && SUBS[i]) sub.textContent = SUBS[i];
+      litSlide(track.children[i], 150);                // pop points when a slide is first reached
     }
     next.addEventListener('click', function () { track.scrollBy({ left: slideW(), behavior: 'smooth' }); });
     back.addEventListener('click', function () { track.scrollBy({ left: -slideW(), behavior: 'smooth' }); });
@@ -432,24 +459,6 @@
       });
     });
     movePill();
-  })();
-
-  // hero photo parallax: the gallery image lags the page scroll (subtle, within crop)
-  (function () {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var hero = document.querySelector('.ohero');
-    var imgs = [].slice.call(document.querySelectorAll('.ohero__slide img'));
-    if (!hero || !imgs.length) return;
-    var ticking = false;
-    function upd() {
-      ticking = false;
-      var y = window.scrollY;
-      if (y > hero.offsetHeight + 120) return;
-      var p = Math.min(y * 0.12, 16) + 'px';
-      imgs.forEach(function (im) { im.style.setProperty('--par', p); });
-    }
-    addEventListener('scroll', function () { if (!ticking) { requestAnimationFrame(upd); ticking = true; } }, { passive: true });
-    upd();
   })();
 
   // reveal on scroll: sections rise + fade in as they enter the viewport
