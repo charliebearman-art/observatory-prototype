@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=9">
-<link rel="stylesheet" href="styles/object.css?v=1">
+<link rel="stylesheet" href="styles/object.css?v=3">
 </head>
 <body>
 
@@ -53,15 +53,33 @@
     </div>
   </header>
 
-  <!-- hero: photo with numbered POI hotspots (→ point page) -->
+  <!-- hero: swipeable gallery of views, each with numbered POI hotspots (→ point page) -->
   <section class="ohero">
-    <div class="ohero__media">
-      <img src="assets/img/object/hero-duomo.jpg" alt="Duomo di Milano">
-      <a class="hotspot" href="poi.html" style="--x:50%;--y:43%" aria-label="Point 1">1</a>
-      <a class="icon-btn icon-btn--scrim-b ohero__next" href="#" aria-label="Next view">
-        <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
-      </a>
+    <div class="ohero__track" id="heroTrack">
+      <div class="ohero__slide ohero__slide--facade">
+        <img src="assets/img/object/hero-duomo.jpg" alt="Duomo di Milano — main façade">
+        <a class="hotspot" href="poi.html" style="--x:50%;--y:42.7%" aria-label="Point 1">1</a>
+      </div>
+      <div class="ohero__slide ohero__slide--plan">
+        <img src="assets/img/object/gallery-plan.jpg" alt="Duomo floor plan">
+        <a class="hotspot" href="poi.html" style="--x:50%;--y:26.6%" aria-label="Point 4">4</a>
+        <a class="hotspot" href="poi.html" style="--x:calc(50% + 72px);--y:32.3%" aria-label="Point 6">6</a>
+        <a class="hotspot" href="poi.html" style="--x:50%;--y:40.5%" aria-label="Point 5">5</a>
+        <a class="hotspot" href="poi.html" style="--x:calc(50% + 52px);--y:47.7%" aria-label="Point 3">3</a>
+        <a class="hotspot" href="poi.html" style="--x:50%;--y:67.95%" aria-label="Point 2">2</a>
+        <a class="hotspot" href="poi.html" style="--x:calc(50% - 39px);--y:81.8%" aria-label="Point 7">7</a>
+      </div>
+      <div class="ohero__slide ohero__slide--terraces">
+        <img src="assets/img/object/gallery-terraces.jpg" alt="Duomo terraces">
+        <a class="hotspot" href="poi.html" style="--x:50%;--y:55%" aria-label="Point 8">8</a>
+      </div>
     </div>
+    <button class="icon-btn icon-btn--scrim-b ohero__nav ohero__nav--back" id="heroBack" hidden aria-label="Previous view">
+      <svg class="icon"><use href="assets/icons.svg#i-arrow-left"></use></svg>
+    </button>
+    <button class="icon-btn icon-btn--scrim-b ohero__nav ohero__nav--next" id="heroNext" aria-label="Next view">
+      <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+    </button>
   </section>
 
   <!-- description + audio + step-by-step -->
@@ -154,7 +172,7 @@
       <div class="oblock">
         <h2 class="oblock__h">Commissioned by Gian Galeazzo Visconti</h2>
         <figure class="org-figure">
-          <img class="org-figure__img" src="assets/img/object/org-visconti.jpg" alt="Gian Galeazzo Visconti">
+          <div class="org-figure__imgwrap"><img class="org-figure__img" src="assets/img/object/org-visconti.jpg" alt="Gian Galeazzo Visconti"></div>
           <figcaption class="org-figure__text oblock__text">In 1386 the ruler of Milan Gian Galeazzo Visconti and Archbishop Antonio da Saluzzo resolved to raise a cathedral worthy of the city. The Veneranda Fabbrica del Duomo has overseen the work ever since — some 300 people at its founding.</figcaption>
         </figure>
       </div>
@@ -219,7 +237,7 @@
       <div class="numgrid">
         <div class="numcard numcard--illus">
           <span class="numcard__cap">The Madonnina crowns the highest 108 m spire</span>
-          <img class="numcard__img" src="assets/img/object/num-madonnina.png" alt="">
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:143.02%;top:-16.05%;left:10.34%;width:79.33%" src="assets/img/object/num-madonnina.png" alt=""></div>
         </div>
         <div class="numcard numcard--num">
           <span class="numcard__up">up to</span>
@@ -233,11 +251,11 @@
         </div>
         <div class="numcard numcard--illus">
           <span class="numcard__cap">96 Gargoyles and monsters carry off the rain</span>
-          <img class="numcard__img" src="assets/img/object/num-gargoyle.png" alt="">
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:203.8%;top:-41.48%;left:-17.29%;width:100%" src="assets/img/object/num-gargoyle.png" alt=""></div>
         </div>
         <div class="numcard numcard--illus">
           <span class="numcard__cap">157 m long — and 93 m across the transept</span>
-          <img class="numcard__img" src="assets/img/object/num-cathedral.png" alt="">
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:243.66%;top:-46.38%;left:-18.09%;width:135.15%" src="assets/img/object/num-cathedral.png" alt=""></div>
         </div>
         <div class="numcard numcard--num">
           <span class="numcard__up">up to</span>
@@ -251,7 +269,7 @@
         </div>
         <div class="numcard numcard--illus">
           <span class="numcard__cap">1,000+ m³ of Serizzo granite in the foundations</span>
-          <img class="numcard__img" src="assets/img/object/num-granite.png" alt="">
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:230.29%;top:-57.25%;left:-6.5%;width:113%" src="assets/img/object/num-granite.png" alt=""></div>
         </div>
       </div>
     </div>
@@ -310,6 +328,24 @@
 </main>
 
 <script>
+  // hero gallery: prev/next arrows scroll the slide track; arrows hide at the ends
+  (function () {
+    var track = document.getElementById('heroTrack');
+    var back = document.getElementById('heroBack'), next = document.getElementById('heroNext');
+    if (!track) return;
+    function slideW() { return track.querySelector('.ohero__slide').getBoundingClientRect().width; }
+    function update() {
+      var i = Math.round(track.scrollLeft / slideW());
+      var last = track.children.length - 1;
+      back.hidden = i <= 0;
+      next.hidden = i >= last;
+    }
+    next.addEventListener('click', function () { track.scrollBy({ left: slideW(), behavior: 'smooth' }); });
+    back.addEventListener('click', function () { track.scrollBy({ left: -slideW(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
+    update();
+  })();
+
   // description expand / collapse
   (function () {
     var btn = document.querySelector('.odesc__more');
