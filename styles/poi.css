@@ -1,0 +1,59 @@
+/* Observatory — point-of-interest page. Builds on tokens.css + base.css + object.css
+   (reuses .audio and .fact/.facts components). Figma 1099:3735, concept B, Duomo. */
+.screen.poi-screen { width: 100%; background: var(--color-bg); display: flex; flex-direction: column; }
+@media (min-width: 481px) { .screen.poi-screen { width: 390px; } }
+
+/* ---------- header: back · "Point N of M" · language, + progress ---------- */
+.phead { position: sticky; top: 0; z-index: 30; background: var(--color-surface); border-radius: 0 0 var(--radius-card) var(--radius-card); padding-bottom: var(--space-4); }
+.phead__bar { display: flex; align-items: center; justify-content: space-between; height: 67px; padding: 0 var(--space-4); }
+.phead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }
+.pprogress { display: flex; gap: 3px; padding: 0 var(--space-4); }
+.pprogress__seg { flex: 1 1 0; height: 4px; background: var(--color-border); }
+.pprogress__seg.is-done { background: var(--color-accent); }
+
+/* ---------- hero ---------- */
+.phero { position: relative; width: 100%; margin-top: -67px; }
+.phero__media { position: relative; width: 100%; aspect-ratio: 390 / 440; overflow: hidden; }
+.phero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- description ---------- */
+.pdesc { position: relative; z-index: 1; margin-top: -16px; display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-6) var(--space-4); background: var(--color-surface); border-radius: var(--radius-card); }
+.pdesc__block { display: flex; flex-direction: column; gap: var(--space-5); }
+.pdesc__head { display: flex; flex-direction: column; gap: var(--space-4); }
+.pdesc__headtop { display: flex; flex-direction: column; gap: var(--space-2); }
+.poi-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.14em; }
+.pdesc__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); margin: 0; }
+.pdesc__text { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); margin: 0; }
+
+/* where-is-it card (full-width characteristic) */
+.wherecard { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+.wherecard__k { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.wherecard__v { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+
+/* ---------- point switcher (pinned bottom) ---------- */
+.pswitch { position: sticky; bottom: 0; z-index: 20; display: flex; gap: var(--space-2); padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 20%); backdrop-filter: blur(12px); }
+.pswitch__prev { flex: none; width: 56px; height: 56px; border-radius: var(--radius-button); border: 1.5px solid var(--color-accent); background: none; color: var(--color-accent); display: flex; align-items: center; justify-content: center; }
+.pswitch__next { flex: 1 1 0; height: 56px; border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); display: flex; align-items: center; justify-content: center; gap: var(--space-2); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
+.pswitch__next .icon, .pswitch__prev .icon { width: 24px; height: 24px; }
+
+/* ---------- fact modal (bottom sheet over the dimmed page) ---------- */
+.factmodal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-end; justify-content: center; }
+.factmodal[hidden] { display: none; }
+.factmodal__scrim { position: absolute; inset: 0; background: var(--scrim); animation: fm-fade var(--dur) var(--ease); }
+.factmodal__sheet {
+  position: relative; width: 100%; max-width: 480px; max-height: 92svh; overflow-y: auto;
+  background: var(--color-surface); border-radius: var(--radius-card) var(--radius-card) 0 0;
+  padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5);
+  animation: fm-up var(--dur) var(--ease);
+}
+@media (min-width: 481px) { .factmodal__sheet { max-width: 390px; } }
+.factmodal__handle { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 48px; height: 4px; border-radius: 2px; background: var(--color-border); }
+.factmodal__head { display: flex; flex-direction: column; gap: var(--space-2); }
+.factmodal__eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.14em; }
+.factmodal__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); margin: 0; }
+.factmodal__figure { display: flex; flex-direction: column; gap: var(--space-4); }
+.factmodal__img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius-card); display: block; }
+.factmodal__text { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); margin: 0; padding-inline: var(--space-2); }
+@keyframes fm-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fm-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .factmodal__sheet, .factmodal__scrim { animation: none; } }

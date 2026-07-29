@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en" data-concept="b" data-palette="duomo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14110c">
+<title>Duomo di Milano — Observatory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=9">
+<link rel="stylesheet" href="styles/object.css?v=1">
+</head>
+<body>
+
+<!-- demo-only control: preview both theme axes -->
+<div class="switch">
+  <div class="switch__panel">
+    <div class="switch__group">
+      <span class="switch__label">Concept</span>
+      <button data-set="concept" data-val="a">A</button>
+      <button data-set="concept" data-val="b" aria-pressed="true">B</button>
+      <button data-set="concept" data-val="c">C</button>
+    </div>
+    <div class="switch__group">
+      <span class="switch__label">Place</span>
+      <button data-set="palette" data-val="cosmos">Cosmos</button>
+      <button data-set="palette" data-val="santorini">Santorini</button>
+      <button data-set="palette" data-val="terracotta">Rome</button>
+      <button data-set="palette" data-val="krem">Krem</button>
+      <button data-set="palette" data-val="duomo" aria-pressed="true">Duomo</button>
+      <button data-set="palette" data-val="night">Night</button>
+    </div>
+  </div>
+  <button class="switch__toggle" aria-expanded="false" aria-label="Показать переключатель темы">
+    <svg class="icon"><use href="assets/icons.svg#i-grid"></use></svg>
+  </button>
+</div>
+
+<main class="screen object-screen">
+
+  <!-- header: object title + language + exit -->
+  <header class="ohead">
+    <span class="ohead__title">#1 Duomo di Milano</span>
+    <div class="ohead__btns">
+      <button class="icon-btn icon-btn--ghost-b" aria-label="Language">
+        <svg class="icon"><use href="assets/icons.svg#i-globe"></use></svg>
+      </button>
+      <a class="icon-btn icon-btn--ghost-b" href="nav.html" aria-label="Exit object">
+        <svg class="icon"><use href="assets/icons.svg#i-x"></use></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- hero: photo with numbered POI hotspots (→ point page) -->
+  <section class="ohero">
+    <div class="ohero__media">
+      <img src="assets/img/object/hero-duomo.jpg" alt="Duomo di Milano">
+      <a class="hotspot" href="poi.html" style="--x:50%;--y:43%" aria-label="Point 1">1</a>
+      <a class="icon-btn icon-btn--scrim-b ohero__next" href="#" aria-label="Next view">
+        <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- description + audio + step-by-step -->
+  <section class="odesc">
+    <div class="odesc__head">
+      <h1 class="odesc__title">Duomo di Milano</h1>
+      <p class="odesc__body odesc__body--clamp" id="odescBody">This is not just a cathedral. It’s a story of obsession, engineering and power — a building raised over almost six hundred years that reshaped an entire city. To carry marble down from the Alps, canals were cut across half of Lombardy. Napoleon crowned himself here. An 18th-century solar meridian still keeps time on its floor. And, officially, the Duomo has never been finished.</p>
+      <button class="odesc__more text-btn" aria-expanded="false" aria-controls="odescBody">
+        <span>More</span>
+        <svg class="icon icon--20"><use href="assets/icons.svg#i-chevron-down"></use></svg>
+      </button>
+    </div>
+    <div class="odesc__audiowrap">
+      <div class="audio" id="audioIntro" role="button" tabindex="0" aria-label="Play intro">
+        <span class="audio__play"><svg class="icon"><use href="assets/icons.svg#i-play"></use></svg></span>
+        <div class="audio__body">
+          <div class="audio__row"><span class="audio__label">Play Intro</span><span class="audio__time">0:55</span></div>
+          <div class="audio__track"><i></i></div>
+        </div>
+      </div>
+      <a class="btn-step" href="poi.html">Step by Step
+        <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- info tabs -->
+  <section class="otabs">
+    <div class="tabs" role="tablist" aria-label="Object information">
+      <button class="tabs__btn" role="tab" aria-selected="true"  aria-controls="tab-about"   id="t-about">About</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-origins" id="t-origins">Origins</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-numbers" id="t-numbers">Numbers</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-visit"   id="t-visit">Visit</button>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="tabpanel" role="tabpanel" id="tab-about" aria-labelledby="t-about">
+      <div class="charslider">
+        <div class="charcard"><span class="charcard__k">Location</span><span class="charcard__v">Piazza del Duomo, Milano</span></div>
+        <div class="charcard"><span class="charcard__k">Full Name</span><span class="charcard__v">Cattedrale di Santa Maria Nascente</span></div>
+        <div class="charcard"><span class="charcard__k">Type</span><span class="charcard__v">Active Catholic cathedral</span></div>
+        <div class="charcard"><span class="charcard__k">Style</span><span class="charcard__v">Gothic &amp; Neo-Gothic</span></div>
+      </div>
+
+      <div class="facts">
+        <h2 class="facts__title">Interesting Facts</h2>
+        <div class="facts__row">
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-1.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">A Milanese way to say “never”</h3>
+              <p class="fact__text">Milanese have a saying — “lungo come la fabbrica del Duomo,” as long as the building of the Duomo — for anything that drags on forever.</p>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-2.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">Even Leonardo couldn’t get it built</h3>
+              <p class="fact__text">Leonardo da Vinci submitted a design for the cathedral’s central spire in 1487 — and, like many, was ultimately turned down.</p>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-3.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">A church 1,600 years older, below</h3>
+              <p class="fact__text">Beneath the floor lie the remains of Santa Tecla and the 4th-century baptistery where, tradition says, Saint Ambrose baptised Saint Augustine.</p>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-4.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">Some of the tallest glass on Earth</h3>
+              <p class="fact__text">The Duomo’s stained-glass windows are among the largest in the world, some panels rising over 20 metres from floor to tracery.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <div class="tabpanel" role="tabpanel" id="tab-origins" aria-labelledby="t-origins" hidden>
+      <div class="oblock">
+        <h2 class="oblock__h">Commissioned by Gian Galeazzo Visconti</h2>
+        <figure class="org-figure">
+          <img class="org-figure__img" src="assets/img/object/org-visconti.jpg" alt="Gian Galeazzo Visconti">
+          <figcaption class="org-figure__text oblock__text">In 1386 the ruler of Milan Gian Galeazzo Visconti and Archbishop Antonio da Saluzzo resolved to raise a cathedral worthy of the city. The Veneranda Fabbrica del Duomo has overseen the work ever since — some 300 people at its founding.</figcaption>
+        </figure>
+      </div>
+
+      <div class="oblock">
+        <h2 class="oblock__h">Six centuries in the making</h2>
+        <div class="timeline">
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot tl-dot--accent"></span></span>
+            <div class="tl-body"><span class="tl-year tl-year--accent">1386</span><span class="tl-desc">Construction begins — Gian Galeazzo Visconti’s vision.</span></div>
+            <img class="tl-era" src="assets/img/object/org-visconti.jpg" alt="">
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1387</span><span class="tl-desc">Simone da Orsenigo takes charge of the works.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1389</span><span class="tl-desc">Nicolas de Bonaventure brings the rayonnant Gothic from France.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1480 – 1490</span><span class="tl-desc">Leonardo da Vinci enters the dispute over the crossing tower.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1805 – 1813</span><span class="tl-desc">The façade is completed, on Napoleon’s order.</span></div>
+            <img class="tl-era" src="assets/img/object/org-era.jpg" alt="">
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot tl-dot--accent"></span></span>
+            <div class="tl-body"><span class="tl-year tl-year--accent">1965</span><span class="tl-desc">The last bronze door is set — nearly 600 years on.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oblock">
+        <h2 class="oblock__h">Not one architect —<br>six centuries of them</h2>
+        <p class="oblock__text">There is no single author. Dozens of masters shaped the Duomo across six hundred years.</p>
+        <div class="arch-cards">
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-1.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Simone da Orsenigo</h3><p class="arch-card__desc">The first design of the cathedral — Milan, 1387.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-2.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Nicolas de Bonaventure</h3><p class="arch-card__desc">In 1389 the Frenchman brought the rayonnant Gothic; then Jean Mignot of Paris, and a long line of engineers.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-3.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Leonardo da Vinci</h3><p class="arch-card__desc">In the 1480s he joined the dispute over the crossing tower — the tiburio. His designs were never built.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-4.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Carlo Amati &amp; Zanoia</h3><p class="arch-card__desc">The façade — Carlo Amati and Giuseppe Zanoia.</p></div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <!-- NUMBERS -->
+    <div class="tabpanel" role="tabpanel" id="tab-numbers" aria-labelledby="t-numbers" hidden>
+      <div class="numgrid">
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">The Madonnina crowns the highest 108 m spire</span>
+          <img class="numcard__img" src="assets/img/object/num-madonnina.png" alt="">
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">135</span>
+          <span class="numcard__sub">Marble spires bristle across the roof</span>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">3 400</span>
+          <span class="numcard__sub">Statues watch from every ledge</span>
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">96 Gargoyles and monsters carry off the rain</span>
+          <img class="numcard__img" src="assets/img/object/num-gargoyle.png" alt="">
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">157 m long — and 93 m across the transept</span>
+          <img class="numcard__img" src="assets/img/object/num-cathedral.png" alt="">
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">~ 12 000 m²</span>
+          <span class="numcard__sub">The biggest church in Italy</span>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">~ 600 000</span>
+          <span class="numcard__sub">Candoglia marble blocks</span>
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">1,000+ m³ of Serizzo granite in the foundations</span>
+          <img class="numcard__img" src="assets/img/object/num-granite.png" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- VISIT -->
+    <div class="tabpanel" role="tabpanel" id="tab-visit" aria-labelledby="t-visit" hidden>
+      <div class="visit-block">
+        <h2 class="oblock__h">Hours &amp; Address</h2>
+        <div class="visit-list">
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Hours</span><span class="listrow__v">09:00–19:00 · last entry 18:10</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg#i-clock"></use></svg></span>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Address</span><span class="listrow__v">Piazza del Duomo, 20122 Milano MI, Italy</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg#i-map-pin"></use></svg></span>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Duration</span><span class="listrow__v">45–90 min inside · +1 h terraces</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg#i-eye"></use></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="visit-block">
+        <h2 class="oblock__h">Tickets</h2>
+        <div class="visit-list">
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Tickets Duomo + Museum</span><span class="listrow__v">€10 adult / €5 reduced (ages 6–18), free under 5.</span></div>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Tickets Terraces</span><span class="listrow__v">On foot ~€10, elevator ~€14 (separate ticket!).</span></div>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Duomo Pass</span><span class="listrow__v">€20–30 · all-in (cathedral + terraces + museum + archaeological area)</span></div>
+          </div>
+        </div>
+        <a class="btn-secondary" href="#">Buy on duomomilano.it
+          <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- next on the route -->
+  <div class="nextobj-wrap">
+    <a class="nextobj" href="nav.html">
+      <img class="nextobj__thumb" src="assets/img/object/next-galleria.jpg" alt="">
+      <div class="nextobj__text">
+        <span class="nextobj__eyebrow">Next on the route</span>
+        <h2 class="nextobj__name">Galleria Vittorio Emanuele II</h2>
+      </div>
+      <svg class="icon"><use href="assets/icons.svg#i-arrow-right"></use></svg>
+    </a>
+  </div>
+
+</main>
+
+<script>
+  // description expand / collapse
+  (function () {
+    var btn = document.querySelector('.odesc__more');
+    var body = document.getElementById('odescBody');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var open = body.classList.toggle('odesc__body--clamp') === false;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.querySelector('span').textContent = open ? 'Less' : 'More';
+    });
+  })();
+
+  // tabs
+  (function () {
+    var tabs = [].slice.call(document.querySelectorAll('.tabs__btn'));
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (x) {
+          var on = x === t;
+          x.setAttribute('aria-selected', String(on));
+          document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+        });
+      });
+    });
+  })();
+
+  // interesting facts: expand the card in place (not a modal)
+  (function () {
+    document.querySelectorAll('.fact').forEach(function (card) {
+      var toggle = card.querySelector('.fact__toggle');
+      function flip(e) { e.preventDefault(); e.stopPropagation(); card.classList.toggle('is-open'); }
+      toggle.addEventListener('click', flip);
+      card.addEventListener('click', function (e) { if (e.target === card || e.target.classList.contains('fact__img') || e.target.classList.contains('fact__scrim')) card.classList.toggle('is-open'); });
+    });
+  })();
+
+  // demo switch
+  (function () {
+    var box = document.querySelector('.switch');
+    if (!box) return;
+    box.querySelector('.switch__toggle').addEventListener('click', function () {
+      var open = box.classList.toggle('switch--open');
+      this.setAttribute('aria-expanded', String(open));
+    });
+    var meta = document.querySelector('meta[name="theme-color"]');
+    box.querySelectorAll('.switch__panel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.documentElement.setAttribute('data-' + b.dataset.set, b.dataset.val);
+        box.querySelectorAll('.switch__panel button[data-set="' + b.dataset.set + '"]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        var bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim();
+        if (bg) meta.setAttribute('content', bg);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

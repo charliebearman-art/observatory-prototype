@@ -1,0 +1,13 @@
+/* Observatory — placeholder for screens not yet designed/built.
+   Used so the client can walk the full UX; each stub says what will live here. */
+.stub-screen { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100svh; display: flex; flex-direction: column; background: var(--color-bg); }
+@media (min-width: 481px) { .stub-screen { width: 390px; } }
+.stub-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); }
+.stub-head__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.stub-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-5); padding: var(--space-8) var(--space-4); text-align: center; }
+.stub-mark { width: 72px; height: 72px; border-radius: var(--radius-pill); background: var(--color-accent-subtle); color: var(--color-accent); display: flex; align-items: center; justify-content: center; }
+.stub-mark .icon { width: 32px; height: 32px; }
+.stub-badge { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); border-radius: var(--radius-button); border: 1px solid var(--color-border); color: var(--color-text-muted); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); text-transform: uppercase; letter-spacing: 0.14em; }
+.stub-title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-text); margin: 0; }
+.stub-desc { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); max-width: 34ch; margin: 0; }
+.stub-actions { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; max-width: 320px; margin-top: var(--space-2); }
