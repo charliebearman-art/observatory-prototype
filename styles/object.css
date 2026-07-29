@@ -24,8 +24,10 @@
   backdrop-filter: blur(4px); color: var(--color-accent);
 }
 
-/* ---------- hero gallery (swipeable slides with POI hotspots) ---------- */
-.ohero { position: relative; width: 100%; margin-top: -67px; }         /* header overlaps the top */
+/* ---------- hero gallery (swipeable slides with POI hotspots) ----------
+   Figma: image starts at y=52 while the 67px header sits above it, so the header
+   overlaps only its top 15px (its rounded bottom corners reveal the photo). */
+.ohero { position: relative; width: 100%; margin-top: -15px; }
 .ohero__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .ohero__track::-webkit-scrollbar { display: none; }
 .ohero__slide { position: relative; flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 390 / 440; overflow: hidden; }
