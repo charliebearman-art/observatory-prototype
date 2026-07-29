@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=10">
-<link rel="stylesheet" href="styles/object.css?v=11">
+<link rel="stylesheet" href="styles/object.css?v=12">
 </head>
 <body>
 
@@ -115,6 +115,7 @@
   <!-- info tabs -->
   <section class="otabs">
     <div class="tabs" role="tablist" aria-label="Object information">
+      <span class="tabs__pill" aria-hidden="true"></span>
       <button class="tabs__btn" role="tab" aria-selected="true"  aria-controls="tab-about"   id="t-about">About</button>
       <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-origins" id="t-origins">Origins</button>
       <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-numbers" id="t-numbers">Numbers</button>
@@ -412,9 +413,18 @@
     });
   })();
 
-  // tabs
+  // tabs: switch panels + slide the active pill (iOS segmented control)
   (function () {
-    var tabs = [].slice.call(document.querySelectorAll('.tabs__btn'));
+    var container = document.querySelector('.tabs');
+    var pill = container.querySelector('.tabs__pill');
+    var tabs = [].slice.call(container.querySelectorAll('.tabs__btn'));
+    function movePill() {
+      var a = container.querySelector('[aria-selected="true"]');
+      if (!a || !pill) return;
+      pill.style.width = a.offsetWidth + 'px';
+      pill.style.height = a.offsetHeight + 'px';
+      pill.style.transform = 'translate(' + (a.offsetLeft - container.clientLeft) + 'px,' + (a.offsetTop - container.clientTop) + 'px)';
+    }
     tabs.forEach(function (t) {
       t.addEventListener('click', function () {
         tabs.forEach(function (x) {
@@ -422,8 +432,48 @@
           x.setAttribute('aria-selected', String(on));
           document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
         });
+        movePill();
       });
     });
+    movePill();
+    window.addEventListener('resize', movePill);
+    window.addEventListener('load', movePill);   // re-measure after fonts settle
+  })();
+
+  // hero photo parallax: the gallery image lags the page scroll (subtle, within crop)
+  (function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var hero = document.querySelector('.ohero');
+    var imgs = [].slice.call(document.querySelectorAll('.ohero__slide img'));
+    if (!hero || !imgs.length) return;
+    var ticking = false;
+    function upd() {
+      ticking = false;
+      var y = window.scrollY;
+      if (y > hero.offsetHeight + 120) return;
+      var p = Math.min(y * 0.12, 16) + 'px';
+      imgs.forEach(function (im) { im.style.setProperty('--par', p); });
+    }
+    addEventListener('scroll', function () { if (!ticking) { requestAnimationFrame(upd); ticking = true; } }, { passive: true });
+    upd();
+  })();
+
+  // reveal on scroll: sections rise + fade in as they enter the viewport
+  (function () {
+    var groups = [['.odesc', 60], ['.nextobj-wrap', 0]];
+    groups.forEach(function (g) {
+      document.querySelectorAll(g[0]).forEach(function (box) {
+        box.setAttribute('data-reveal-group', '');
+        [].forEach.call(box.children, function (el, i) { el.style.setProperty('--reveal-delay', i * g[1] + 'ms'); el.setAttribute('data-reveal', ''); });
+      });
+    });
+    // info tabs: reveal just the tab bar (each panel animates itself on show, see .tabpanel CSS)
+    var otabs = document.querySelector('.otabs');
+    if (otabs) { otabs.setAttribute('data-reveal-group', ''); var bar = otabs.querySelector('.tabs'); if (bar) bar.setAttribute('data-reveal', ''); }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
   })();
 
   // interesting facts: expand the card in place (not a modal)
