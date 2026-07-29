@@ -121,11 +121,15 @@
   display: flex; align-items: center; padding: var(--space-1);
   border: 1px solid var(--color-border); border-radius: var(--radius-button);
 }
-/* the active-tab pill slides between the equal-width tabs (iOS segmented control) */
+/* the active-tab pill slides between the equal-width tabs (iOS segmented control).
+   pure CSS: it is exactly one quarter of the track, inset 4px on every side, and
+   slides by whole-pill steps via --tab-i (0–3). No JS measurement, fully responsive. */
 .tabs__pill {
-  position: absolute; top: 0; left: 0; width: 0; height: 0;
+  position: absolute; top: var(--space-1); bottom: var(--space-1); left: var(--space-1);
+  width: calc((100% - var(--space-1) * 2) / 4);
   background: var(--color-text-muted); border-radius: var(--radius-button); z-index: 0;
-  transition: transform var(--dur) var(--ease), width var(--dur) var(--ease);
+  transform: translateX(calc(100% * var(--tab-i, 0)));
+  transition: transform var(--dur) var(--ease);
 }
 .tabs__btn {
   position: relative; z-index: 1;
