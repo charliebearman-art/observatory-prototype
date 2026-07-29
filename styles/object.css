@@ -141,6 +141,10 @@
   font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body);
 }
 .btn-step .icon { width: 24px; height: 24px; }
+/* pinned Step-by-Step bar: stays at the viewport bottom while scrolling the tabs,
+   then settles into place just above the next-object card */
+.ostep { position: sticky; bottom: 0; z-index: 5; padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 12%); backdrop-filter: blur(12px); }
+.ostep .btn-step { width: 100%; }
 
 /* ---------- info tabs ---------- */
 .otabs {
@@ -222,18 +226,18 @@
   display: flex; align-items: center; justify-content: center;
 }
 .fact__toggle .icon { transition: transform var(--dur-slow) var(--ease-slow); }
-/* no gap when collapsed (title alone sits 24px from the bottom); the title↔text
-   gap (8px) only appears once the card is open — otherwise the hidden text still
-   adds its gap and pushes the title up. gap is transitioned so the title glides
-   up rather than jumping. */
-.fact__body { position: relative; display: flex; flex-direction: column; transition: gap var(--dur-slow) var(--ease-slow); }
-.fact.is-open .fact__body { gap: var(--space-2); }
+/* the title sits at the bottom; the text reveals with a smooth grid-rows height
+   animation (0fr → 1fr) — exact height, no max-height overshoot, so it never jerks */
+.fact__body { position: relative; display: flex; flex-direction: column; }
 .fact__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--on-media); margin: 0; }
-.fact__text { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--on-media-muted); margin: 0; max-height: 0; opacity: 0; overflow: hidden;
-  transition: max-height calc(var(--dur-slow) * 1.35) var(--ease-slow), opacity var(--dur-slow) var(--ease); }
+.fact__reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows calc(var(--dur-slow) * 1.4) var(--ease-slow); }
+.fact__reveal > .fact__text { min-height: 0; overflow: hidden; margin: 0; padding-top: var(--space-2); opacity: 0;
+  font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--on-media-muted);
+  transition: opacity calc(var(--dur-slow) * 1.2) var(--ease-slow); }
 /* open state: SAME size — the photo blurs, the text is revealed, + becomes × */
 .fact.is-open .fact__scrim { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: linear-gradient(to bottom, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
-.fact.is-open .fact__text { max-height: 220px; opacity: 1; }
+.fact.is-open .fact__reveal { grid-template-rows: 1fr; }
+.fact.is-open .fact__reveal > .fact__text { opacity: 1; }
 .fact.is-open .fact__toggle .icon { transform: rotate(45deg); }   /* + → × */
 
 /* ---------- next object ---------- */
