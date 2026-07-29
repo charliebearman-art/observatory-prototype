@@ -83,16 +83,19 @@
 .ohero__nav--next { right: var(--space-4); }
 .ohero__nav[hidden] { display: none; }
 
-/* ---------- content sheet: opaque, sits above the pinned hero and scrolls over it ---------- */
+/* ---------- content sheet: opaque, sits above the pinned hero and scrolls over it.
+   flow-root makes it a BFC so the description card keeps its own -16px overlap
+   (its rounded corners reveal the hero photo) while the sheet bg starts at the
+   hero bottom to cover the hero on scroll. */
 .osheet {
-  position: relative; z-index: 1; background: var(--color-bg);
-  margin-top: -16px;                       /* the sheet overlaps the hero bottom, per Figma */
+  position: relative; z-index: 1; background: var(--color-bg); display: flow-root;
 }
 
 /* ---------- description card ---------- */
 .odesc {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; gap: var(--space-5);
+  margin-top: -16px;                       /* overlaps the hero bottom; corners reveal the photo */
   padding: var(--space-6) var(--space-4);
   background: var(--color-surface); border-radius: var(--radius-card);
 }
