@@ -115,6 +115,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .text-btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 0; border: 0; background: none; cursor: pointer;   /* reset <button> chrome */
   font-family: var(--font-ui); font-weight: var(--font-ui-weight);
   font-size: var(--size-body); line-height: var(--lh-body);
   color: var(--color-accent);

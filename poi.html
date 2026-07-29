@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=9">
-<link rel="stylesheet" href="styles/object.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=10">
+<link rel="stylesheet" href="styles/object.css?v=9">
 <link rel="stylesheet" href="styles/poi.css?v=2">
 </head>
 <body>
@@ -78,7 +78,10 @@
       </div>
 
       <div class="audio">
-        <button class="audio__play" aria-label="Play"><svg class="icon"><use href="assets/icons.svg#i-play"></use></svg></button>
+        <button class="audio__play" aria-label="Play">
+          <svg class="icon audio__ico audio__ico--play"><use href="assets/icons.svg#i-play"></use></svg>
+          <svg class="icon audio__ico audio__ico--pause"><use href="assets/icons.svg#i-pause"></use></svg>
+        </button>
         <div class="audio__body">
           <div class="audio__row"><span class="audio__label">The Main Façade</span><span class="audio__time">0:55</span></div>
           <div class="audio__track"><span class="audio__rail"></span><span class="audio__fill"></span><span class="audio__thumb"></span></div>
@@ -146,7 +149,7 @@
     document.querySelectorAll('.audio').forEach(function (audio) {
       var btn = audio.querySelector('.audio__play');
       var fill = audio.querySelector('.audio__fill'), thumb = audio.querySelector('.audio__thumb');
-      var use = btn.querySelector('use'), timeEl = audio.querySelector('.audio__time');
+      var timeEl = audio.querySelector('.audio__time');
       var parts = (timeEl ? timeEl.textContent : '0:55').split(':');
       var dur = (+parts[0]) * 60 + (+parts[1]) || 55;
       var playing = false, elapsed = 0, last = 0, raf;
@@ -155,8 +158,7 @@
         var rem = Math.max(0, Math.ceil(dur - elapsed));            // time left, counts down
         if (timeEl) timeEl.textContent = Math.floor(rem / 60) + ':' + ('0' + (rem % 60)).slice(-2);
       }
-      function icon(id) { use.setAttribute('href', 'assets/icons.svg#' + id); }
-      function pause() { playing = false; audio.classList.remove('is-playing'); icon('i-play'); btn.setAttribute('aria-label', 'Play'); cancelAnimationFrame(raf); }
+      function pause() { playing = false; audio.classList.remove('is-playing'); btn.setAttribute('aria-label', 'Play'); cancelAnimationFrame(raf); }
       function tick(ts) {
         if (!last) last = ts;
         elapsed += (ts - last) / 1000; last = ts; render();
@@ -165,8 +167,23 @@
       }
       btn.addEventListener('click', function () {
         if (playing) { pause(); return; }
-        playing = true; audio.classList.add('is-playing'); icon('i-pause'); btn.setAttribute('aria-label', 'Pause'); last = 0; raf = requestAnimationFrame(tick);
+        playing = true; audio.classList.add('is-playing'); btn.setAttribute('aria-label', 'Pause'); last = 0; raf = requestAnimationFrame(tick);
       });
+
+      // scrub: tap/drag anywhere on the track to seek (works while playing or paused)
+      var track = audio.querySelector('.audio__track'), scrubbing = false, wasPlaying = false;
+      function seekAt(x) { var r = track.getBoundingClientRect(); elapsed = Math.min(1, Math.max(0, (x - r.left) / r.width)) * dur; render(); }
+      track.addEventListener('pointerdown', function (e) {
+        e.preventDefault(); scrubbing = true; wasPlaying = playing;
+        if (playing) cancelAnimationFrame(raf);
+        audio.classList.add('is-scrubbing');
+        try { track.setPointerCapture(e.pointerId); } catch (_) {}
+        seekAt(e.clientX);
+      });
+      track.addEventListener('pointermove', function (e) { if (scrubbing) seekAt(e.clientX); });
+      function endScrub() { if (!scrubbing) return; scrubbing = false; audio.classList.remove('is-scrubbing'); if (wasPlaying && elapsed < dur) { last = 0; raf = requestAnimationFrame(tick); } }
+      track.addEventListener('pointerup', endScrub);
+      track.addEventListener('pointercancel', endScrub);
     });
   })();
 

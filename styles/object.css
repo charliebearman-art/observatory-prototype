@@ -91,12 +91,13 @@
 .audio__row { display: flex; align-items: center; justify-content: space-between; font-size: var(--size-caption); line-height: var(--lh-caption); }
 .audio__label { color: var(--color-text); }
 .audio__time { color: var(--color-text-muted); }
-/* progress: rail + fill + a thumb that appears while playing */
-.audio__track { position: relative; height: 4px; }
+/* progress: rail + fill + a draggable thumb (tap/drag to seek) */
+.audio__track { position: relative; height: 4px; cursor: pointer; touch-action: none; }
+.audio__track::before { content: ""; position: absolute; left: -4px; right: -4px; top: -12px; bottom: -12px; }  /* larger hit area */
 .audio__rail { position: absolute; inset: 0; background: var(--color-border); border-radius: 2px; }
 .audio__fill { position: absolute; left: 0; top: 0; height: 4px; width: 0; background: var(--color-accent); border-radius: 2px; }
 .audio__thumb { position: absolute; top: 50%; left: 0; width: 12px; height: 12px; border-radius: var(--radius-pill); background: var(--color-accent); transform: translate(-50%, -50%); opacity: 0; transition: opacity var(--dur) var(--ease); }
-.audio.is-playing .audio__thumb { opacity: 1; }
+.audio.is-playing .audio__thumb, .audio.is-scrubbing .audio__thumb { opacity: 1; }
 
 /* ---------- primary big button (Step by Step) ---------- */
 .btn-step {
@@ -133,7 +134,7 @@
 /* characteristic slider (Location / Full Name / …) */
 .charslider {
   display: flex; gap: var(--space-2); overflow-x: auto;
-  /* first card aligns to the 16px content padding of the tabs card */
+  margin-inline: calc(var(--space-4) * -1); scroll-padding-inline: var(--space-4);
   scrollbar-width: none;
 }
 .charslider::-webkit-scrollbar { display: none; }
@@ -150,7 +151,7 @@
 .facts__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); margin: 0; }
 .facts__row {
   display: flex; gap: var(--space-4); overflow-x: auto;
-  /* first card aligns to the 16px content padding of the tabs card */
+  margin-inline: calc(var(--space-4) * -1); scroll-padding-inline: var(--space-4);
   scrollbar-width: none; scroll-snap-type: x mandatory;
 }
 .facts__row::-webkit-scrollbar { display: none; }
@@ -228,7 +229,7 @@
 /* architects carousel */
 .arch-cards {
   display: flex; gap: var(--space-3); overflow-x: auto;
-  /* first card aligns to the 16px content padding of the tabs card */
+  margin-inline: calc(var(--space-4) * -1); scroll-padding-inline: var(--space-4);
   scrollbar-width: none; scroll-snap-type: x mandatory;
 }
 .arch-cards::-webkit-scrollbar { display: none; }
@@ -271,3 +272,18 @@
   font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body);
 }
 .btn-secondary .icon { width: 24px; height: 24px; }
+
+/* ---------- gallery bleed + misc fixes ---------- */
+/* horizontal sliders bleed to the screen edge on scroll (negative margin above),
+   while the first/last card keeps a 16px inset — margins on the cards themselves so
+   the container gap doesn't add to the inset */
+.charslider > :first-child, .facts__row > :first-child, .arch-cards > :first-child { margin-inline-start: var(--space-4); }
+.charslider > :last-child, .facts__row > :last-child, .arch-cards > :last-child { margin-inline-end: var(--space-4); }
+
+/* architect block: heading + description grouped tightly (Figma 10px), then carousel */
+.oblock__intro { display: flex; flex-direction: column; gap: 10px; }
+
+/* audio play/pause icon toggle (swapping an external <use> href is unreliable) */
+.audio__ico--pause { display: none; }
+.audio.is-playing .audio__ico--play { display: none; }
+.audio.is-playing .audio__ico--pause { display: block; }
