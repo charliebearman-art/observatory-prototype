@@ -281,7 +281,7 @@
 .charslider > :last-child, .facts__row > :last-child, .arch-cards > :last-child { margin-inline-end: var(--space-4); }
 
 /* architect block: heading + description grouped tightly (Figma 10px), then carousel */
-.oblock__intro { display: flex; flex-direction: column; gap: 10px; }
+.oblock__intro { display: flex; flex-direction: column; gap: var(--space-4); }
 
 /* audio play/pause icon toggle (swapping an external <use> href is unreliable) */
 .audio__ico--pause { display: none; }
