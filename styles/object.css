@@ -209,6 +209,8 @@
   padding: var(--space-4) var(--space-4) var(--space-5);
   cursor: pointer;
 }
+/* a lone fact fills the whole content width (same 5:6 proportion), per Figma */
+.fact--wide { flex: 1 1 100%; width: 100%; height: auto; aspect-ratio: 300 / 360; }
 .fact__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .fact__scrim { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%);
   transition: backdrop-filter var(--dur-slow) var(--ease-slow), background var(--dur-slow) var(--ease-slow); }

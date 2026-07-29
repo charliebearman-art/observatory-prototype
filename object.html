@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=29">
-<link rel="stylesheet" href="styles/poi.css?v=6">
+<link rel="stylesheet" href="styles/object.css?v=30">
+<link rel="stylesheet" href="styles/poi.css?v=7">
 </head>
 <body>
 
@@ -364,7 +364,7 @@
   </div>
 </div>
 
-<script src="points.js?v=1"></script>
+<script src="points.js?v=2"></script>
 
 <script>
   // object-page audio player (shared helper from points.js)
@@ -411,6 +411,9 @@
     back.addEventListener('click', function () { track.scrollBy({ left: -slideW(), behavior: 'smooth' }); });
     track.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
     update();
+    // arriving from a point's "Back" (poi.html?...→object.html?slide=N): open that slide
+    var qs = parseInt(new URLSearchParams(location.search).get('slide'), 10);
+    if (qs > 0) requestAnimationFrame(function () { track.scrollLeft = qs * slideW(); update(); });
   })();
 
   // description expand / collapse with an animated height reveal
@@ -524,22 +527,35 @@
     if (!poiov || !objScreen || !window.renderPointInner) return;
     var mount = poiov.querySelector('#poiMount');
     var modal = initFactModal(poiov.querySelector('#factModal'));
+    var track = document.getElementById('heroTrack');
     var open = false, cur = 1, retTimer = null, hideTimer = null;
 
-    function renderInto(n) {
-      cur = n;
-      mount.innerHTML = renderPointInner(n - 1);
+    function wireBody() {
       wireFacts(mount, modal.open);
       wireAudioIn(mount);
-      var back = mount.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', exitPOI);
       var prev = mount.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { step(cur - 1); });
       var next = mount.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { step(cur + 1); });
     }
-    // move to an adjacent point inside the overlay; the fresh content build-animates
-    // because is-in is already on. Edges return to the object.
+    function renderInto(n) {                       // full render (on enter)
+      cur = n;
+      mount.innerHTML = renderPointInner(n - 1);
+      var back = mount.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', exitPOI);
+      wireBody();
+    }
+    // prev/next: keep the header (update its text in place, no animation) and replace
+    // only the body, so the hero + description re-animate but the header does NOT.
     function step(n) {
       if (n < 1 || n > POINTS.length) { exitPOI(); return; }
-      renderInto(n); poiov.scrollTop = 0;
+      cur = n;
+      updatePointHead(mount, n - 1);
+      mount.querySelector('.poibody').innerHTML = renderPointBody(n - 1);
+      wireBody();
+      poiov.scrollTop = 0;
+    }
+    function gotoSlideOfCurrent() {                // set the object gallery to this point's slide
+      if (!track) return;
+      var sw = track.querySelector('.ohero__slide'); if (!sw) return;
+      track.scrollLeft = slideOfPoint(cur - 1) * sw.getBoundingClientRect().width;
     }
     function enterPOI(n) {
       if (open) return;
@@ -560,6 +576,7 @@
       if (!open) return;
       open = false;
       clearTimeout(hideTimer); clearTimeout(retTimer);
+      gotoSlideOfCurrent();                         // land on the gallery slide holding this point
       objScreen.style.visibility = '';             // reveal the object for the return
       objScreen.classList.remove('is-leaving');
       objScreen.classList.add('is-returning');     // object hero + header/desc fade back in

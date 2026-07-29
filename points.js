@@ -1,113 +1,116 @@
 /* Observatory — point-of-interest content (Duomo di Milano) + renderer.
    Shared by poi.html (standalone, ?p=N) and object.html (in-page overlay).
-   One template, eight points; only content and image count differ. */
+   One template, eight points; content, image count and fact groups differ.
+   Copy and image mapping verified against Figma (section 1099:3735, details 1139:*). */
 (function () {
   var P = 'assets/img/poi/';
   window.POINTS = [
     { // 1
-      zone: 'Exterior',
+      zone: 'Exterior', time: '0:55', audio: 'The Main Façade',
       title: 'The Main Façade of the Duomo — history in stone',
       desc: 'Duomo di Milano. One of the largest Gothic cathedrals in Europe and the foremost symbol of Milan. Construction began in 1386 and continued for almost six centuries.',
-      audio: 'The Main Façade', where: 'In front of the main façade, Piazza del Duomo.',
+      where: 'In front of the main façade, Piazza del Duomo.',
       hero: P + 'poi1-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The Madonnina — symbol of Milan', img: P + 'poi1-fact-1.jpg', text: 'On the Duomo’s main spire stands a golden statue of the Virgin Mary, about 4 metres tall. Since the 19th century there has been a tradition: no building in Milan was to rise higher than the Madonnina. Later this rule became symbolic — the city’s new high-rises still keep a connection to this image.' },
-        { t: 'An “astronaut” on a 14th-century cathedral', img: P + 'poi1-fact-2.jpg', text: 'Among the reliefs of the main portal, restored in the 20th century, one figure looks strikingly like an astronaut in a spacesuit — carved long before spaceflight. Spotting it has become a small ritual for visitors standing before the façade.' }
+        { t: 'The Madonnina — symbol of Milan', img: P + 'poi1-fact-1.jpg', eyebrow: 'The golden statue on the tallest spire', text: 'On the Duomo’s main spire stands a golden statue of the Virgin Mary, about 4 metres tall. Since the 19th century there has been a tradition: no building in Milan was to rise higher than the Madonnina. Later this rule became symbolic — the city’s new high-rises still keep a connection to this image.' },
+        { t: 'An “astronaut” on a 14th-century cathedral', img: P + 'poi1-fact-2.jpg', eyebrow: 'A detail carved long before spaceflight', text: 'Among the reliefs of the main portal, restored in the 20th century, one figure looks strikingly like an astronaut in a spacesuit. Spotting it has become a small ritual for visitors standing before the façade.' }
       ]}]
     },
     { // 2
-      zone: 'Interior',
+      zone: 'Interior', time: '0:55', audio: 'The Sundial Meridian',
       title: 'First look inside the Duomo — a forest of stone and the sundial meridian',
-      desc: 'Step through the doors and the noise of the square falls away. Fifty-two colossal pillars rise like the trunks of a stone forest, drawing the eye up into the shadows of the vaults — one for each week of the year.',
-      audio: 'Inside the Duomo', where: 'Just inside the main entrance, central nave.',
+      desc: 'First look inside the Duomo. Inside, the cathedral reveals its true scale: colossal columns, Gothic vaults and an 18th-century sundial meridian that turns the cathedral into a meeting place of art and science.',
+      where: 'Just inside the main entrance, the central nave.',
       hero: P + 'poi2-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The Sundial Meridian — a clock inside the cathedral', img: P + 'poi2-fact-1.jpg', text: 'A brass line runs across the floor, marked with the signs of the zodiac. Installed by astronomers in 1786, a beam of sunlight from a small hole in the vault crosses it at solar noon — a working meridian built into the church.' }
+        { t: 'The Sundial Meridian — a clock inside the cathedral', img: P + 'poi2-fact-1.jpg', eyebrow: 'Astronomy built into the floor', text: 'A brass line runs across the floor, marked with the signs of the zodiac. Installed by astronomers in 1786, a beam of sunlight from a small hole in the vault crosses it at solar noon — a working meridian built into the church.' }
       ]}]
     },
     { // 3
-      zone: 'Interior',
+      zone: 'Interior', time: '2:00', audio: 'The Tombs',
       title: 'Tombs — memory of the people of Milan',
-      desc: 'The Duomo is not only a place of worship but a resting place. Along its aisles and in its floor lie archbishops, condottieri and citizens whose monuments turn the cathedral into a chronicle of the city, carved in marble and bronze.',
-      audio: 'The tombs of the Duomo', where: 'Along the side aisles and the transepts.',
+      desc: 'The Duomo is not only a church, but a place of memory. Over the centuries, tombs of important Milanese appeared inside the cathedral: rulers, soldiers and members of the clergy. Open the cards to discover their stories.',
+      where: 'The right side of the cathedral, towards the altar.',
       hero: P + 'poi3-hero.jpg',
       groups: [
         { title: 'The Duomo’s silent residents', facts: [
-          { t: 'The Tomb of Marco Carelli', img: P + 'poi3-fact-1.jpg', text: 'A merchant who left his entire fortune to the cathedral in 1394, speeding its construction. His Gothic sarcophagus repays the gift with a row of finely carved saints.' },
-          { t: 'The Tomb of Ariberto da Intimiano', img: P + 'poi3-fact-2.jpg', text: 'The 11th-century archbishop who crowned emperors is remembered by a great copper crucifix — one of the oldest objects the Duomo still guards.' },
-          { t: 'The Tomb of Gian Giacomo Medici', img: P + 'poi3-fact-3.jpg', text: 'Designed after Michelangelo and cast in bronze and marble, the monument to the condottiero known as “il Medeghino” is among the finest in the church.' }
+          { t: 'The Tomb of Marco Carelli', img: P + 'poi3-fact-1.jpg', eyebrow: 'Patron of the Duomo’s construction', text: 'Marco Carelli was one of the key figures in the cathedral’s construction. In the early 15th century he made a large donation to continue the work, and his contribution proved so significant that after his death his memory was preserved inside the Duomo — a reminder that the cathedral was made possible not only by architects and craftsmen but by those who funded it.' },
+          { t: 'The Tomb of Ariberto da Intimiano', img: P + 'poi3-fact-4.jpg', eyebrow: 'One of the most powerful men in 11th-century Milan', text: 'Ariberto da Intimiano (c. 970/980–1045) was Archbishop of Milan from 1018 — not only a religious leader but a major political figure. He took part in imperial politics and in 1027 crowned Conrad II King of Italy. His sarcophagus was first in the church of San Dionigi and, after its 18th-century destruction, was moved to the Duomo.' },
+          { t: 'The Tomb of Gian Giacomo Medici', img: P + 'poi3-fact-3.jpg', eyebrow: 'A military leader from the Medici family', text: 'Gian Giacomo Medici (1498–1555), known as Medeghino, was one of the most famous soldiers of 16th-century Milan. Unlike the Florentine Medici, his family was Milanese; he served the Spanish crown when Milan was under Habsburg rule. His tomb was created by the sculptor Leone Leoni and is one of the Duomo’s important Renaissance monuments.' }
         ]},
         { title: 'Interesting Facts', facts: [
-          { t: 'Being buried here was a privilege, not a right', img: P + 'poi3-fact-4.jpg', text: 'Space inside the Duomo was reserved for those who served or funded it. A tomb under these vaults was the city’s highest honour, and it was granted sparingly.' },
-          { t: 'The monuments almost everyone walks straight past', img: P + 'poi3-fact-5.jpg', text: 'Set into the floor and half-hidden along the aisles, many memorials are stepped over daily by visitors who never notice the names beneath their feet.' }
+          { t: 'Being buried here was a privilege, not a right', img: P + 'poi3-fact-2.jpg', eyebrow: 'Interesting fact', text: 'In medieval Europe it was common to bury important members of society inside a city’s main churches. In this way a person remained symbolically tied to the history of the place even after death.' },
+          { t: 'The monuments almost everyone walks straight past', img: P + 'poi3-fact-5.jpg', eyebrow: 'Interesting fact', text: 'Many visitors cross the cathedral without noticing the funerary monuments — attention is usually taken by the scale of the architecture and the stained glass. Yet it is precisely such details that reveal the personal stories of the people behind the Duomo.' }
         ]}
       ]
     },
     { // 4
-      zone: 'Interior',
+      zone: 'Interior', time: '2:00', audio: 'Altar and Nail',
       title: 'The Main Altar, the Holy Nail and the Porphyry Chalice',
-      desc: 'The heart of the cathedral. Beneath the apse, the presbytery gathers the Duomo’s most sacred objects — from a relic said to come from the Cross to vessels far older than the church itself.',
-      audio: 'The main altar', where: 'The presbytery and apse, behind the main altar.',
+      desc: 'The main altar is the heart of the cathedral’s religious life. Here stand an unusual porphyry chalice and one of Milan’s greatest relics — the Holy Nail.',
+      where: 'The altar area of the cathedral.',
       hero: P + 'poi4-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The Holy Nail hangs high above the altar', img: P + 'poi4-fact-1.jpg', text: 'A relic believed to be a nail from the Crucifixion is kept in a niche high in the apse, marked by a small red light. It is lowered for veneration only once a year.' },
-        { t: 'The Nivola is more than a machine', img: P + 'poi4-fact-2.jpg', text: 'To reach the relic, the archbishop rises in the Nivola — a cloud-shaped lift painted with angels, designed in the 16th century and still in use today.' },
-        { t: 'A porphyry chalice from Egypt', img: P + 'poi4-fact-3.jpg', text: 'Among the treasures stands a great basin of imperial porphyry, quarried in Egypt and far older than the Duomo — reused, like so much here, across the centuries.' }
+        { t: 'The Holy Nail hangs high above the altar', img: P + 'poi4-fact-2.jpg', eyebrow: 'A relic of the Crucifixion', text: 'A relic believed to be a nail from the Crucifixion is kept in a niche high in the apse, marked by a small red light. It is lowered for veneration only once a year.' },
+        { t: 'The Nivola is more than a machine', img: P + 'poi4-fact-1.jpg', eyebrow: 'A 16th-century lift still in use', text: 'To reach the relic, the archbishop rises in the Nivola — a cloud-shaped lift painted with angels, designed in the 16th century and still in use today.' },
+        { t: 'A porphyry chalice from Egypt', img: P + 'poi4-fact-3.jpg', eyebrow: 'Older than the cathedral itself', text: 'Among the treasures stands a great basin of imperial porphyry, quarried in Egypt and far older than the Duomo — reused, like so much here, across the centuries.' }
       ]}]
     },
     { // 5
-      zone: 'Interior',
+      zone: 'Interior', time: '2:30', audio: 'The Crypt',
       title: 'The Crypt of Carlo Borromeo — the saint who changed Milan',
-      desc: 'Beneath the main altar, a golden octagonal chapel holds the body of Saint Charles Borromeo, the reforming archbishop who shaped Milan through the plague and the Counter-Reformation.',
-      audio: 'The crypt of San Carlo', where: 'The Scurolo, beneath the main altar.',
+      desc: 'Beneath the main altar lies the place that keeps the memory of Carlo Borromeo — one of Milan’s most important archbishops. His reforms changed not only the Church, but the city itself.',
+      where: 'Beneath the main altar of the Duomo.',
       hero: P + 'poi5-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The archbishop who stayed during the plague', img: P + 'poi5-fact-1.jpg', text: 'When plague struck Milan in 1576, Borromeo remained in the city, tending the sick and organising relief while others fled. The epidemic still bears his name.' },
-        { t: 'Borromeo and education', img: P + 'poi5-fact-2.jpg', text: 'He founded seminaries and schools across the diocese, believing an educated clergy could renew the Church — an early network of colleges that outlived him.' },
-        { t: 'A tomb of crystal', img: P + 'poi5-fact-3.jpg', text: 'His body rests in a rock-crystal and silver casket, the gift of a Spanish king, visible to pilgrims in the shimmering gold of the crypt.' }
+        { t: 'The archbishop who stayed during the plague', img: P + 'poi5-fact-1.jpg', eyebrow: 'Milan, 1576', text: 'When plague struck Milan in 1576, Borromeo remained in the city, tending the sick and organising relief while others fled. The epidemic still bears his name.' },
+        { t: 'Borromeo and education', img: P + 'poi5-fact-2.jpg', eyebrow: 'A network of colleges', text: 'He founded seminaries and schools across the diocese, believing an educated clergy could renew the Church — an early network of colleges that outlived him.' },
+        { t: 'A tomb of crystal', img: P + 'poi5-fact-3.jpg', eyebrow: 'A royal gift', text: 'His body rests in a rock-crystal and silver casket, the gift of a Spanish king, visible to pilgrims in the shimmering gold of the crypt.' }
       ]}]
     },
     { // 6
-      zone: 'Interior',
+      zone: 'Interior', time: '3:00', audio: 'Saint Bartholomew',
       title: 'Saint Bartholomew — anatomy turned into art',
-      desc: 'Near the right transept stands one of the most unsettling sculptures in any church: Saint Bartholomew, martyred by flaying, carrying his own skin as if it were a cloak.',
-      audio: 'Saint Bartholomew', where: 'The right transept, near the presbytery.',
+      desc: 'Saint Bartholomew without his skin. One of the Duomo’s most unusual sculptures shows the saint not as a religious image, but as a true study of the human body.',
+      where: 'The left side of the cathedral, the south transept.',
       hero: P + 'poi6-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'A sculpture often mistaken for an anatomy atlas', img: P + 'poi6-fact-1.jpg', text: 'Marco d’Agrate carved every muscle and vein with such precision in 1562 that anatomists have studied the figure. The saint’s body is a lesson in flesh without its skin.' },
-        { t: 'Bartholomew holds not a cloak, but his own skin', img: P + 'poi6-fact-2.jpg', text: 'What drapes his shoulders is his flayed skin, complete with its face — the instrument of his martyrdom worn as a garment.' }
+        { t: 'A sculpture often mistaken for an anatomy atlas', img: P + 'poi6-fact-1.jpg', eyebrow: 'Carved in 1562', text: 'Marco d’Agrate carved every muscle and vein with such precision that anatomists have studied the figure. The saint’s body is a lesson in flesh without its skin.' },
+        { t: 'Bartholomew holds not a cloak, but his own skin', img: P + 'poi6-fact-2.jpg', eyebrow: 'The instrument of a martyrdom', text: 'What drapes his shoulders is his flayed skin, complete with its face — the instrument of his martyrdom worn as a garment.' }
       ]}]
     },
     { // 7
-      zone: 'Interior',
-      title: 'The Basilica of Santa Tecla before the Duomo',
-      desc: 'Long before the Duomo, two early churches stood on this spot. Their foundations survive beneath the cathedral floor, reached by a stair near the entrance — the oldest layer of Christian Milan.',
-      audio: 'Beneath the Duomo', where: 'The archaeological area beneath the cathedral.',
+      zone: 'Interior', time: '3:00', audio: 'The Basilica',
+      title: 'The Basilica of Santa Tecla — Milan before the Duomo',
+      desc: 'Beneath the Duomo hides another city. Long before the present cathedral, ancient Christian basilicas stood here. Today, underground, you can see the remains of Santa Tecla — one of the most important churches of early Milan.',
+      where: 'The archaeological area beneath the cathedral.',
       hero: P + 'poi7-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The Edict of Milan', img: P + 'poi7-fact-1.jpg', text: 'It was in the Milan of Constantine that Christianity was granted freedom, in 313 AD. The city where the faith became legal lies, quite literally, beneath your feet.' },
-        { t: 'Archaeology underfoot', img: P + 'poi7-fact-2.jpg', text: 'The excavations reveal the octagonal baptistery of San Giovanni alle Fonti, where, by tradition, Saint Ambrose baptised Saint Augustine.' }
+        { t: 'The Edict of Milan', img: P + 'poi7-fact-1.jpg', eyebrow: 'Milan, 313 AD', text: 'It was in the Milan of Constantine that Christianity was granted freedom, in 313 AD. The city where the faith became legal lies, quite literally, beneath your feet.' },
+        { t: 'Archaeology underfoot', img: P + 'poi7-fact-2.jpg', eyebrow: 'The baptistery of San Giovanni', text: 'The excavations reveal the octagonal baptistery of San Giovanni alle Fonti, where, by tradition, Saint Ambrose baptised Saint Augustine.' }
       ]}]
     },
     { // 8
-      zone: 'Terraces',
+      zone: 'Terraces', time: '3:00', audio: 'The Terraces',
       title: 'The Duomo Terraces — the city from a Gothic forest',
-      desc: 'The climb ends on the roof, among a forest of 135 marble spires and hundreds of statues. From here Milan opens out below, and on clear days the Alps close the horizon.',
-      audio: 'The terraces', where: 'The roof of the cathedral.',
+      desc: 'Where stone meets the sky. The terraces reveal another side of the Duomo: among the spires and statues you see the architecture not from below but from within — walking across the summit of a Gothic masterpiece.',
+      where: 'The roof of Milan Cathedral.',
       hero: P + 'poi8-hero.jpg',
       groups: [{ title: 'Interesting Facts', facts: [
-        { t: 'The terraces are the same marble as the whole cathedral', img: P + 'poi8-fact-1.jpg', text: 'Every spire and statue is carved from Candoglia marble, quarried on Lake Maggiore and floated to Milan along the canals — a supply that has served the Duomo for over six centuries.' }
+        { t: 'The terraces are the same marble as the whole cathedral', img: P + 'poi8-fact-1.jpg', eyebrow: 'Candoglia marble, floated in by canal', text: 'Every spire and statue is carved from Candoglia marble, quarried on Lake Maggiore and floated to Milan along the canals — a supply that has served the Duomo for over six centuries.' }
       ]}],
       next: { eyebrow: 'Next on the route', name: 'Galleria Vittorio Emanuele II', img: 'assets/img/object/next-galleria.jpg' }
     }
   ];
 
   var TOTAL = window.POINTS.length;                       // 8
+  var ZONE_SLIDE = { Exterior: 0, Interior: 1, Terraces: 2 };
+  window.slideOfPoint = function (i) { return ZONE_SLIDE[window.POINTS[i].zone] || 0; };
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   var ICN = 'assets/icons.svg?v=3#';
 
-  function factCard(f) {
-    return '<article class="fact" role="button" tabindex="0" data-title="' + esc(f.t) + '" data-img="' + esc(f.img) + '" data-text="' + esc(f.text) + '">' +
+  function factCard(f, wide) {
+    return '<article class="fact' + (wide ? ' fact--wide' : '') + '" role="button" tabindex="0" data-title="' + esc(f.t) + '" data-img="' + esc(f.img) + '" data-eyebrow="' + esc(f.eyebrow || 'Interesting fact') + '" data-text="' + esc(f.text) + '">' +
       '<img class="fact__img" src="' + esc(f.img) + '" alt="">' +
       '<div class="fact__scrim"></div>' +
       '<div class="fact__top"><button class="fact__toggle" aria-label="Open fact" tabindex="-1"><svg class="icon"><use href="' + ICN + 'i-plus"></use></svg></button></div>' +
@@ -115,31 +118,37 @@
     '</article>';
   }
 
-  // inner HTML of a .poi-screen for point index i (0-based)
-  window.renderPointInner = function (i) {
-    var pt = window.POINTS[i]; if (!pt) return '';
-    var n = i + 1;
-    var segs = '';
+  // the sticky header (does NOT get re-rendered on prev/next, so it never re-animates)
+  window.renderPointHead = function (i) {
+    var pt = window.POINTS[i], n = i + 1, segs = '';
     for (var s = 1; s <= TOTAL; s++) segs += '<span class="pprogress__seg' + (s <= n ? ' is-done' : '') + '"></span>';
-    var groups = pt.groups.map(function (g) {
-      return '<div class="facts pdesc__block"><h2 class="facts__title">' + esc(g.title) + '</h2>' +
-        '<div class="facts__row">' + g.facts.map(factCard).join('') + '</div></div>';
-    }).join('');
-    var nextCard = pt.next ? '<div class="nextobj-wrap"><a class="nextobj" href="nav.html">' +
-      '<img class="nextobj__thumb" src="' + esc(pt.next.img) + '" alt="">' +
-      '<div class="nextobj__text"><span class="nextobj__eyebrow">' + esc(pt.next.eyebrow) + '</span><h2 class="nextobj__name">' + esc(pt.next.name) + '</h2></div>' +
-      '<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a></div>' : '';
-
-    return '' +
-    '<header class="phead">' +
+    return '<header class="phead">' +
       '<div class="phead__bar">' +
         '<button class="icon-btn icon-btn--ghost-b" data-nav="back" aria-label="Back"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg></button>' +
         '<div class="phead__center"><span class="phead__title">Point ' + n + ' of ' + TOTAL + '</span><span class="phead__zone">' + esc(pt.zone) + '</span></div>' +
         '<button class="icon-btn icon-btn--ghost-b" aria-label="Language"><svg class="icon"><use href="' + ICN + 'i-globe"></use></svg></button>' +
       '</div>' +
       '<div class="pprogress" aria-hidden="true">' + segs + '</div>' +
-    '</header>' +
-    '<section class="phero"><div class="phero__media"><img src="' + esc(pt.hero) + '" alt=""></div></section>' +
+    '</header>';
+  };
+
+  // the scrolling body (hero + description + facts + switcher [+ next object]) — replaced on prev/next
+  window.renderPointBody = function (i) {
+    var pt = window.POINTS[i], n = i + 1;
+    var groups = pt.groups.map(function (g) {
+      var wide = g.facts.length === 1;
+      return '<div class="facts pdesc__block"><h2 class="facts__title">' + esc(g.title) + '</h2>' +
+        '<div class="facts__row' + (wide ? ' facts__row--single' : '') + '">' + g.facts.map(function (f) { return factCard(f, wide); }).join('') + '</div></div>';
+    }).join('');
+    var sw = '<nav class="pswitch' + (pt.next ? ' pswitch--flow' : '') + '" aria-label="Points">';
+    if (n > 1) sw += '<button class="pswitch__back" data-nav="prev"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg>Back</button>';
+    if (n < TOTAL) sw += '<a class="pswitch__next" data-nav="next">Next<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a>';
+    sw += '</nav>';
+    var nextCard = pt.next ? '<div class="nextobj-wrap"><a class="nextobj" href="nav.html">' +
+      '<img class="nextobj__thumb" src="' + esc(pt.next.img) + '" alt="">' +
+      '<div class="nextobj__text"><span class="nextobj__eyebrow">' + esc(pt.next.eyebrow) + '</span><h2 class="nextobj__name">' + esc(pt.next.name) + '</h2></div>' +
+      '<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a></div>' : '';
+    return '<section class="phero"><div class="phero__media"><img src="' + esc(pt.hero) + '" alt=""></div></section>' +
     '<section class="pdesc">' +
       '<div class="pdesc__block">' +
         '<div class="pdesc__head"><div class="pdesc__headtop">' +
@@ -151,24 +160,28 @@
             '<svg class="icon audio__ico audio__ico--play"><use href="' + ICN + 'i-play"></use></svg>' +
             '<svg class="icon audio__ico audio__ico--pause"><use href="' + ICN + 'i-pause"></use></svg>' +
           '</button>' +
-          '<div class="audio__body"><div class="audio__row"><span class="audio__label">' + esc(pt.audio) + '</span><span class="audio__time">0:55</span></div>' +
+          '<div class="audio__body"><div class="audio__row"><span class="audio__label">' + esc(pt.audio) + '</span><span class="audio__time">' + esc(pt.time || '0:55') + '</span></div>' +
           '<div class="audio__track"><span class="audio__rail"></span><span class="audio__fill"></span><span class="audio__thumb"></span></div></div>' +
         '</div>' +
         '<div class="wherecard"><span class="wherecard__k">Where is It?</span><span class="wherecard__v">' + esc(pt.where) + '</span></div>' +
       '</div>' +
       groups +
-    '</section>' +
-    nextCard +
-    '<nav class="pswitch" aria-label="Points">' +
-      '<button class="pswitch__prev" data-nav="prev" aria-label="Previous point"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg></button>' +
-      '<a class="pswitch__next" data-nav="next">Next<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a>' +
-    '</nav>';
+    '</section>' + sw + nextCard;
   };
-})();
 
-/* ---------- shared behaviour (works on freshly-rendered .poi-screen content) ---------- */
-(function () {
-  // audio player: play/pause + animated progress bar + countdown + scrub (demo, no file)
+  window.renderPointInner = function (i) {
+    return window.renderPointHead(i) + '<div class="poibody">' + window.renderPointBody(i) + '</div>';
+  };
+
+  // update the header in place for prev/next (no animation on the header)
+  window.updatePointHead = function (root, i) {
+    var n = i + 1;
+    var tt = root.querySelector('.phead__title'); if (tt) tt.textContent = 'Point ' + n + ' of ' + TOTAL;
+    var zn = root.querySelector('.phead__zone'); if (zn) zn.textContent = window.POINTS[i].zone;
+    root.querySelectorAll('.pprogress__seg').forEach(function (s, idx) { s.classList.toggle('is-done', idx < n); });
+  };
+
+  /* ---------- shared behaviour (works on freshly-rendered content) ---------- */
   window.wireAudio = function (audio) {
     if (audio.__wired) return; audio.__wired = true;
     var btn = audio.querySelector('.audio__play');
@@ -194,7 +207,6 @@
   };
   window.wireAudioIn = function (scope) { (scope || document).querySelectorAll('.audio').forEach(window.wireAudio); };
 
-  // fact cards → open the bottom-sheet modal (populated from data-*)
   window.wireFacts = function (scope, open) {
     scope.querySelectorAll('.fact').forEach(function (c) {
       if (c.__wired) return; c.__wired = true;
@@ -203,11 +215,11 @@
     });
   };
 
-  // fact modal: open/close + drag-to-dismiss (wired once per modal element)
   window.initFactModal = function (modal) {
+    var eb = modal.querySelector('.factmodal__eyebrow');
     var t = modal.querySelector('.factmodal__title'), im = modal.querySelector('.factmodal__img'), tx = modal.querySelector('.factmodal__text');
     var sheet = modal.querySelector('.factmodal__sheet'), scrim = modal.querySelector('.factmodal__scrim');
-    function open(card) { t.textContent = card.dataset.title; im.src = card.dataset.img; tx.textContent = card.dataset.text; modal.hidden = false; }
+    function open(card) { if (eb) eb.textContent = card.dataset.eyebrow || 'Interesting fact'; t.textContent = card.dataset.title; im.src = card.dataset.img; tx.textContent = card.dataset.text; modal.hidden = false; }
     function close() { modal.hidden = true; sheet.style.transition = ''; sheet.style.transform = ''; scrim.style.transition = ''; scrim.style.opacity = ''; }
     modal.querySelectorAll('[data-close]').forEach(function (el) { el.addEventListener('click', close); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
