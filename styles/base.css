@@ -546,6 +546,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 [data-reveal-group].is-revealed [data-reveal] {
   animation: reveal-rise 700ms var(--ease-slow) var(--reveal-delay, 0ms) both;
 }
+/* self-revealing element: it rises in when it (not a parent group) enters view.
+   Used for the blocks inside tab panels, which reveal individually on scroll. */
+[data-reveal-self] { opacity: 0; }
+[data-reveal-self].is-revealed {
+  animation: reveal-rise 700ms var(--ease-slow) var(--reveal-delay, 0ms) both;
+}
 /* Once the animation has run, JS drops it and hands the element back to this static
    state. `both` keeps the final keyframe applied forever, and a persisted filter —
    even blur(0) — keeps the element on an offscreen buffer that iOS rasterises at CSS
@@ -578,7 +584,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 @media (prefers-reduced-motion: reduce) {
   /* Reduced motion means gentler, not none — the fade stays, the travel goes. */
-  [data-reveal-group].is-revealed [data-reveal] { animation: reveal-fade 300ms var(--ease) var(--reveal-delay, 0ms) both; }
+  [data-reveal-group].is-revealed [data-reveal],
+  [data-reveal-self].is-revealed { animation: reveal-fade 300ms var(--ease) var(--reveal-delay, 0ms) both; }
   .text-btn:hover .icon, .chip:hover .chip__photo img, .excursion:hover .excursion__media { transform: none; }
   .btn:active, .icon-btn:active, .chip:active, .excursion:active { transform: none; }
 }

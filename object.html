@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=10">
-<link rel="stylesheet" href="styles/object.css?v=18">
+<link rel="stylesheet" href="styles/base.css?v=11">
+<link rel="stylesheet" href="styles/object.css?v=19">
 </head>
 <body>
 
@@ -428,15 +428,43 @@
     update();
   })();
 
-  // description expand / collapse
+  // description expand / collapse with an animated height reveal
   (function () {
     var btn = document.querySelector('.odesc__more');
     var body = document.getElementById('odescBody');
     if (!btn) return;
+    var label = btn.querySelector('span');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var open = false, busy = false;
+    function collapsedHeight() { return Math.round(parseFloat(getComputedStyle(body).lineHeight) * 2); }  // 2-line clamp
     btn.addEventListener('click', function () {
-      var open = body.classList.toggle('odesc__body--clamp') === false;
+      if (busy) return;
+      open = !open;
       btn.setAttribute('aria-expanded', String(open));
-      btn.querySelector('span').textContent = open ? 'Less' : 'More';
+      label.textContent = open ? 'Less' : 'More';
+      if (reduce) { body.classList.toggle('odesc__body--clamp', !open); return; }
+      busy = true;
+      body.classList.add('odesc__body--anim');
+      if (open) {
+        var from = body.clientHeight;                        // current 2-line clamp height
+        body.classList.remove('odesc__body--clamp');
+        var to = body.scrollHeight;                          // full height
+        body.style.maxHeight = from + 'px';
+        body.getBoundingClientRect();                        // reflow so the start sticks
+        body.style.maxHeight = to + 'px';
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.style.maxHeight = 'none'; body.classList.remove('odesc__body--anim'); busy = false;
+        });
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';     // pin full height
+        body.getBoundingClientRect();
+        body.style.maxHeight = collapsedHeight() + 'px';     // animate down to 2 lines
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.classList.add('odesc__body--clamp'); body.style.maxHeight = ''; body.classList.remove('odesc__body--anim'); busy = false;
+        });
+      }
     });
   })();
 
@@ -456,6 +484,16 @@
           document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
         });
         movePill();
+        // reveal the blocks that are already in view in the newly shown panel
+        // (the scroll observer handles the ones still below the fold)
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        requestAnimationFrame(function () {
+          var vh = window.innerHeight;
+          panel.querySelectorAll('[data-reveal-self]').forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < vh && r.bottom > 0) el.classList.add('is-revealed');
+          });
+        });
       });
     });
     movePill();
@@ -470,13 +508,18 @@
         [].forEach.call(box.children, function (el, i) { el.style.setProperty('--reveal-delay', i * g[1] + 'ms'); el.setAttribute('data-reveal', ''); });
       });
     });
-    // info tabs: reveal just the tab bar (each panel animates itself on show, see .tabpanel CSS)
+    // info tabs: reveal the tab bar as a group
     var otabs = document.querySelector('.otabs');
     if (otabs) { otabs.setAttribute('data-reveal-group', ''); var bar = otabs.querySelector('.tabs'); if (bar) bar.setAttribute('data-reveal', ''); }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+    // each block inside a tab panel reveals on its own as it scrolls into view
+    // (and when its tab is switched to — the display change re-triggers the observer)
+    document.querySelectorAll('.tabpanel').forEach(function (panel) {
+      [].forEach.call(panel.children, function (el) { el.setAttribute('data-reveal-self', ''); io.observe(el); });
+    });
   })();
 
   // interesting facts: expand the card in place (not a modal)
