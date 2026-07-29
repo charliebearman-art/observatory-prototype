@@ -15,7 +15,10 @@
   background: var(--color-surface);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
 }
+.ohead__titles { display: flex; flex-direction: column; overflow: hidden; }
 .ohead__title { font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text); }
+/* subtitle changes with the gallery slide (Exterior / Interior / Terraces) */
+.ohead__sub { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.14em; }
 .ohead__btns { display: flex; align-items: center; gap: var(--space-2); }
 /* near-transparent bordered icon buttons */
 .icon-btn--ghost-b {
@@ -163,7 +166,11 @@
   display: flex; align-items: center; justify-content: center;
 }
 .fact__toggle .icon { transition: transform var(--dur) var(--ease); }
-.fact__body { position: relative; display: flex; flex-direction: column; gap: var(--space-3); }
+/* no gap when collapsed (title alone sits 24px from the bottom); the title↔text
+   gap (8px) only appears once the card is open — otherwise the hidden text still
+   adds its gap and pushes the title up */
+.fact__body { position: relative; display: flex; flex-direction: column; }
+.fact.is-open .fact__body { gap: var(--space-2); }
 .fact__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--on-media); margin: 0; }
 .fact__text { font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--on-media-muted); margin: 0; max-height: 0; opacity: 0; overflow: hidden; transition: max-height var(--dur-slow) var(--ease), opacity var(--dur) var(--ease); }
 /* open state: SAME size — the photo blurs, the text is revealed, + becomes × */
@@ -191,7 +198,7 @@
 .oblock__text { font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); margin: 0; }
 
 /* ---------- ORIGINS ---------- */
-.org-figure { display: flex; flex-direction: column; gap: var(--space-4); }
+.org-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-4); }
 .org-figure__imgwrap { width: 100%; height: 200px; position: relative; overflow: hidden; border-radius: var(--radius-card); }
 .org-figure__img { position: absolute; left: 0; width: 100%; height: 239.73%; top: -17.01%; max-width: none; display: block; }
 .org-figure__text { padding-inline: var(--space-2); }
