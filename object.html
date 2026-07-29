@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=27">
+<link rel="stylesheet" href="styles/object.css?v=28">
 <link rel="stylesheet" href="styles/poi.css?v=6">
 </head>
 <body>
@@ -666,10 +666,10 @@
       poiov.classList.add('is-out');               // point contents blur out, header shrinks
       poiov.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      // remove the overlay once its exit is ~done so the object header's fade-in shows,
-      // but keep is-returning until the object animations finish (else they snap)
-      retTimer = setTimeout(function () { poiov.classList.remove('is-in', 'is-out'); }, 500);
-      retTimer2 = setTimeout(function () { objScreen.classList.remove('is-returning'); }, 780);
+      // clear the overlay right as the object contents begin their fade-in (CSS delay
+      // ~380ms) so the fade is visible; keep is-returning until it finishes (else it snaps)
+      retTimer = setTimeout(function () { poiov.classList.remove('is-in', 'is-out'); }, 460);
+      retTimer2 = setTimeout(function () { objScreen.classList.remove('is-returning'); }, 840);
     }
 
     // hotspots and "Step by Step" open the point in place instead of navigating
