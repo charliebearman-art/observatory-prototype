@@ -47,6 +47,13 @@
 /* ---------- point switcher (pinned bottom): Back (outlined) + Next (filled) ---------- */
 .pswitch { position: sticky; bottom: 0; z-index: 20; display: flex; gap: var(--space-2); padding: var(--space-2) var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 20%); backdrop-filter: blur(12px); }
 .pswitch__back, .pswitch__next { flex: 1 1 0; height: 56px; border-radius: var(--radius-button); display: flex; align-items: center; justify-content: center; gap: var(--space-2); cursor: pointer; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
+/* crisp, symmetric 1.5px outline: give the buttons whole-pixel widths (round down) and
+   let the leftover sub-pixel fall into the gap, so both edges land on whole pixels —
+   otherwise a fractional flex width makes the right side of the border antialias thinner */
+@supports (width: round(down, 10.5px, 1px)) {
+  .pswitch { justify-content: space-between; }
+  .pswitch__back, .pswitch__next { flex: 0 0 auto; width: round(down, calc((100% - var(--space-2)) / 2), 1px); }
+}
 .pswitch__back { border: 1.5px solid var(--color-accent); background: none; color: var(--color-accent); }
 .pswitch__next { border: 0; background: var(--color-accent); color: var(--color-on-accent); }
 .pswitch__back .icon, .pswitch__next .icon { width: 24px; height: 24px; }
