@@ -126,8 +126,26 @@
 .a-about__head { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; }
 .a-about__head h2 { margin: 0; }
 .a-about__head .ac { color: var(--color-accent); }
-.a-about .rail { gap: var(--space-2); padding: 0; width: 100%; }
+/* Cancel the base rail's edge-bleed (margin-inline:-16) so the cards sit 16px
+   inside the panel, aligned with the heading, instead of flush to the screen edge. */
+.a-about .rail { gap: var(--space-2); margin-inline: 0; padding: 0; }
 .a-about .benefit { flex: 0 0 253px; width: 253px; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
+/* The card already carries its own 1.5px border; the base overlay stroke would double it. */
+.a-about .benefit::after { display: none; }
+/* The animation stage is part of the card surface, not a lighter inset. */
+.a-about .benefit__slot { background: var(--color-bg); }
+/* Dashed guides shipped as fixed light-theme assets (SVG #E8E7E4 / baked PNG); drive
+   their colour from the token instead by using each asset purely as an alpha mask. */
+.a-about .orbit__track {
+  -webkit-mask: url(../assets/img/anim-dashed.png) center / 100% 100% no-repeat;
+          mask: url(../assets/img/anim-dashed.png) center / 100% 100% no-repeat;
+  background: var(--color-border);
+}
+.a-about .obs__route {
+  -webkit-mask: url(../assets/img/obs-path.svg) center / 100% 100% no-repeat;
+          mask: url(../assets/img/obs-path.svg) center / 100% 100% no-repeat;
+  background: var(--color-border);
+}
 .a-about .benefit__body { padding: var(--space-5) var(--space-4); gap: var(--space-2); }
 .a-about .benefit__body h3 { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-accent); }
 
