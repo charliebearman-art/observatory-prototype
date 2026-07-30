@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=12">
-<link rel="stylesheet" href="styles/concept-a.css?v=17">
+<link rel="stylesheet" href="styles/concept-a.css?v=18">
 </head>
 <body>
 
@@ -37,20 +37,20 @@
 
 <main class="screen a-screen">
 
-  <!-- hero: one screen — editorial morph (height fits the screen), CTA at foot -->
+  <!-- hero: one-screen 16px stack — copy, image block (cycles cities), CTA -->
   <section class="a-hero" data-astate="1" aria-label="Observatory">
-    <div class="a-hero__stage">
-      <!-- 390x720 design frame; scaled as a unit so the morph geometry never changes -->
-      <div class="a-hero__canvas">
-        <div class="a-hero__pic a-hero__pic--1"><img src="assets/img/a/hero-1.jpg" alt="Duomo di Milano"></div>
-        <div class="a-hero__pic a-hero__pic--2"><img src="assets/img/a/hero-2.jpg" alt="Colosseum, Rome"></div>
-        <div class="a-hero__pic a-hero__pic--3"><img src="assets/img/a/hero-3.jpg" alt="Renaissance painting"></div>
-        <div class="a-hero__pic a-hero__pic--4"><img src="assets/img/a/hero-4.jpg" alt="Venetian canal"></div>
-        <p class="a-hero__line a-hero__line--e">Explore.</p>
-        <p class="a-hero__line a-hero__line--o">Observe.</p>
-        <p class="a-hero__line a-hero__line--u">Understand.</p>
-        <span class="a-hero__globe" aria-hidden="true"><span class="a-hero__globe-in logo logo--globe"></span></span>
-      </div>
+    <div class="a-hero__copy">
+      <p class="a-hero__line a-hero__line--e">Explore.</p>
+      <p class="a-hero__line a-hero__line--o">Observe.</p>
+      <p class="a-hero__line a-hero__line--u">Understand.</p>
+      <span class="a-hero__globe" aria-hidden="true"><span class="a-hero__globe-in logo logo--globe"></span></span>
+    </div>
+
+    <div class="a-hero__stage" aria-hidden="true">
+      <div class="a-hero__pic a-hero__pic--1"><img src="assets/img/a/hero-1.jpg" alt="Duomo di Milano"></div>
+      <div class="a-hero__pic a-hero__pic--2"><img src="assets/img/a/hero-2.jpg" alt="Colosseum, Rome"></div>
+      <div class="a-hero__pic a-hero__pic--3"><img src="assets/img/a/hero-3.jpg" alt="Renaissance painting"></div>
+      <div class="a-hero__pic a-hero__pic--4"><img src="assets/img/a/hero-4.jpg" alt="Venetian canal"></div>
     </div>
 
     <div class="a-herocta">
@@ -261,46 +261,32 @@
 </main>
 
 <script>
-  // hero: cycle the editorial states (CSS transitions morph everything between them)
+  // hero: reserve space under the fixed header, then cycle the four city photos with a
+  // left-to-right wipe — the incoming photo is revealed over the current one; the accent
+  // travels down the headline (data-astate) and the globe rotates a quarter-turn in step.
   (function () {
     var hero = document.querySelector('.a-hero');
-    if (!hero || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!hero) return;
+    var header = document.getElementById('aMenu');
+    function reserve() { if (header) hero.style.setProperty('--a-header', (header.offsetHeight + 32) + 'px'); }
+    reserve();
+    addEventListener('resize', reserve);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var pics = [].slice.call(hero.querySelectorAll('.a-hero__pic'));
     var gin = hero.querySelector('.a-hero__globe-in');
-    var s = 1, rot = 0;
+    if (pics.length < 2) return;
+    var z = 1, order = [pics[0]], s = 1, rot = 0;
     setInterval(function () {
       s = s % 4 + 1;
       hero.setAttribute('data-astate', String(s));
-      rot += 90;                                          // quarter-turn per transition; static while held
+      rot += 90;
       if (gin) gin.style.setProperty('--gr', rot + 'deg');
+      var pic = pics[s - 1];
+      pic.style.zIndex = ++z;
+      pic.style.clipPath = 'inset(0)';               // wipe the incoming city in over the current
+      order.push(pic);
+      if (order.length > 2) order.shift().style.clipPath = 'inset(0 100% 0 0)';  // reset the hidden one
     }, 2300);
-  })();
-
-  // hero fits one screen by driving the animation's own vertical scale: the image
-  // containers open to a shorter height on smaller screens (--a-vscale = stage height
-  // / 720, capped at 1). Widths, text spacing and the morph mechanic are untouched.
-  // Also reserves space for the fixed header. Because the hero is sized in svh, this
-  // does NOT re-run on scroll (the URL bar collapsing no longer resizes the stage).
-  (function () {
-    var header = document.getElementById('aMenu');
-    var hero = document.querySelector('.a-hero');
-    var stage = document.querySelector('.a-hero__stage');
-    var canvas = document.querySelector('.a-hero__canvas');
-    if (!hero || !stage || !canvas) return;
-    var lastV = null;
-    function fit() {
-      if (header) hero.style.setProperty('--a-header', (header.offsetHeight + 32) + 'px');
-      var v = Math.min(stage.clientHeight / 720, 1);
-      if (v === lastV) return;
-      lastV = v;
-      hero.classList.add('a-hero--nofx');            // don't animate the re-fit
-      canvas.style.setProperty('--a-vscale', v);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { hero.classList.remove('a-hero--nofx'); });
-      });
-    }
-    fit();
-    addEventListener('resize', fit);
-    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(stage);
   })();
 
   // reveal on scroll — sections rise + fade in as they enter (shared base.css system)

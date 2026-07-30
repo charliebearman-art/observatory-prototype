@@ -41,102 +41,40 @@
 .a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
 
 /* --------------------------------------------------------------------- hero --
-   Editorial morph (Figma smart-animate): one headline (3 lines) + one rotating
-   globe reposition between four states, while four image cards each WIPE open
-   (width/height 0 -> full) in their own state and wipe closed otherwise.
-   The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
-/* The hero is one screen: header pinned on top (space reserved via --a-header), then a
-   flex column of stage (fills) + CTA. Height is 100svh — the STABLE small-viewport unit
-   — so the mobile URL bar collapsing during scroll never resizes the stage (and so never
-   re-animates the morph). */
+   One screen, a clean 16px-rhythm stack (per Figma 1191-8007):
+   pinned header · 16 · copy (headline + globe) · 16 · image block · 16 · CTA · 16 · next.
+   The image block cycles the four city photos with a left-to-right wipe; the accent
+   travels down the headline and the globe rotates in step. */
 .a-hero {
-  height: 100svh; display: flex; flex-direction: column; overflow: hidden;
+  min-height: 100svh; display: flex; flex-direction: column;
   background: var(--color-bg); padding-top: var(--a-header, 96px);
 }
-/* Stage is the leftover space; the canvas (390-wide design frame) is bottom-aligned in
-   it, so the animation's bottom edge is a fixed 16px above the button regardless of
-   screen height. Only the frame's HEIGHT and its image containers scale with --a-vscale
-   (JS: stage height / 720, capped at 1); text spacing and widths do NOT scale. */
-.a-hero__stage { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; }
-.a-hero__canvas {
-  --v: var(--a-vscale, 1);
-  --a-open: calc(495px * var(--v));   /* image open height */
-  --a-cap:  calc(56px * var(--v));    /* collapsed leading edge */
-  --a-in:   calc(32px * var(--v));    /* top / bottom inset */
-  position: absolute; left: 0; right: 0; bottom: 0;
-  height: calc(720px * var(--v));
-}
-/* While the layout re-fits (orientation change), suppress the morph transitions so the
-   containers/text/globe don't animate to their new resting geometry. */
-.a-hero--nofx .a-hero__pic,
-.a-hero--nofx .a-hero__line,
-.a-hero--nofx .a-hero__globe,
-.a-hero--nofx .a-hero__globe-in { transition: none; }
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
-/* image cards — a clip container whose size animates; the inner <img> is the full
-   size and anchored to the edge it reveals from, so the size change reads as a wipe.
-   Open height + inset scale with --v; widths stay fixed. */
-.a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--a-ease), height var(--a-morph) var(--a-ease); will-change: width, height; }
-.a-hero__pic img { position: absolute; display: block; object-fit: cover; }
-/* Pic 1 Duomo — bottom-left anchor; collapses to a full-width bottom line (1D) */
-.a-hero__pic--1 { left: 16px; bottom: var(--a-in); width: 358px; height: 0; }
-.a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; height: var(--a-open); }
-.a-hero[data-astate="1"] .a-hero__pic--1 { height: var(--a-open); }
-/* Pic 2 Colosseum — top-right anchor; grows from a top-right point (2D) */
-.a-hero__pic--2 { right: 16px; top: var(--a-in); width: 0; height: var(--a-open); }
-.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: var(--a-open); }
-.a-hero[data-astate="1"] .a-hero__pic--2 { height: var(--a-cap); }
-.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: var(--a-open); }
-/* Pic 3 painting — top-left anchor; grows from and collapses back to a top-left point
-   (kept collapsed to 0-width in every non-S3 state so it never flashes mid-transition) */
-.a-hero__pic--3 { left: 16px; top: var(--a-in); width: 0; height: var(--a-cap); }
-.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: var(--a-open); }
-.a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: var(--a-open); }
-/* Pic 4 Venice — bottom-left anchor; grows from a bottom-left point (2D) */
-.a-hero__pic--4 { left: 16px; bottom: var(--a-in); width: 0; height: var(--a-cap); }
-.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: var(--a-open); }
-.a-hero[data-astate="1"] .a-hero__pic--4 { height: var(--a-open); }
-.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: var(--a-open); }
-
-/* headline — three lines that slide between states; the accent line changes.
-   Vertical offsets scale with --v; horizontal offsets are fixed. */
-.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--a-ease), color var(--a-morph) var(--a-ease); }
-/* Y = cluster anchor (scales with --v so the block stays proportionally placed) + a
-   CONSTANT per-line offset (0 / 42 / 84), so the gaps between the three lines never
-   shrink when the screen height shrinks. Top cluster anchor 32, bottom cluster 551. */
-.a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, calc(32px * var(--v))); }
-.a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, calc(551px * var(--v))); }
-.a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, calc(551px * var(--v))); }
-.a-hero[data-astate="4"] .a-hero__line--e { transform: translate(218px, calc(32px * var(--v))); }
-.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, calc(32px * var(--v) + 42px)); }
-.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, calc(551px * var(--v) + 42px)); }
-.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, calc(551px * var(--v) + 42px)); }
-.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, calc(32px * var(--v) + 42px)); }
-.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, calc(32px * var(--v) + 84px)); }
-.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, calc(551px * var(--v) + 84px)); }
-.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, calc(551px * var(--v) + 84px)); }
-.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, calc(32px * var(--v) + 84px)); }
-/* the accent travels down the lines across the cycle: S1 none, S2 Explore,
-   S3 Observe, S4 Understand (per the reference recording) */
+/* copy — three static headline lines, globe in the top-right corner */
+.a-hero__copy { position: relative; flex: 0 0 auto; padding: 0 var(--space-4); }
+.a-hero__line { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: color var(--a-morph) var(--a-ease); }
+/* accent travels down the lines across the cycle: S1 none, S2 Explore, S3 Observe, S4 Understand */
 .a-hero[data-astate="2"] .a-hero__line--e { color: var(--color-accent); }
 .a-hero[data-astate="3"] .a-hero__line--o { color: var(--color-accent); }
 .a-hero[data-astate="4"] .a-hero__line--u { color: var(--color-accent); }
-
-/* globe — sits in the empty corner of each composition; the four positions form a
-   rectangle so every move is a pure horizontal or vertical slide (never diagonal).
-   Its Y scales with --v (X fixed); the 56px mark itself keeps a constant size.
-   The inner element rotates ONLY during a transition: JS bumps --gr on each state
-   change and it eases over the morph, then stays still while the state is held. */
-.a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--a-ease); }
+.a-hero__globe { position: absolute; top: 0; right: var(--space-4); width: 56px; height: 56px; }
 .a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); transform: rotate(var(--gr, 0deg)); transition: transform var(--a-morph) var(--a-ease); }
-.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, calc(32px * var(--v))); }   /* top-right */
-.a-hero[data-astate="2"] .a-hero__globe { transform: translate(16px, calc(32px * var(--v))); }    /* top-left */
-.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, calc(632px * var(--v))); }   /* bottom-left */
-.a-hero[data-astate="4"] .a-hero__globe { transform: translate(318px, calc(632px * var(--v))); }  /* bottom-right */
+
+/* image block — fills the leftover height but never shrinks below 530px; inset 16px from
+   the copy above and from the screen sides. The four photos stack and wipe between one
+   another (clip-path, left-to-right), the incoming one revealed over the current. */
+.a-hero__stage {
+  flex: 1 1 auto; min-height: 530px; position: relative; overflow: hidden;
+  margin: var(--space-4) var(--space-4) 0; border-radius: var(--radius-input);
+  background: var(--color-surface);
+}
+.a-hero__pic { position: absolute; inset: 0; clip-path: inset(0 100% 0 0); transition: clip-path var(--a-morph) var(--a-ease); }
+.a-hero__pic--1 { clip-path: inset(0); }
+.a-hero__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
-  .a-hero__pic, .a-hero__line, .a-hero__globe, .a-hero__globe-in { transition: none; }
+  .a-hero__pic, .a-hero__globe-in { transition: none; }
 }
 
 /* hero CTA that sits just under the hero */
