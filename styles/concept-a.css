@@ -97,18 +97,19 @@
 .a-hero[data-astate="3"] .a-hero__line--o { color: var(--color-accent); }
 .a-hero[data-astate="4"] .a-hero__line--u { color: var(--color-accent); }
 
-/* rotating globe — outer element slides between states, inner element spins */
+/* globe — sits in the empty corner of each composition; the four positions form a
+   rectangle so every move is a pure horizontal or vertical slide (never diagonal).
+   The inner element rotates ONLY during a transition: JS bumps --gr on each state
+   change and it eases over the morph, then stays still while the state is held. */
 .a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--ease); }
-.a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); animation: a-globe-spin 22s linear infinite; }
-@keyframes a-globe-spin { to { transform: rotate(360deg); } }
-.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, 32px); }
-.a-hero[data-astate="2"] .a-hero__globe { transform: translate(72px, 88px); }
-.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, 631px); }
-.a-hero[data-astate="4"] .a-hero__globe { transform: translate(373px, 688px); }
+.a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); transform: rotate(var(--gr, 0deg)); transition: transform var(--a-morph) var(--ease); }
+.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, 32px); }   /* top-right */
+.a-hero[data-astate="2"] .a-hero__globe { transform: translate(16px, 32px); }    /* top-left */
+.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, 632px); }   /* bottom-left */
+.a-hero[data-astate="4"] .a-hero__globe { transform: translate(318px, 632px); }  /* bottom-right */
 
 @media (prefers-reduced-motion: reduce) {
-  .a-hero__pic, .a-hero__line, .a-hero__globe { transition: none; }
-  .a-hero__globe-in { animation: none; }
+  .a-hero__pic, .a-hero__line, .a-hero__globe, .a-hero__globe-in { transition: none; }
 }
 
 /* hero CTA that sits just under the hero */
