@@ -26,20 +26,17 @@
 .a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin: 0; }
 
 /* ------------------------------------------------------------------ header --
-   Not shown at the top of the page — slides down and pins only once the hero
-   scrolls under it. Confined to the content column. */
+   Pinned pill at the top of the screen from the start, floating over the hero and
+   staying fixed as the page scrolls. The hero reserves space for it (--a-header). */
 .a-menu {
   position: fixed; top: var(--space-4); left: 50%; z-index: 40;
   width: 358px; max-width: calc(100% - var(--space-4) * 2);
-  transform: translateX(-50%) translateY(calc(-100% - var(--space-4)));
+  transform: translateX(-50%);
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
   padding: var(--space-4); border-radius: var(--radius-card);
   background: color-mix(in oklab, var(--color-bg), transparent 8%);
   backdrop-filter: blur(6px); border: 1.5px solid var(--color-border);
-  opacity: 0; pointer-events: none;
-  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
-.a-menu.is-visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
 .a-menu .logo--short { width: 68px; color: var(--color-accent); }
 .a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
 
@@ -48,24 +45,33 @@
    globe reposition between four states, while four image cards each WIPE open
    (width/height 0 -> full) in their own state and wipe closed otherwise.
    The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
-/* The hero is one screen: the floating header pins on scroll (hidden at the top,
-   so it never covers the animation there); the hero itself is a flex column —
-   stage (fills) + CTA (auto) — so the button always sits within the first screen. */
-.a-hero { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--color-bg); }
-/* Stage is the leftover space. The canvas is the 390-wide design frame; its HEIGHT —
-   and every vertical coordinate inside it — is driven by --a-vscale (JS: available
-   height / 720, capped at 1). So on a shorter screen the image containers OPEN to a
-   shorter height, while the full width and the entire morph mechanic stay as designed.
-   Widths and horizontal positions never change. */
+/* The hero is one screen: header pinned on top (space reserved via --a-header), then a
+   flex column of stage (fills) + CTA. Height is 100svh — the STABLE small-viewport unit
+   — so the mobile URL bar collapsing during scroll never resizes the stage (and so never
+   re-animates the morph). */
+.a-hero {
+  height: 100svh; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--color-bg); padding-top: var(--a-header, 96px);
+}
+/* Stage is the leftover space; the canvas (390-wide design frame) is bottom-aligned in
+   it, so the animation's bottom edge is a fixed 16px above the button regardless of
+   screen height. Only the frame's HEIGHT and its image containers scale with --a-vscale
+   (JS: stage height / 720, capped at 1); text spacing and widths do NOT scale. */
 .a-hero__stage { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; }
 .a-hero__canvas {
   --v: var(--a-vscale, 1);
   --a-open: calc(495px * var(--v));   /* image open height */
   --a-cap:  calc(56px * var(--v));    /* collapsed leading edge */
   --a-in:   calc(32px * var(--v));    /* top / bottom inset */
-  position: absolute; left: 0; right: 0; top: 50%;
-  height: calc(720px * var(--v)); transform: translateY(-50%);
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: calc(720px * var(--v));
 }
+/* While the layout re-fits (orientation change), suppress the morph transitions so the
+   containers/text/globe don't animate to their new resting geometry. */
+.a-hero--nofx .a-hero__pic,
+.a-hero--nofx .a-hero__line,
+.a-hero--nofx .a-hero__globe,
+.a-hero--nofx .a-hero__globe-in { transition: none; }
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
 /* image cards — a clip container whose size animates; the inner <img> is the full
@@ -95,19 +101,22 @@
 
 /* headline — three lines that slide between states; the accent line changes.
    Vertical offsets scale with --v; horizontal offsets are fixed. */
-.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--a-ease), color calc(var(--a-morph) * 0.7) var(--a-ease); }
+.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--a-ease), color var(--a-morph) var(--a-ease); }
+/* Y = cluster anchor (scales with --v so the block stays proportionally placed) + a
+   CONSTANT per-line offset (0 / 42 / 84), so the gaps between the three lines never
+   shrink when the screen height shrinks. Top cluster anchor 32, bottom cluster 551. */
 .a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, calc(32px * var(--v))); }
 .a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, calc(551px * var(--v))); }
 .a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, calc(551px * var(--v))); }
 .a-hero[data-astate="4"] .a-hero__line--e { transform: translate(218px, calc(32px * var(--v))); }
-.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, calc(74px * var(--v))); }
-.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, calc(593px * var(--v))); }
-.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, calc(593px * var(--v))); }
-.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, calc(74px * var(--v))); }
-.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, calc(116px * var(--v))); }
-.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, calc(635px * var(--v))); }
-.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, calc(635px * var(--v))); }
-.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, calc(116px * var(--v))); }
+.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, calc(32px * var(--v) + 42px)); }
+.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, calc(551px * var(--v) + 42px)); }
+.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, calc(551px * var(--v) + 42px)); }
+.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, calc(32px * var(--v) + 42px)); }
+.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, calc(32px * var(--v) + 84px)); }
+.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, calc(551px * var(--v) + 84px)); }
+.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, calc(551px * var(--v) + 84px)); }
+.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, calc(32px * var(--v) + 84px)); }
 /* the accent travels down the lines across the cycle: S1 none, S2 Explore,
    S3 Observe, S4 Understand (per the reference recording) */
 .a-hero[data-astate="2"] .a-hero__line--e { color: var(--color-accent); }
@@ -131,8 +140,9 @@
 }
 
 /* hero CTA that sits just under the hero */
-/* CTA sits at the foot of the one-screen hero flex column. */
-.a-herocta { flex: 0 0 auto; padding: var(--space-4) var(--space-4) var(--space-6); }
+/* CTA at the foot of the one-screen hero: 16px above (from the animation frame, which
+   is bottom-aligned in the stage) and 16px below (to the next block). */
+.a-herocta { flex: 0 0 auto; padding: var(--space-4); }
 .a-herocta .btn { width: 100%; }
 
 /* ---------------------------------------------------------- about (What is) --
@@ -176,10 +186,10 @@
 .a-featured__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .a-featured__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
 .a-featured__title { margin: 0; }
-/* Inset scroller: the track sits 16px from both screen edges and clips there, so the
-   cards keep a 16px gutter on the right (and left) instead of a flex scroll container
-   dropping its trailing padding and letting the last card butt against the edge. */
-.a-featured__rail { display: flex; gap: var(--space-2); overflow-x: auto; margin-inline: var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
+/* Edge-bleed carousel, same as the What-is-Observatory rail: the track spans the full
+   screen width, cards rest 16px in and scroll out to the edges. scroll-padding keeps
+   the snap aligned to that 16px inset. */
+.a-featured__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scroll-padding-inline: var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .a-featured__rail::-webkit-scrollbar { display: none; }
 
 .a-guide { position: relative; flex: 0 0 318px; height: 500px; scroll-snap-align: start; border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }

@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=12">
-<link rel="stylesheet" href="styles/concept-a.css?v=16">
+<link rel="stylesheet" href="styles/concept-a.css?v=17">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
   <span aria-disabled="true" title="Concept C — coming">C</span>
 </nav>
 
-<!-- header: hidden at the top, slides in and pins on scroll -->
+<!-- header: pinned pill, visible at the top of the screen and fixed as the page scrolls -->
 <header class="a-menu" id="aMenu">
   <a class="logo logo--short" href="#" aria-label="Observatory TS"></a>
   <div class="a-menu__actions">
@@ -276,28 +276,31 @@
   })();
 
   // hero fits one screen by driving the animation's own vertical scale: the image
-  // containers open to a shorter height on smaller screens (--a-vscale = available
-  // height / 720, capped at 1). Widths and the morph mechanic are untouched.
+  // containers open to a shorter height on smaller screens (--a-vscale = stage height
+  // / 720, capped at 1). Widths, text spacing and the morph mechanic are untouched.
+  // Also reserves space for the fixed header. Because the hero is sized in svh, this
+  // does NOT re-run on scroll (the URL bar collapsing no longer resizes the stage).
   (function () {
+    var header = document.getElementById('aMenu');
+    var hero = document.querySelector('.a-hero');
     var stage = document.querySelector('.a-hero__stage');
     var canvas = document.querySelector('.a-hero__canvas');
-    if (!stage || !canvas) return;
+    if (!hero || !stage || !canvas) return;
+    var lastV = null;
     function fit() {
-      canvas.style.setProperty('--a-vscale', Math.min(stage.clientHeight / 720, 1));
+      if (header) hero.style.setProperty('--a-header', (header.offsetHeight + 32) + 'px');
+      var v = Math.min(stage.clientHeight / 720, 1);
+      if (v === lastV) return;
+      lastV = v;
+      hero.classList.add('a-hero--nofx');            // don't animate the re-fit
+      canvas.style.setProperty('--a-vscale', v);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { hero.classList.remove('a-hero--nofx'); });
+      });
     }
     fit();
     addEventListener('resize', fit);
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(stage);
-  })();
-
-  // header: hidden at the top, slides in and pins once the hero has scrolled away
-  (function () {
-    var menu = document.getElementById('aMenu');
-    var hero = document.querySelector('.a-hero');
-    if (!menu || !hero) return;
-    new IntersectionObserver(function (e) {
-      menu.classList.toggle('is-visible', !e[0].isIntersecting);
-    }, { rootMargin: '-72px 0px 0px 0px' }).observe(hero);
   })();
 
   // reveal on scroll — sections rise + fade in as they enter (shared base.css system)
