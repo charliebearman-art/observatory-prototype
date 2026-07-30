@@ -128,7 +128,7 @@
 .a-about__head .ac { color: var(--color-accent); }
 /* Cancel the base rail's edge-bleed (margin-inline:-16) so the cards sit 16px
    inside the panel, aligned with the heading, instead of flush to the screen edge. */
-.a-about .rail { gap: var(--space-2); margin-inline: 0; padding: 0; }
+.a-about .rail { gap: var(--space-2); margin-inline: 0; padding: 0; width: 100%; }
 .a-about .benefit { flex: 0 0 253px; width: 253px; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
 /* The card already carries its own 1.5px border; the base overlay stroke would double it. */
 .a-about .benefit::after { display: none; }
