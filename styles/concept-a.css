@@ -62,6 +62,7 @@
      gap, so text and image always clear each other by 16px whatever the screen height. */
   --a-txt: calc(84px + var(--lh-display));
   --a-slot: calc(var(--a-canvasH, 530px) - var(--a-txt) - 16px);
+  --a-cap: 56px;   /* collapsed leading edge of a corner-growing photo (Figma: 0 x 56) */
   position: absolute; inset: 0;
 }
 /* While the layout re-fits (orientation change), suppress transitions so nothing animates
@@ -72,28 +73,29 @@
 .a-hero--nofx .a-hero__globe-in { transition: none; }
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
-/* image cards — a clip container that wipes open (by HEIGHT, toward its own top/bottom
-   edge) to reveal the fixed-size photo. Because the slot leaves a 16px gap to the text,
-   a photo collapsing to its edge recedes faster than the headline slides past it, so the
-   two never overlap at any point of the morph — the image "opens" only into clear space. */
+/* image cards — a clip container that wipes open to reveal the fixed-size photo. Per
+   Figma the photos corner-grow in BOTH dimensions (e.g. Pic 2 Colosseum: 0x56 -> 286x495);
+   the open height is the adaptive slot (=495 at the design size). The headline paints on
+   top of the photos (later in the DOM), so a photo growing behind it never covers it, and
+   the slot's 16px gap keeps the resting compositions clear. */
 .a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--a-ease), height var(--a-morph) var(--a-ease); }
 .a-hero__pic img { position: absolute; display: block; object-fit: cover; height: var(--a-slot); }
-/* Pic 1 Duomo — state 1: full-width photo at the BOTTOM, wipes up from the base */
+/* Pic 1 Duomo — state 1: full-width photo at the BOTTOM; grows up from a bottom line */
 .a-hero__pic--1 { left: 16px; bottom: 0; width: 358px; height: 0; }
 .a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; }
 .a-hero[data-astate="1"] .a-hero__pic--1 { height: var(--a-slot); }
-/* Pic 2 Colosseum — state 2: photo at the TOP-RIGHT, wipes down from the top */
-.a-hero__pic--2 { right: 16px; top: 0; width: 286px; height: 0; }
+/* Pic 2 Colosseum — state 2: TOP-RIGHT; corner-grows 0x56 -> 286xslot */
+.a-hero__pic--2 { right: 16px; top: 0; width: 0; height: var(--a-cap); }
 .a-hero__pic--2 img { right: 0; top: 0; width: 286px; }
-.a-hero[data-astate="2"] .a-hero__pic--2 { height: var(--a-slot); }
-/* Pic 3 painting — state 3: full-width photo at the TOP, wipes down from the top */
-.a-hero__pic--3 { left: 16px; top: 0; width: 358px; height: 0; }
+.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: var(--a-slot); }
+/* Pic 3 painting — state 3: TOP-LEFT; corner-grows 0x56 -> 358xslot */
+.a-hero__pic--3 { left: 16px; top: 0; width: 0; height: var(--a-cap); }
 .a-hero__pic--3 img { left: 0; top: 0; width: 358px; }
-.a-hero[data-astate="3"] .a-hero__pic--3 { height: var(--a-slot); }
-/* Pic 4 Venice — state 4: photo at the BOTTOM-LEFT, wipes up from the base */
-.a-hero__pic--4 { left: 16px; bottom: 0; width: 286px; height: 0; }
+.a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: var(--a-slot); }
+/* Pic 4 Venice — state 4: BOTTOM-LEFT; corner-grows 0x56 -> 286xslot */
+.a-hero__pic--4 { left: 16px; bottom: 0; width: 0; height: var(--a-cap); }
 .a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; }
-.a-hero[data-astate="4"] .a-hero__pic--4 { height: var(--a-slot); }
+.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: var(--a-slot); }
 
 /* headline — three lines that slide between the top and the bottom of the block. The
    inter-line spacing is constant (42px); each cluster is anchored 16px from the frame
