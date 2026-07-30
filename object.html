@@ -572,10 +572,10 @@
       objScreen.style.visibility = '';
       objScreen.classList.add('is-leaving');       // object hero blurs + enlarges away
       poiov.classList.remove('is-out');
-      poiov.scrollTop = 0;
       poiov.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
       poiov.classList.add('is-in');                // point view appears; header stretches, contents build in
+      poiov.scrollTop = 0;                          // reset AFTER is-in makes it display:flex — a hidden element ignores scrollTop and keeps its old scroll
       hideTimer = setTimeout(function () { objScreen.style.visibility = 'hidden'; }, 900);
     }
     function exitPOI() {
