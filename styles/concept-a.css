@@ -26,29 +26,30 @@
 .a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin: 0; }
 
 /* ------------------------------------------------------------------ header --
-   Not shown at the top of the page — slides down only once the hero scrolls
-   under it. Confined to the content column. */
-.a-menu {
-  position: fixed; top: var(--space-4); left: 50%; z-index: 40;
-  width: 358px; max-width: calc(100% - var(--space-4) * 2);
-  transform: translateX(-50%) translateY(calc(-100% - var(--space-4)));
+   Static bar at the very top of the hero, in flow with the animation and CTA
+   below it — the whole hero is one screen. Scrolls away with the page. */
+.a-hero__bar {
+  flex: 0 0 auto;
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
-  padding: var(--space-4); border-radius: var(--radius-card);
-  background: color-mix(in oklab, var(--color-bg), transparent 8%);
-  backdrop-filter: blur(6px); border: 1.5px solid var(--color-border);
-  opacity: 0; pointer-events: none;
-  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  padding: var(--space-4);
 }
-.a-menu.is-visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
-.a-menu .logo--short { width: 68px; color: var(--color-accent); }
-.a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
+.a-hero__bar .logo--short { width: 68px; color: var(--color-accent); }
+.a-hero__actions { display: flex; align-items: center; gap: var(--space-2); }
 
 /* --------------------------------------------------------------------- hero --
    Editorial morph (Figma smart-animate): one headline (3 lines) + one rotating
    globe reposition between four states, while four image cards each WIPE open
    (width/height 0 -> full) in their own state and wipe closed otherwise.
    The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
-.a-hero { position: relative; height: 720px; overflow: hidden; background: var(--color-bg); }
+/* The hero is one screen: header (auto) + stage (fills the rest) + CTA (auto). */
+.a-hero { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--color-bg); }
+/* Stage is the leftover space; the canvas is the fixed 390x720 design frame, scaled
+   as a whole by JS (--hero-scale) and centred, so no morph coordinate ever changes. */
+.a-hero__stage { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; }
+.a-hero__canvas {
+  position: absolute; top: 0; left: 50%; width: 390px; height: 720px;
+  transform: translateX(-50%) scale(var(--hero-scale, 1)); transform-origin: top center;
+}
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
 /* image cards — a clip container whose size animates; the inner <img> is the full
@@ -113,9 +114,8 @@
 }
 
 /* hero CTA that sits just under the hero */
-/* Hero already leaves 32px below its last image, so top padding is 0 — this yields a
-   balanced 32px above the button and 32px below it, on the 4-grid. */
-.a-herocta { padding: 0 var(--space-4) var(--space-6); }
+/* CTA sits at the foot of the one-screen hero flex column. */
+.a-herocta { flex: 0 0 auto; padding: var(--space-4) var(--space-4) var(--space-6); }
 .a-herocta .btn { width: 100%; }
 
 /* ---------------------------------------------------------- about (What is) --
