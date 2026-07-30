@@ -433,7 +433,11 @@
    full-screen brand loader shown while the object page loads; the mark is
    recoloured to --color-accent at runtime so it follows the palette. */
 .loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
-.loader__anim { width: 168px; height: 168px; opacity: 0; transition: opacity var(--dur) var(--ease); }
-.loader__anim svg { display: block; width: 100% !important; height: 100% !important; }
+.loader__anim { width: 118px; height: 118px; opacity: 0; transition: opacity var(--dur) var(--ease); }
+/* the Lottie artwork is drawn right-of-centre in its own canvas; overflow keeps the
+   wide orbital from clipping, the translate (set in JS) recentres it */
+.loader__anim svg { display: block; overflow: visible; }
 .loader.is-ready .loader__anim { opacity: 1; }
 .loader.is-hidden { opacity: 0; pointer-events: none; }
+/* hold the object-page intro (hero focus-in) until the loader lifts */
+.is-loading .ohero__slide img { animation-play-state: paused; }

@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=33">
+<link rel="stylesheet" href="styles/object.css?v=34">
 <link rel="stylesheet" href="styles/poi.css?v=11">
 </head>
 <body>
@@ -20,22 +20,33 @@
   <div class="loader__anim" id="loaderAnim"></div>
 </div>
 <script>
+  // gate the object-page intro animations until the loader lifts
+  window.__loaderDone = false;
+  window.__loaderCbs = [];
+  window.afterLoader = function (cb) { if (window.__loaderDone) cb(); else window.__loaderCbs.push(cb); };
   (function () {
     var loader = document.getElementById('loader');
-    if (!loader) return;
+    function flush() {                                      // release the page: run intro animations now
+      if (window.__loaderDone) return;
+      window.__loaderDone = true;
+      document.documentElement.classList.remove('is-loading');
+      document.documentElement.style.overflow = '';
+      window.__loaderCbs.forEach(function (cb) { try { cb(); } catch (e) {} });
+      window.__loaderCbs = [];
+    }
+    if (!loader) { flush(); return; }
+    document.documentElement.classList.add('is-loading');
+    document.documentElement.style.overflow = 'hidden';    // freeze the page behind the loader
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.documentElement.style.overflow = 'hidden';   // freeze the page behind the loader
-    var start = Date.now(), MIN = 1100, CAP = 4000, done = false, anim = null;
-    function unfreeze() { document.documentElement.style.overflow = ''; }
+    var start = Date.now(), MIN = 1100, CAP = 4000, hidden = false, anim = null;
     function hide() {
-      if (done) return; done = true;
+      if (hidden) return; hidden = true;
       loader.classList.add('is-hidden');
-      unfreeze();
+      flush();                                             // reveal the page intro as the loader fades out
       setTimeout(function () { if (anim) anim.destroy(); loader.remove(); }, 460);
     }
     function finish() { var wait = Math.max(0, MIN - (Date.now() - start)); setTimeout(hide, wait); }
-    // reduced motion: skip the animation, don't hold the page
-    if (reduce) { hide(); return; }
+    if (reduce) { hide(); return; }                        // reduced motion: skip the animation, don't hold the page
     function tint(svg) {                                    // recolour the mark to --color-accent (keeps fill="none" strokes intact)
       var c = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim();
       svg.querySelectorAll('[fill]').forEach(function (n) { if (n.getAttribute('fill') !== 'none') n.setAttribute('fill', c); });
@@ -48,7 +59,7 @@
         anim = lottie.loadAnimation({ container: document.getElementById('loaderAnim'), renderer: 'svg', loop: true, autoplay: true, path: 'assets/loader.json?v=1' });
         anim.addEventListener('DOMLoaded', function () {
           var svg = loader.querySelector('svg');
-          if (svg) { svg.setAttribute('viewBox', '81 0 300 300'); tint(svg); }   // artwork sits ~81 units right of canvas centre; shift the viewBox to recentre
+          if (svg) { svg.style.transform = 'translateX(-46%)'; tint(svg); }   // artwork is right-of-centre in its canvas; nudge it back to centre
           loader.classList.add('is-ready');
         });
       } catch (e) { hide(); }
@@ -444,11 +455,11 @@
       if (!slide || lit.indexOf(slide) >= 0) return;
       lit.push(slide); lightSpots(slide, base);
     }
-    // first slide: wait for the hero focus-in to settle, then pop its points
+    // first slide: after the loader lifts, wait for the hero focus-in to settle, then pop its points
     if (track.children[0]) {
       lit.push(track.children[0]);
-      if (reduce) lightSpots(track.children[0], 0);
-      else setTimeout(function () { lightSpots(track.children[0], 0); }, 780);
+      var popFirst = function () { if (reduce) lightSpots(track.children[0], 0); else setTimeout(function () { lightSpots(track.children[0], 0); }, 780); };
+      window.afterLoader ? window.afterLoader(popFirst) : popFirst();
     }
 
     function update() {
@@ -554,12 +565,16 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
-    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
-    // each block inside a tab panel reveals on its own as it scrolls into view
-    // (and when its tab is switched to — the display change re-triggers the observer)
     document.querySelectorAll('.tabpanel').forEach(function (panel) {
-      [].forEach.call(panel.children, function (el) { el.setAttribute('data-reveal-self', ''); io.observe(el); });
+      [].forEach.call(panel.children, function (el) { el.setAttribute('data-reveal-self', ''); });
     });
+    // start observing only after the loader lifts, so above-the-fold sections
+    // actually animate in for the user instead of revealing behind the loader
+    var observe = function () {
+      document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+      document.querySelectorAll('.tabpanel [data-reveal-self]').forEach(function (el) { io.observe(el); });
+    };
+    window.afterLoader ? window.afterLoader(observe) : observe();
   })();
 
   // interesting facts (object tabs): expand the card in place (not a modal)
