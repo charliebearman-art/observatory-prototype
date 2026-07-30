@@ -16,10 +16,10 @@
 <style>
   /* first-load intro: the full Observatory logo animation (Lottie), recoloured to
      the palette accent. Wide frame so the "observatory TS" reveal fits; it then
-     collapses to the "⊕ TS" mark. */
-  .intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
+     collapses to the "⊕ TS" mark. Confined to the 390px content column (.screen). */
+  .intro { position: fixed; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px; max-width: 100%; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
   .intro.is-hidden { opacity: 0; pointer-events: none; }
-  .intro__anim { width: min(90vw, 440px); aspect-ratio: 1280 / 300; opacity: 0; transition: opacity var(--dur) var(--ease); }
+  .intro__anim { width: min(88%, 360px); aspect-ratio: 1280 / 300; opacity: 0; transition: opacity var(--dur) var(--ease); }
   .intro.is-ready .intro__anim { opacity: 1; }
   .intro__anim svg { display: block; width: 100% !important; height: 100% !important; overflow: visible; }
   .intro__anim svg [fill]:not([fill="none"]) { fill: var(--color-accent) !important; }
@@ -27,39 +27,6 @@
 </style>
 </head>
 <body>
-
-<!-- first-load intro splash: full Observatory logo animation, then reveals the home page -->
-<div class="intro" id="intro" role="status" aria-label="Observatory"><div class="intro__anim" id="introAnim"></div></div>
-<script>
-  (function () {
-    var intro = document.getElementById('intro');
-    if (!intro) return;
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var seen = false; try { seen = sessionStorage.getItem('obsIntro') === '1'; } catch (e) {}
-    if (reduce || seen) { intro.remove(); return; }        // once per session; skip under reduced motion
-    try { sessionStorage.setItem('obsIntro', '1'); } catch (e) {}
-    document.documentElement.style.overflow = 'hidden';
-    var anim = null, done = false;
-    function hide() {
-      if (done) return; done = true;
-      intro.classList.add('is-hidden');
-      document.documentElement.style.overflow = '';
-      setTimeout(function () { if (anim) anim.destroy(); intro.remove(); }, 460);
-    }
-    var s = document.createElement('script');
-    s.src = 'assets/vendor/lottie.min.js';
-    s.onload = function () {
-      try {
-        anim = lottie.loadAnimation({ container: document.getElementById('introAnim'), renderer: 'svg', loop: false, autoplay: true, path: 'assets/logo-intro.json?v=1', initialSegment: [0, 276] });
-        anim.addEventListener('DOMLoaded', function () { var svg = intro.querySelector('svg'); if (svg) svg.setAttribute('viewBox', '360 850 1280 300'); intro.classList.add('is-ready'); });   // colour is CSS; crop the wide canvas to the logo
-        anim.addEventListener('complete', function () { setTimeout(hide, 400); });   // hold a beat once the logo has fully formed
-      } catch (e) { hide(); }
-    };
-    s.onerror = hide;
-    document.head.appendChild(s);
-    setTimeout(hide, 8000);                                 // safety cap
-  })();
-</script>
 
 <!-- demo-only control: lets the client feel both axes live -->
 <div class="switch">
@@ -86,6 +53,10 @@
 </div>
 
 <main class="screen">
+
+  <!-- first-load intro splash: full Observatory logo animation, confined to this content column -->
+  <div class="intro" id="intro" role="status" aria-label="Observatory"><div class="intro__anim" id="introAnim"></div></div>
+
 
   <!-- menu -->
   <header class="menu">
@@ -369,6 +340,38 @@
   </footer>
 
 </main>
+
+<!-- first-load intro: play the full logo once, then reveal the page -->
+<script>
+  (function () {
+    var intro = document.getElementById('intro');
+    if (!intro) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var seen = false; try { seen = sessionStorage.getItem('obsIntro') === '1'; } catch (e) {}
+    if (reduce || seen) { intro.remove(); return; }        // once per session; skip under reduced motion
+    try { sessionStorage.setItem('obsIntro', '1'); } catch (e) {}
+    document.documentElement.style.overflow = 'hidden';
+    var anim = null, done = false;
+    function hide() {
+      if (done) return; done = true;
+      intro.classList.add('is-hidden');
+      document.documentElement.style.overflow = '';
+      setTimeout(function () { if (anim) anim.destroy(); intro.remove(); }, 460);
+    }
+    var s = document.createElement('script');
+    s.src = 'assets/vendor/lottie.min.js';
+    s.onload = function () {
+      try {
+        anim = lottie.loadAnimation({ container: document.getElementById('introAnim'), renderer: 'svg', loop: false, autoplay: true, path: 'assets/logo-intro.json?v=1', initialSegment: [0, 276] });
+        anim.addEventListener('DOMLoaded', function () { var svg = intro.querySelector('svg'); if (svg) svg.setAttribute('viewBox', '360 850 1280 300'); intro.classList.add('is-ready'); });   // colour is CSS; crop the wide canvas to the logo
+        anim.addEventListener('complete', function () { setTimeout(hide, 400); });   // hold a beat once the logo has fully formed
+      } catch (e) { hide(); }
+    };
+    s.onerror = hide;
+    document.head.appendChild(s);
+    setTimeout(hide, 8000);                                 // safety cap
+  })();
+</script>
 
 <script>
   // The header only frosts once content scrolls under it. A sentinel avoids a
