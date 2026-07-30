@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=31">
-<link rel="stylesheet" href="styles/poi.css?v=8">
+<link rel="stylesheet" href="styles/object.css?v=32">
+<link rel="stylesheet" href="styles/poi.css?v=9">
 </head>
 <body>
 
@@ -43,19 +43,21 @@
 <div class="factmodal" id="factModal" hidden role="dialog" aria-modal="true" aria-labelledby="fmTitle">
   <div class="factmodal__scrim" data-close></div>
   <div class="factmodal__sheet">
-    <span class="factmodal__handle" data-close></span>
-    <div class="factmodal__head">
-      <span class="factmodal__eyebrow">Interesting fact</span>
-      <h2 class="factmodal__title" id="fmTitle"></h2>
+    <div class="factmodal__card">
+      <div class="factmodal__head">
+        <span class="factmodal__eyebrow">Interesting fact</span>
+        <h2 class="factmodal__title" id="fmTitle"></h2>
+      </div>
+      <div class="factmodal__figure">
+        <img class="factmodal__img" id="fmImg" src="" alt="">
+        <p class="factmodal__text" id="fmText"></p>
+      </div>
     </div>
-    <div class="factmodal__figure">
-      <img class="factmodal__img" id="fmImg" src="" alt="">
-      <p class="factmodal__text" id="fmText"></p>
-    </div>
+    <div class="factmodal__nav"></div>
   </div>
 </div>
 
-<script src="points.js?v=3"></script>
+<script src="points.js?v=4"></script>
 <script>
   // pick the point from ?p=N (1-based), clamp to range
   var params = new URLSearchParams(location.search);

@@ -143,7 +143,7 @@
 .btn-step .icon { width: 24px; height: 24px; }
 /* pinned Step-by-Step bar: stays at the viewport bottom while scrolling the tabs,
    then settles into place just above the next-object card */
-.ostep { position: sticky; bottom: 0; z-index: 5; padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 12%); backdrop-filter: blur(12px); }
+.ostep { position: sticky; bottom: 0; z-index: 5; padding: var(--space-2) var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 12%); backdrop-filter: blur(12px); }
 .ostep .btn-step { width: 100%; }
 
 /* ---------- info tabs ---------- */
