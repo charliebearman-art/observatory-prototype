@@ -583,6 +583,7 @@
       open = false;
       clearTimeout(hideTimer); clearTimeout(retTimer);
       gotoSlideOfCurrent();                         // land on the gallery slide holding this point
+      window.scrollTo(0, 0);                        // return to the top (the map), even if step-by-step was tapped while scrolled down — hidden under the exit animation
       objScreen.style.visibility = '';             // reveal the object for the return
       objScreen.classList.remove('is-leaving');
       objScreen.classList.add('is-returning');     // object hero + header/desc fade back in
