@@ -1,33 +1,34 @@
 /* ============================================================================
-   Concept A — guide page (Страница гайда · Неавторизованный). Editorial restyle
-   of the guide flow: cover with merged price card, about, gallery marquee, route
-   map, formats, then the shared a-featured / a-foot components. Colour + type come
-   from tokens.css [data-concept="a"][data-palette="archive"] via concept-a.css.
+   Concept A — guide page (Страница гайда · Неавторизованный). Geometry mirrors the
+   Figma frames (node 1167-7994): cover with the price card merged in, about, a
+   static gallery grid, a full-bleed route map, formats, then the shared a-featured /
+   a-foot components. Colour + type come from concept-a.css.
    ============================================================================ */
 
-/* section heading shared by the guide blocks (Cormorant display, 40) */
+/* section heading shared by the guide blocks (Cormorant display, 40 = h1) */
 .ga-h2 { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
 .ga-h2 .ac { color: var(--color-accent); }
 
-/* ---------------------------------------------------------------- cover -- */
+/* ---------------------------------------------------------------- cover --
+   Photo is 482 tall and sits BEHIND; the panel content starts at ~400 over its faded
+   bottom (badges/title over the photo, sub + price card on solid bg below it). */
 .ga-cover { position: relative; background: var(--color-bg); }
-.ga-cover__media { position: relative; height: 360px; overflow: hidden; }
+.ga-cover__media { position: absolute; top: 0; left: 0; right: 0; height: 482px; overflow: hidden; z-index: 0; }
 .ga-cover__bg { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateY(var(--parallax, 0)); will-change: transform; }
-/* blend the photo's base into the page background */
-.ga-cover__fade { position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(to bottom, rgba(26,26,28,0) 0%, var(--color-bg) 100%); pointer-events: none; }
-.ga-cover__top { position: absolute; top: var(--space-4); left: var(--space-4); right: var(--space-4); display: flex; align-items: center; justify-content: space-between; z-index: 2; }
-.ga-lang { display: inline-flex; align-items: center; gap: var(--space-1); height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1.5px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
+.ga-cover__fade { position: absolute; left: 0; right: 0; bottom: 0; height: 340px; background: linear-gradient(to bottom, rgba(26,26,28,0) 0%, var(--color-bg) 100%); pointer-events: none; }
+.ga-cover__top { position: absolute; top: var(--space-5); left: var(--space-4); right: var(--space-4); display: flex; align-items: center; justify-content: space-between; z-index: 2; }
+.ga-lang { display: inline-flex; align-items: center; gap: var(--space-1); height: 40px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1.5px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
 
-.ga-cover__panel { position: relative; margin-top: -32px; padding: 0 var(--space-4) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
-.ga-cover__badges { display: flex; align-items: center; gap: var(--space-3); }
-.ga-cover__mark { width: 40px; height: 40px; color: var(--color-accent); }
-.ga-city { display: inline-flex; align-items: center; height: 32px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
+.ga-cover__panel { position: relative; z-index: 1; padding: 400px var(--space-4) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
+.ga-cover__badges { display: flex; align-items: center; gap: var(--space-1); }
+.ga-cover__mark { width: 32px; height: 32px; color: var(--color-accent); }
+.ga-city { display: inline-flex; align-items: center; height: 33px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
 .ga-cover__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
 .ga-cover__sub { color: var(--color-text-muted); margin: 0; }
 
 /* price / metrics card, merged into the cover */
 .ga-info { margin-top: var(--space-2); padding: var(--space-4); background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-input); display: flex; flex-direction: column; gap: var(--space-4); }
-.ga-info__metrics { display: grid; grid-template-columns: auto 1fr 1fr; gap: var(--space-4) var(--space-3); align-items: center; }
+.ga-info__metrics { display: grid; grid-template-columns: auto 1fr 1fr; column-gap: var(--space-4); row-gap: var(--space-3); align-items: center; }
 .ga-info__price { grid-row: span 2; align-self: center; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-accent); padding-right: var(--space-3); }
 .ga-metric { display: flex; flex-direction: column; gap: 2px; }
 .ga-metric__label { font-family: var(--font-ui); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
@@ -35,38 +36,37 @@
 .ga-info__buy { width: 100%; }
 .ga-info__note { text-align: center; margin: 0; }
 
-/* ---------------------------------------------------------------- about -- */
+/* ---------------------------------------------------------------- about --
+   48 top/bottom, eyebrow · 16 · heading (40, 2 lines) · 16 · body (4-line clamp) · 16 · More */
 .ga-about { padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); align-items: flex-start; }
-.ga-about .a-eyebrow { margin-bottom: calc(var(--space-2) * -1 + var(--space-2)); }
 .ga-about__body { margin: 0; }
-.ga-about__body--clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.ga-about__body--clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .ga-about__body--anim { overflow: hidden; transition: max-height var(--dur-slow) var(--ease); }
 
-/* -------------------------------------------------------------- gallery -- */
-.ga-gallery { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
-.ga-gallery::-webkit-scrollbar { display: none; }
-.ga-gallery__track { display: flex; gap: var(--space-2); padding: 0 var(--space-4); width: max-content; }
-.ga-gallery__item { flex: none; height: 460px; border-radius: var(--radius-input); overflow: hidden; }
-.ga-gallery__item--n { width: 300px; }
-.ga-gallery__item--w { width: 440px; }
-.ga-gallery__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* -------------------------------------------------------------- gallery --
+   Static vertical grid: [2-up 175x191] · [wide 358x214] · [2-up] · [wide], 8px gaps. */
+.ga-gallery { padding: 0 var(--space-4) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.ga-gallery__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+.ga-gallery__cell { height: 191px; border-radius: var(--radius-input); overflow: hidden; }
+.ga-gallery__wide { height: 214px; border-radius: var(--radius-input); overflow: hidden; }
+.ga-gallery__cell img, .ga-gallery__wide img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ---------------------------------------------------------------- route -- */
-.ga-route { padding: var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-6); }
+/* ---------------------------------------------------------------- route --
+   head (16 inset) · 32 · full-bleed map (293) · 32 · route cards. */
+.ga-route { padding: var(--space-8) 0 0; display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-route__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
-.ga-route__map { position: relative; height: 300px; margin: 0 var(--space-4); border-radius: var(--radius-input); overflow: hidden; background: var(--color-surface); border: 1.5px solid var(--color-border); }
-.ga-route__map .maplibregl-map { border-radius: inherit; }
+.ga-route__map { position: relative; height: 293px; overflow: hidden; background: var(--color-surface); }
 .ga-route__cards { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .ga-route__cards::-webkit-scrollbar { display: none; }
 .ga-rcard { flex: 0 0 300px; width: 300px; scroll-snap-align: start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; transition: border-color var(--dur) var(--ease); }
 .ga-rcard.is-active { border-color: var(--color-accent); }
-.ga-rcard__img { width: 100%; height: 190px; object-fit: cover; display: block; }
+.ga-rcard__img { width: 100%; height: 168px; object-fit: cover; display: block; }
 .ga-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
 .ga-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.12em; color: var(--color-text-muted); }
 .ga-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
 .ga-rcard__desc { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); }
 
-/* map markers — accent-ringed photo bubbles, same visuals as Concept B */
+/* map markers — accent-ringed photo bubbles */
 .mpoi { width: 36px; height: 36px; cursor: pointer; }
 .mpoi__inner { position: relative; width: 100%; height: 100%; transition: transform var(--dur) var(--ease); }
 .mpoi.is-active { z-index: 3; }
@@ -76,8 +76,9 @@
 .poi__num { position: absolute; right: -4px; bottom: -4px; min-width: 16px; height: 16px; padding: 0 4px; display: grid; place-items: center; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: 10px; line-height: 1; }
 .poi__glow { position: absolute; inset: -8px; border-radius: var(--radius-pill); box-shadow: 0 0 0 2px var(--color-accent), 0 0 16px 2px var(--color-accent); opacity: 0; transition: opacity var(--dur) var(--ease); }
 
-/* -------------------------------------------------------------- formats -- */
-.ga-formats { padding: 0 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
+/* -------------------------------------------------------------- formats --
+   32 above (from the route cards) · head (16 inset) · card rail · 48 below. */
+.ga-formats { padding: var(--space-6) 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-formats__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .ga-formats__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; }
 .ga-formats__rail::-webkit-scrollbar { display: none; }
@@ -86,7 +87,7 @@
 .ga-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
 .ga-format__sub { font-size: var(--size-caption); line-height: var(--lh-caption); }
 
-/* footer tweaks (a-foot is defined in concept-a.css; these support the flat markup) */
+/* footer tweaks (a-foot is defined in concept-a.css; support the flat markup here) */
 .a-foot__title { margin: 0; }
 .a-foot__lang { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text); }
 .a-foot__social { display: flex; align-items: center; gap: var(--space-2); }
