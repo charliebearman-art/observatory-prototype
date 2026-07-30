@@ -24,6 +24,14 @@
   .intro__anim svg { display: block; width: 100% !important; height: 100% !important; overflow: visible; }
   .intro__anim svg [fill]:not([fill="none"]) { fill: var(--color-accent) !important; }
   .intro__anim svg [stroke]:not([stroke="none"]) { stroke: var(--color-accent) !important; }
+
+  /* soft reveal for the rotating hero rings once the splash is done (text reveal
+     rides the shared [data-reveal] system). Skipped under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero--intro .hero__anim { opacity: 0; transform: translate(-50%, -50%) scale(0.94); }
+    .hero--in .hero__anim { opacity: 1; transform: translate(-50%, -50%) scale(1);
+      transition: opacity calc(var(--dur-slow) * 1.6) var(--ease), transform calc(var(--dur-slow) * 1.6) var(--ease-slow); }
+  }
 </style>
 </head>
 <body>
@@ -343,12 +351,17 @@
 
 <!-- first-load intro: play the full logo once, then reveal the page -->
 <script>
+  // lets the hero reveal wait for the splash (mirrors the object page's afterLoader)
+  window.__introDone = false;
+  window.__introCbs = [];
+  window.afterIntro = function (cb) { if (window.__introDone) cb(); else window.__introCbs.push(cb); };
   (function () {
+    function flushIntro() { if (window.__introDone) return; window.__introDone = true; window.__introCbs.forEach(function (cb) { try { cb(); } catch (e) {} }); window.__introCbs = []; }
     var intro = document.getElementById('intro');
-    if (!intro) return;
+    if (!intro) { flushIntro(); return; }
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var seen = false; try { seen = sessionStorage.getItem('obsIntro') === '1'; } catch (e) {}
-    if (reduce || seen) { intro.remove(); return; }        // once per session; skip under reduced motion
+    if (reduce || seen) { intro.remove(); flushIntro(); return; }   // once per session; skip under reduced motion
     try { sessionStorage.setItem('obsIntro', '1'); } catch (e) {}
     document.documentElement.style.overflow = 'hidden';
     var anim = null, done = false;
@@ -356,6 +369,7 @@
       if (done) return; done = true;
       intro.classList.add('is-hidden');
       document.documentElement.style.overflow = '';
+      flushIntro();                                        // reveal the hero as the splash fades out
       setTimeout(function () { if (anim) anim.destroy(); intro.remove(); }, 460);
     }
     var s = document.createElement('script');
@@ -444,6 +458,27 @@
         e.target.classList.add('is-settled');
       }
     });
+  })();
+
+  // Hero entrance: the text rises + fades in (shared [data-reveal] system) and the
+  // rotating rings fade/scale in — but only once the intro splash has finished
+  // (afterIntro). Set up AFTER the scroll-reveal block above so its observer doesn't
+  // grab this group and reveal it behind the splash.
+  (function () {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    var content = hero.querySelector('.hero__content');
+    var head = hero.querySelector('.hero__head');
+    var seq = head ? Array.prototype.slice.call(head.children) : [];   // logo, eyebrow, headline
+    var btn = content && content.querySelector('.btn'); if (btn) seq.push(btn);
+    seq.forEach(function (el, i) { el.style.setProperty('--reveal-delay', (i * 90) + 'ms'); el.setAttribute('data-reveal', ''); });
+    if (content) content.setAttribute('data-reveal-group', '');
+    hero.classList.add('hero--intro');                                 // hold the rings hidden until the reveal
+    function reveal() {
+      if (content) content.classList.add('is-revealed');              // hero text rises + fades in (staggered)
+      hero.classList.add('hero--in');                                 // rings fade + settle in
+    }
+    if (window.afterIntro) window.afterIntro(reveal); else reveal();
   })();
 
   // Touch swipes the rails natively; this adds the same gesture for a mouse, so the
