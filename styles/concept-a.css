@@ -22,6 +22,18 @@
 /* globe-only mark (rotates in the hero); the .logo mask components stay for the lockups */
 .logo--globe { width: 56px; height: 56px; -webkit-mask: url(../assets/img/a/globe.svg) center / contain no-repeat; mask: url(../assets/img/a/globe.svg) center / contain no-repeat; background: currentColor; }
 
+/* ------------------------------------------------------- first-load intro --
+   The Observatory logo animation on first load (same as Concept B), recoloured to
+   the accent on the page background. Concept A's palette equals "Night", so this is
+   the accent-on-bg splash the brief asks for. Confined to the 390px content column. */
+.intro { position: fixed; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px; max-width: 100%; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
+.intro.is-hidden { opacity: 0; pointer-events: none; }
+.intro__anim { width: min(88%, 360px); aspect-ratio: 1280 / 300; opacity: 0; transition: opacity var(--dur) var(--ease); }
+.intro.is-ready .intro__anim { opacity: 1; }
+.intro__anim svg { display: block; width: 100% !important; height: 100% !important; overflow: visible; }
+.intro__anim svg [fill]:not([fill="none"]) { fill: var(--color-accent) !important; }
+.intro__anim svg [stroke]:not([stroke="none"]) { stroke: var(--color-accent) !important; }
+
 /* shared eyebrow used by the A blocks — accent per Figma */
 .a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin: 0; }
 
@@ -162,7 +174,9 @@
    Only the width is forced — the panel is align-items:flex-start, which would
    otherwise shrink the rail to its content and kill the overflow scroll. */
 .a-about .rail { gap: var(--space-2); width: calc(100% + var(--space-4) * 2); }
-.a-about .benefit { flex: 0 0 253px; width: 253px; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
+/* Cards stretch to the tallest in the rail; keep the animation slot pinned to the TOP
+   (base .benefit bottom-aligns, which leaves a gap above the slot on shorter cards). */
+.a-about .benefit { flex: 0 0 253px; width: 253px; justify-content: flex-start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
 /* The card already carries its own 1.5px border; the base overlay stroke would double it. */
 .a-about .benefit::after { display: none; }
 /* The animation stage is part of the card surface, not a lighter inset. */

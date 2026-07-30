@@ -470,18 +470,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .switch button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-on-accent); border-color: var(--color-accent); }
 
-/* On a phone the panel would cover the screen it is meant to demonstrate, so it
-   collapses to a button and opens on tap. */
+/* The theme/palette switcher is a desktop-only demo control — on a phone it would
+   cover the screen it is meant to demonstrate, so hide it entirely on mobile. */
 @media (max-width: 760px) {
-  .switch__toggle {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px;
-    background: var(--color-surface); color: var(--color-text);
-    border: 1.5px solid var(--color-border); border-radius: var(--radius-pill);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
-  }
-  .switch__panel { display: none; max-width: calc(100vw - var(--space-5)); }
-  .switch--open .switch__panel { display: flex; }
+  .switch { display: none; }
 }
 
 /* ============================================================

@@ -9,10 +9,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=12">
-<link rel="stylesheet" href="styles/concept-a.css?v=20">
+<link rel="stylesheet" href="styles/base.css?v=13">
+<link rel="stylesheet" href="styles/concept-a.css?v=21">
 </head>
 <body>
+
+<!-- first-load intro splash: the Observatory logo animation (Night palette — accent on bg) -->
+<div class="intro" id="intro" role="status" aria-label="Observatory"><div class="intro__anim" id="introAnim"></div></div>
 
 <!-- concept switcher (demo): jump between concepts -->
 <nav class="concept-nav" aria-label="Concept">
@@ -261,6 +264,37 @@
 </main>
 
 <script>
+  // first-load intro: play the Observatory logo once, then reveal the page (once per
+  // session, skipped under reduced motion). Colour is CSS (accent on bg = Night).
+  (function () {
+    var intro = document.getElementById('intro');
+    if (!intro) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var seen = false; try { seen = sessionStorage.getItem('obsIntroA') === '1'; } catch (e) {}
+    if (reduce || seen) { intro.remove(); return; }         // once per session; skip under reduced motion
+    try { sessionStorage.setItem('obsIntroA', '1'); } catch (e) {}
+    document.documentElement.style.overflow = 'hidden';
+    var anim = null, done = false;
+    function hide() {
+      if (done) return; done = true;
+      intro.classList.add('is-hidden');
+      document.documentElement.style.overflow = '';
+      setTimeout(function () { if (anim) anim.destroy(); intro.remove(); }, 460);
+    }
+    var s = document.createElement('script');
+    s.src = 'assets/vendor/lottie.min.js';
+    s.onload = function () {
+      try {
+        anim = lottie.loadAnimation({ container: document.getElementById('introAnim'), renderer: 'svg', loop: false, autoplay: true, path: 'assets/logo-intro.json?v=1', initialSegment: [0, 276] });
+        anim.addEventListener('DOMLoaded', function () { var svg = intro.querySelector('svg'); if (svg) svg.setAttribute('viewBox', '360 850 1280 300'); intro.classList.add('is-ready'); });   // colour is CSS; crop the wide canvas to the logo
+        anim.addEventListener('complete', function () { setTimeout(hide, 400); });   // hold a beat once the logo has fully formed
+      } catch (e) { hide(); }
+    };
+    s.onerror = hide;
+    document.head.appendChild(s);
+    setTimeout(hide, 8000);                                  // safety cap
+  })();
+
   // hero: reserve space for the fixed header and publish the stage height (--a-canvasH,
   // which drives the adaptive image slot), then cycle the four editorial states — CSS
   // transitions morph everything (image wipe, headline slide, globe move) between them.
