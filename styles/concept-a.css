@@ -92,21 +92,36 @@
    the slot's 16px gap keeps the resting compositions clear. */
 .a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--a-ease), height var(--a-morph) var(--a-ease); }
 .a-hero__pic img { position: absolute; display: block; object-fit: cover; height: var(--a-slot); }
-/* Pic 1 Duomo — state 1: full-width photo at the BOTTOM; grows up from a bottom line */
+/* Per Figma (Hero · Concept A keyframes) each photo OPENS by a 2D corner-grow from a
+   0 x 56 point, then COLLAPSES 1D keeping its full dimension — into a line — before
+   resetting to the corner while hidden. Widths are fixed; open height = adaptive slot.
+   Sizes below are (width x height) per state; the img anchor sets the collapse edge. */
+
+/* Pic 1 Duomo — full-width BOTTOM. s1 open (358 x slot); else a bottom line (358 x 0). */
 .a-hero__pic--1 { left: 16px; bottom: 0; width: 358px; height: 0; }
 .a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; }
 .a-hero[data-astate="1"] .a-hero__pic--1 { height: var(--a-slot); }
-/* Pic 2 Colosseum — state 2: TOP-RIGHT; corner-grows 0x56 -> 286xslot */
-.a-hero__pic--2 { right: 16px; top: 0; width: 0; height: var(--a-cap); }
+
+/* Pic 2 Colosseum — TOP-RIGHT. s1 (0x56) · s2 open (286xslot) · s3 (0xslot, right line) · s4 (0x0). */
+.a-hero__pic--2 { right: 16px; top: 0; width: 0; height: 0; }
 .a-hero__pic--2 img { right: 0; top: 0; width: 286px; }
+.a-hero[data-astate="1"] .a-hero__pic--2 { height: var(--a-cap); }
 .a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: var(--a-slot); }
-/* Pic 3 painting — state 3: TOP-LEFT; corner-grows 0x56 -> 358xslot */
-.a-hero__pic--3 { left: 16px; top: 0; width: 0; height: var(--a-cap); }
+.a-hero[data-astate="3"] .a-hero__pic--2 { height: var(--a-slot); }
+
+/* Pic 3 painting — full-width TOP. s2 (0x56) · s3 open (358xslot) · s4 (358x0, top line) · s1 (0x0). */
+.a-hero__pic--3 { left: 16px; top: 0; width: 0; height: 0; }
 .a-hero__pic--3 img { left: 0; top: 0; width: 358px; }
+.a-hero[data-astate="2"] .a-hero__pic--3 { height: var(--a-cap); }
 .a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: var(--a-slot); }
-/* Pic 4 Venice — state 4: BOTTOM-LEFT; corner-grows 0x56 -> 286xslot */
-.a-hero__pic--4 { left: 16px; bottom: 0; width: 0; height: var(--a-cap); }
+.a-hero[data-astate="4"] .a-hero__pic--3 { width: 358px; height: 0; }
+
+/* Pic 4 Venice — BOTTOM-LEFT. s3 (0x56) · s4 open (286xslot) · s1 (0xslot, full-height left line
+   — collapses width-only from s4, height stays full) · s2 (0x0). */
+.a-hero__pic--4 { left: 16px; bottom: 0; width: 0; height: 0; }
 .a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; }
+.a-hero[data-astate="1"] .a-hero__pic--4 { height: var(--a-slot); }
+.a-hero[data-astate="3"] .a-hero__pic--4 { height: var(--a-cap); }
 .a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: var(--a-slot); }
 
 /* headline — three lines that slide between the top and the bottom of the block. The
