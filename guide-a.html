@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en" data-concept="a" data-palette="archive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a1c">
+<title>The City You Don’t Understand at First — Observatory · Concept A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=13">
+<link rel="stylesheet" href="styles/concept-a.css?v=23">
+<link rel="stylesheet" href="styles/guide-a.css?v=1">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+</head>
+<body>
+
+<!-- concept switcher (demo): jump between concepts -->
+<nav class="concept-nav" aria-label="Concept">
+  <a href="index-a.html">A</a>
+  <a href="index.html">B</a>
+  <span aria-disabled="true" title="Concept C — coming">C</span>
+</nav>
+
+<main class="screen a-screen">
+
+  <!-- cover: hero image + panel (badge, title, sub) + price card -->
+  <section class="ga-cover" id="gaCover">
+    <div class="ga-cover__media" aria-hidden="true"><img class="ga-cover__bg" src="assets/img/guide/guide-cover.jpg?v=2" alt=""></div>
+    <div class="ga-cover__fade" aria-hidden="true"></div>
+    <div class="ga-cover__top">
+      <a class="icon-btn icon-btn--scrim icon-btn--36" href="index-a.html" aria-label="Back">
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-left"></use></svg>
+      </a>
+      <button class="ga-lang" aria-label="Language: English">ENGLISH
+        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-down"></use></svg>
+      </button>
+    </div>
+
+    <div class="ga-cover__panel">
+      <div class="ga-cover__badges">
+        <span class="ga-cover__mark logo logo--globe" aria-hidden="true"></span>
+        <span class="ga-city">MILAN</span>
+      </div>
+      <h1 class="ga-cover__title">The City You Don’t Understand at First</h1>
+      <p class="ga-cover__sub t-body">Seven landmarks, one square mile, six hundred years. Milan’s centre — slowed down until it finally makes sense.</p>
+
+      <!-- price card -->
+      <div class="ga-info" id="gaInfo">
+        <div class="ga-info__metrics">
+          <div class="ga-info__price">210 $</div>
+          <div class="ga-metric"><span class="ga-metric__label">Duration</span><span class="ga-metric__value">1h 40m</span></div>
+          <div class="ga-metric"><span class="ga-metric__label">Distance</span><span class="ga-metric__value">2.4 km</span></div>
+          <div class="ga-metric"><span class="ga-metric__label">Stops</span><span class="ga-metric__value">9</span></div>
+          <div class="ga-metric"><span class="ga-metric__label">Level</span><span class="ga-metric__value">Easy</span></div>
+        </div>
+        <a class="btn btn--primary btn--large ga-info__buy" href="nav.html">Buy guide
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+        </a>
+        <p class="ga-info__note t-caption t-muted">one-time · lifetime access</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="ga-about">
+    <p class="a-eyebrow">About</p>
+    <h2 class="ga-h2">A Journey to Experience</h2>
+    <p class="ga-about__body ga-about__body--clamp t-body t-muted" id="aboutBody">Milan hides its greatness in plain sight — behind a plain façade, under an arcade, inside a church that fakes its own depth. This walk slows the centre down: six hundred years of cathedral, gallery, opera house, medieval square and Bramante’s impossible apse, in a few hundred metres. Seven stops, one afternoon — and by the end the city reads differently, because now you know what you’re looking at.</p>
+    <button class="ga-about__toggle text-btn" aria-expanded="false" aria-controls="aboutBody">
+      <span>More</span>
+      <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-down"></use></svg>
+    </button>
+  </section>
+
+  <!-- gallery (looping) -->
+  <section class="ga-gallery" aria-label="Gallery">
+    <div class="ga-gallery__track" id="galleryTrack">
+      <span class="ga-gallery__item ga-gallery__item--n"><img src="assets/img/guide/gal-1.jpg" alt=""></span>
+      <span class="ga-gallery__item ga-gallery__item--w"><img src="assets/img/guide/gal-2.jpg" alt=""></span>
+      <span class="ga-gallery__item ga-gallery__item--n"><img src="assets/img/guide/gal-3.jpg" alt=""></span>
+      <span class="ga-gallery__item ga-gallery__item--n"><img src="assets/img/guide/gal-4.jpg" alt=""></span>
+      <span class="ga-gallery__item ga-gallery__item--w"><img src="assets/img/guide/gal-5.jpg" alt=""></span>
+      <span class="ga-gallery__item ga-gallery__item--n"><img src="assets/img/guide/gal-6.jpg" alt=""></span>
+    </div>
+  </section>
+
+  <!-- the route -->
+  <section class="ga-route">
+    <div class="ga-route__head">
+      <p class="a-eyebrow">The route</p>
+      <h2 class="ga-h2"><span class="ac">7 stops</span>, one afternoon</h2>
+    </div>
+
+    <div class="ga-route__map" id="routeMap"></div>
+
+    <div class="ga-route__cards" id="routeCards">
+      <article class="ga-rcard" data-stop="1"><img class="ga-rcard__img" src="assets/img/guide/poi-1.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">01</span><h3 class="ga-rcard__title">Duomo di Milano</h3><p class="ga-rcard__desc t-muted">Six hundred years of marble, and a roof you can walk.</p></div></article>
+      <article class="ga-rcard" data-stop="2"><img class="ga-rcard__img" src="assets/img/guide/poi-2.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">02</span><h3 class="ga-rcard__title">Galleria Vittorio Emanuele II</h3><p class="ga-rcard__desc t-muted">Glass, iron and mosaic — the oldest shopping arcade in Italy.</p></div></article>
+      <article class="ga-rcard" data-stop="3"><img class="ga-rcard__img" src="assets/img/guide/poi-3.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">03</span><h3 class="ga-rcard__title">Palazzo Marino</h3><p class="ga-rcard__desc t-muted">The city hall Milan almost never lets you inside.</p></div></article>
+      <article class="ga-rcard" data-stop="4"><img class="ga-rcard__img" src="assets/img/guide/poi-4.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">04</span><h3 class="ga-rcard__title">Teatro alla Scala</h3><p class="ga-rcard__desc t-muted">The plainest façade in Milan hides its loudest room.</p></div></article>
+      <article class="ga-rcard" data-stop="5"><img class="ga-rcard__img" src="assets/img/guide/poi-5.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">05</span><h3 class="ga-rcard__title">Piazza dei Mercanti</h3><p class="ga-rcard__desc t-muted">The medieval heart, from when the city was a handful of streets.</p></div></article>
+      <article class="ga-rcard" data-stop="6"><img class="ga-rcard__img" src="assets/img/guide/poi-6.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">06</span><h3 class="ga-rcard__title">Santa Maria presso San Satiro</h3><p class="ga-rcard__desc t-muted">Step in and the church runs deep — except it doesn’t.</p></div></article>
+      <article class="ga-rcard" data-stop="7"><img class="ga-rcard__img" src="assets/img/guide/poi-7.jpg" alt=""><div class="ga-rcard__text"><span class="ga-rcard__num">07</span><h3 class="ga-rcard__title">Pinacoteca Ambrosiana</h3><p class="ga-rcard__desc t-muted">A courtyard, and Leonardo’s notebooks in the rooms beyond.</p></div></article>
+    </div>
+  </section>
+
+  <!-- formats -->
+  <section class="ga-formats">
+    <div class="ga-formats__head">
+      <p class="a-eyebrow">Formats</p>
+      <h2 class="ga-h2">How you’ll experience it</h2>
+    </div>
+    <div class="ga-formats__rail">
+      <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-interactive"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Interactive</div><div class="ga-format__sub t-muted">Tap the details to dig in</div></div></div>
+      <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-headphones"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Audio</div><div class="ga-format__sub t-muted">Narrated as you walk</div></div></div>
+      <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-play"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Video</div><div class="ga-format__sub t-muted">Short scenes on site</div></div></div>
+      <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-text"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Text</div><div class="ga-format__sub t-muted">Read at your own pace</div></div></div>
+    </div>
+  </section>
+
+  <!-- featured guides (reuse Concept A component) -->
+  <section class="a-featured">
+    <div class="a-featured__head">
+      <p class="a-eyebrow">You might also like</p>
+      <div class="a-featured__row">
+        <h2 class="a-featured__title t-h1">Popular in Italy</h2>
+        <a class="text-btn" href="index-a.html"><span>All</span>
+          <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <div class="a-featured__rail">
+      <article class="a-guide">
+        <img class="a-guide__img" src="assets/img/guide-disappear.jpg" alt="">
+        <span class="a-guide__badge">Milan</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">Where Milan Goes to Disappear</h3>
+            <p class="a-guide__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
+          </div>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">180 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="a-guide">
+        <img class="a-guide__img" src="assets/img/guide-ritual.jpg" alt="">
+        <span class="a-guide__badge">Milan</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">The Six O’Clock Ritual</h3>
+            <p class="a-guide__teaser">Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
+          </div>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">80 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="a-guide">
+        <img class="a-guide__img" src="assets/img/guide-rooftops.jpg" alt="">
+        <span class="a-guide__badge">Rome</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">Rome from the Rooftops</h3>
+            <p class="a-guide__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta.</p>
+          </div>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">190 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- footer (reuse Concept A component) -->
+  <footer class="a-foot">
+    <a class="logo logo--full a-foot__lockup" href="index-a.html" aria-label="Observatory TS"></a>
+    <h2 class="ga-h2 t-center t-balance a-foot__title">Ready to Start <span class="ac">a New Journey?</span></h2>
+    <div class="a-foot__btns">
+      <a class="btn btn--primary btn--large" href="index-a.html">Let’s go
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+      </a>
+      <a class="btn btn--secondary btn--large" href="#">Log in
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+      </a>
+    </div>
+    <nav class="a-foot__nav">
+      <a class="t-body" href="#">About</a>
+      <a class="t-body" href="#">Guides</a>
+      <a class="t-body" href="#">How it works</a>
+      <a class="t-body" href="#">Contact</a>
+    </nav>
+    <div class="a-foot__row">
+      <span class="a-foot__lang">
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
+        <span class="t-body">English</span>
+      </span>
+      <span class="a-foot__social">
+        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></a>
+        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></a>
+      </span>
+    </div>
+    <div class="a-foot__legal">
+      <span class="t-caption t-muted">© 2026 Observatory</span>
+      <span class="a-foot__legallinks">
+        <a class="t-caption t-muted" href="#">Terms</a>
+        <a class="t-caption t-muted" href="#">Privacy</a>
+      </span>
+    </div>
+    <span class="foot-end" id="footEnd" aria-hidden="true"></span>
+  </footer>
+
+</main>
+
+<!-- sticky purchase bar -->
+<div class="ga-buybar" id="buybar" aria-hidden="true">
+  <div class="ga-buybar__price">
+    <span class="ga-buybar__amount">210 $</span>
+    <span class="t-caption t-muted">one-time · lifetime access</span>
+  </div>
+  <a class="btn btn--primary btn--large" href="nav.html">Buy guide
+    <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+  </a>
+</div>
+
+<script>
+  // hero photo parallax — the img lags the scroll while the cover is in view
+  (function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var img = document.querySelector('.ga-cover__bg');
+    var cover = document.querySelector('.ga-cover');
+    if (!img || !cover) return;
+    var ticking = false;
+    function upd() {
+      ticking = false;
+      var y = window.scrollY;
+      if (y > cover.offsetHeight) return;
+      img.style.setProperty('--parallax', Math.min(y * 0.16, 24) + 'px');
+    }
+    addEventListener('scroll', function () {
+      if (!ticking) { requestAnimationFrame(upd); ticking = true; }
+    }, { passive: true });
+    upd();
+  })();
+
+  // about: expand / collapse with an animated height reveal
+  (function () {
+    var btn = document.querySelector('.ga-about__toggle');
+    var body = document.getElementById('aboutBody');
+    if (!btn || !body) return;
+    var label = btn.querySelector('span');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var open = false, busy = false;
+    function collapsedHeight() { return Math.round(parseFloat(getComputedStyle(body).lineHeight) * 3); }
+    btn.addEventListener('click', function () {
+      if (busy) return;
+      open = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Less' : 'More';
+      if (reduce) { body.classList.toggle('ga-about__body--clamp', !open); return; }
+      busy = true;
+      body.classList.add('ga-about__body--anim');
+      if (open) {
+        var from = body.clientHeight;
+        body.classList.remove('ga-about__body--clamp');
+        var to = body.scrollHeight;
+        body.style.maxHeight = from + 'px';
+        body.getBoundingClientRect();
+        body.style.maxHeight = to + 'px';
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.style.maxHeight = 'none';
+          body.classList.remove('ga-about__body--anim');
+          busy = false;
+        });
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.getBoundingClientRect();
+        body.style.maxHeight = collapsedHeight() + 'px';
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.classList.add('ga-about__body--clamp');
+          body.style.maxHeight = '';
+          body.classList.remove('ga-about__body--anim');
+          busy = false;
+        });
+      }
+    });
+  })();
+
+  // gallery: continuous auto-scroll marquee (tap doesn't pause; swipe takes over)
+  (function () {
+    var gallery = document.querySelector('.ga-gallery');
+    var track = document.getElementById('galleryTrack');
+    if (!gallery || !track) return;
+    var n = track.children.length;
+    var orig = track.innerHTML;
+    track.innerHTML = orig + orig + orig;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var loopW = 0, pxPerMs = 0, pos = 0;
+    function norm(p) { if (!loopW) return p; if (p < loopW * 0.5) p += loopW; else if (p >= loopW * 1.5) p -= loopW; return p; }
+    function measure() {
+      loopW = track.children[n].offsetLeft;
+      if (loopW) { pxPerMs = loopW / 48000; if (gallery.scrollLeft < 1) gallery.scrollLeft = loopW; pos = gallery.scrollLeft; }
+    }
+    requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+    gallery.addEventListener('scroll', function () {
+      if (!paused || !loopW) return;
+      var s = gallery.scrollLeft, w = norm(s);
+      if (Math.abs(w - s) > 0.5) gallery.scrollLeft = w;
+    }, { passive: true });
+    var paused = false, resumeTimer;
+    function pause() { paused = true; clearTimeout(resumeTimer); }
+    function scheduleResume() { clearTimeout(resumeTimer); resumeTimer = setTimeout(function () { paused = false; pos = gallery.scrollLeft; }, 800); }
+    gallery.addEventListener('touchmove', pause, { passive: true });
+    gallery.addEventListener('touchend', scheduleResume, { passive: true });
+    gallery.addEventListener('touchcancel', scheduleResume, { passive: true });
+    gallery.addEventListener('wheel', function () { pause(); scheduleResume(); }, { passive: true });
+    var dx = null;
+    gallery.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') dx = e.clientX; });
+    gallery.addEventListener('pointermove', function (e) { if (dx !== null && Math.abs(e.clientX - dx) > 6) pause(); });
+    window.addEventListener('pointerup', function () { if (dx !== null) { dx = null; scheduleResume(); } });
+    var last = 0;
+    function tick(t) {
+      if (last && !paused && loopW) {
+        var dt = Math.min(t - last, 50);
+        pos = norm(pos + pxPerMs * dt);
+        gallery.scrollLeft = pos;
+      }
+      last = t;
+      requestAnimationFrame(tick);
+    }
+    if (!reduce) requestAnimationFrame(tick);
+  })();
+
+  // route: real MapLibre map + markers <-> cards
+  (function () {
+    var cards = document.getElementById('routeCards');
+    if (!cards) return;
+    var rcards = [].slice.call(cards.querySelectorAll('.ga-rcard'));
+    var STOPS = [
+      { stop: '1', lngLat: [9.19193, 45.46418], photo: 'assets/img/guide/poi-1.jpg' },
+      { stop: '2', lngLat: [9.18997, 45.46560], photo: 'assets/img/guide/poi-2.jpg' },
+      { stop: '3', lngLat: [9.19012, 45.46690], photo: 'assets/img/guide/poi-3.jpg' },
+      { stop: '4', lngLat: [9.18954, 45.46743], photo: 'assets/img/guide/poi-4.jpg' },
+      { stop: '5', lngLat: [9.18800, 45.46476], photo: 'assets/img/guide/poi-5.jpg' },
+      { stop: '6', lngLat: [9.18662, 45.46312], photo: 'assets/img/guide/poi-6.jpg' },
+      { stop: '7', lngLat: [9.18606, 45.46285], photo: 'assets/img/guide/poi-7.jpg' }
+    ];
+    var lngLatFor = {}, markerEls = {};
+    STOPS.forEach(function (s) { lngLatFor[s.stop] = s.lngLat; });
+    var map = null;
+    function activate(stop, scrollCard, pan) {
+      Object.keys(markerEls).forEach(function (k) { markerEls[k].classList.toggle('is-active', k === stop); });
+      rcards.forEach(function (c) {
+        var on = c.dataset.stop === stop;
+        c.classList.toggle('is-active', on);
+        if (on && scrollCard) c.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      });
+      if (pan && map && lngLatFor[stop]) map.easeTo({ center: lngLatFor[stop], duration: 500 });
+    }
+    rcards.forEach(function (c) { c.addEventListener('click', function () { activate(c.dataset.stop, true, true); }); });
+    activate('1', false, false);
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;left:-9999px;visibility:hidden';
+    document.body.appendChild(probe);
+    var cctx = document.createElement('canvas').getContext('2d');
+    function res(expr) {
+      probe.style.color = ''; probe.style.color = expr;
+      cctx.fillStyle = '#000';
+      cctx.fillStyle = getComputedStyle(probe).color;
+      cctx.fillRect(0, 0, 1, 1);
+      var d = cctx.getImageData(0, 0, 1, 1).data;
+      return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
+    }
+    function palette() {
+      return {
+        land: res('var(--color-bg)'),
+        water: res('color-mix(in oklab, var(--color-accent), var(--color-bg) 82%)'),
+        park: res('color-mix(in oklab, var(--color-accent), var(--color-bg) 90%)'),
+        building: res('color-mix(in oklab, var(--color-border), var(--color-bg) 30%)'),
+        roadMinor: res('color-mix(in oklab, var(--color-border), var(--color-bg) 10%)'),
+        roadMajor: res('color-mix(in oklab, var(--color-border), var(--color-text-muted) 40%)'),
+        label: res('var(--color-text-muted)'),
+        halo: res('var(--color-bg)'),
+        accent: res('var(--color-accent)')
+      };
+    }
+    function buildStyle(c) {
+      var TILES = 'https://tiles.openfreemap.org/planet';
+      return {
+        version: 8,
+        glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
+        sources: { omt: { type: 'vector', url: TILES } },
+        layers: [
+          { id: 'bg', type: 'background', paint: { 'background-color': c.land } },
+          { id: 'water', type: 'fill', source: 'omt', 'source-layer': 'water', paint: { 'fill-color': c.water } },
+          { id: 'park', type: 'fill', source: 'omt', 'source-layer': 'park', paint: { 'fill-color': c.park, 'fill-opacity': 0.7 } },
+          { id: 'landuse', type: 'fill', source: 'omt', 'source-layer': 'landuse', filter: ['in', 'class', 'residential', 'commercial', 'retail'], paint: { 'fill-color': c.land } },
+          { id: 'building', type: 'fill', source: 'omt', 'source-layer': 'building', minzoom: 13, paint: { 'fill-color': c.building, 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0, 14.5, 0.75] } },
+          { id: 'road-minor', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['!', ['in', ['get', 'class'], ['literal', ['motorway', 'trunk', 'primary', 'secondary']]]], layout: { 'line-cap': 'round' }, paint: { 'line-color': c.roadMinor, 'line-width': ['interpolate', ['linear'], ['zoom'], 12, 0.5, 16, 4] } },
+          { id: 'road-major', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['in', ['get', 'class'], ['literal', ['motorway', 'trunk', 'primary', 'secondary']]], layout: { 'line-cap': 'round' }, paint: { 'line-color': c.roadMajor, 'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 16, 6] } },
+          { id: 'place', type: 'symbol', source: 'omt', 'source-layer': 'place', filter: ['in', ['get', 'class'], ['literal', ['suburb', 'neighbourhood', 'quarter']]], layout: { 'text-field': ['get', 'name'], 'text-font': ['Noto Sans Regular'], 'text-size': 11, 'text-transform': 'uppercase', 'text-letter-spacing': 0.12 }, paint: { 'text-color': c.label, 'text-halo-color': c.halo, 'text-halo-width': 1.2 } }
+        ]
+      };
+    }
+    var mapEl = document.getElementById('routeMap');
+    var statusEl = document.createElement('div');
+    statusEl.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--on-media);font:12px/1.4 var(--font-ui);z-index:1;pointer-events:none';
+    statusEl.textContent = 'Loading map…';
+    mapEl.appendChild(statusEl);
+    function setStatus(show) { if (!show) statusEl.remove(); }
+    function boot() {
+      if (!window.maplibregl) { setStatus(false); return; }
+      var C = palette();
+      try {
+        map = new maplibregl.Map({
+          container: 'routeMap', style: buildStyle(C),
+          center: [9.18930, 45.46520], zoom: 14.6, minZoom: 13, maxZoom: 17,
+          attributionControl: { compact: true }, scrollZoom: false, dragRotate: false, pitchWithRotate: false
+        });
+      } catch (err) { setStatus(false); return; }
+      map.touchZoomRotate.disableRotation();
+      new IntersectionObserver(function (es) { if (es[0].isIntersecting) map.resize(); }).observe(mapEl);
+      map.on('load', function () {
+        setStatus(false); map.resize();
+        map.addSource('route', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: STOPS.map(function (s) { return s.lngLat; }) } } });
+        map.addLayer({ id: 'route-line', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.accent, 'line-width': 3, 'line-dasharray': [0.2, 2] } });
+        STOPS.forEach(function (s) {
+          var el = document.createElement('div');
+          el.className = 'mpoi'; el.dataset.stop = s.stop;
+          el.innerHTML = '<div class="mpoi__inner"><span class="poi__glow"></span><img class="poi__photo" src="' + s.photo + '" alt=""><span class="poi__num">' + s.stop + '</span></div>';
+          el.addEventListener('click', function (e) { e.stopPropagation(); activate(s.stop, true, true); });
+          markerEls[s.stop] = el;
+          new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(s.lngLat).addTo(map);
+        });
+        var b = new maplibregl.LngLatBounds();
+        STOPS.forEach(function (s) { b.extend(s.lngLat); });
+        map.fitBounds(b, { padding: 44, maxZoom: 15.4, duration: 0 });
+        activate('1', false, false);
+      });
+    }
+    if (window.maplibregl) boot(); else window.addEventListener('load', boot);
+  })();
+
+  // sticky purchase bar: appears once the price card scrolls past, hides at the footer end
+  (function () {
+    var ginfo = document.getElementById('gaInfo');
+    var footEnd = document.getElementById('footEnd');
+    var bar = document.getElementById('buybar');
+    if (!ginfo || !footEnd || !bar) return;
+    var pastGinfo = false, atEnd = false;
+    function update() {
+      var show = pastGinfo && !atEnd;
+      bar.classList.toggle('is-shown', show);
+      bar.setAttribute('aria-hidden', String(!show));
+    }
+    new IntersectionObserver(function (e) { pastGinfo = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; update(); }, { threshold: 0 }).observe(ginfo);
+    new IntersectionObserver(function (e) { atEnd = e[0].isIntersecting; update(); }, { threshold: 0 }).observe(footEnd);
+  })();
+
+  // reveal-on-scroll
+  (function () {
+    var groups = [
+      ['.ga-about', ':scope > *', 70],
+      ['.ga-route__head', ':scope > *', 80],
+      ['.ga-route__cards', ':scope > *', 60],
+      ['.ga-formats__head', ':scope > *', 70],
+      ['.ga-formats__rail', ':scope > *', 60],
+      ['.a-featured__head', ':scope > *', 60],
+      ['.a-featured__rail', ':scope > *', 80],
+      ['.a-foot', ':scope > *', 60]
+    ];
+    groups.forEach(function (g) {
+      document.querySelectorAll(g[0]).forEach(function (box) {
+        var kids = box.querySelectorAll(g[1]); if (!kids.length) return;
+        box.setAttribute('data-reveal-group', '');
+        kids.forEach(function (el, i) { el.style.setProperty('--reveal-delay', i * g[2] + 'ms'); el.setAttribute('data-reveal', ''); });
+      });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>

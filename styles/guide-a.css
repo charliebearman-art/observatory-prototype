@@ -1,0 +1,104 @@
+/* ============================================================================
+   Concept A — guide page (Страница гайда · Неавторизованный). Editorial restyle
+   of the guide flow: cover with merged price card, about, gallery marquee, route
+   map, formats, then the shared a-featured / a-foot components. Colour + type come
+   from tokens.css [data-concept="a"][data-palette="archive"] via concept-a.css.
+   ============================================================================ */
+
+/* section heading shared by the guide blocks (Cormorant display, 40) */
+.ga-h2 { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
+.ga-h2 .ac { color: var(--color-accent); }
+
+/* ---------------------------------------------------------------- cover -- */
+.ga-cover { position: relative; background: var(--color-bg); }
+.ga-cover__media { position: relative; height: 360px; overflow: hidden; }
+.ga-cover__bg { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateY(var(--parallax, 0)); will-change: transform; }
+/* blend the photo's base into the page background */
+.ga-cover__fade { position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(to bottom, rgba(26,26,28,0) 0%, var(--color-bg) 100%); pointer-events: none; }
+.ga-cover__top { position: absolute; top: var(--space-4); left: var(--space-4); right: var(--space-4); display: flex; align-items: center; justify-content: space-between; z-index: 2; }
+.ga-lang { display: inline-flex; align-items: center; gap: var(--space-1); height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1.5px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
+
+.ga-cover__panel { position: relative; margin-top: -32px; padding: 0 var(--space-4) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
+.ga-cover__badges { display: flex; align-items: center; gap: var(--space-3); }
+.ga-cover__mark { width: 40px; height: 40px; color: var(--color-accent); }
+.ga-city { display: inline-flex; align-items: center; height: 32px; padding: 0 var(--space-3); border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.08em; }
+.ga-cover__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
+.ga-cover__sub { color: var(--color-text-muted); margin: 0; }
+
+/* price / metrics card, merged into the cover */
+.ga-info { margin-top: var(--space-2); padding: var(--space-4); background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-input); display: flex; flex-direction: column; gap: var(--space-4); }
+.ga-info__metrics { display: grid; grid-template-columns: auto 1fr 1fr; gap: var(--space-4) var(--space-3); align-items: center; }
+.ga-info__price { grid-row: span 2; align-self: center; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-accent); padding-right: var(--space-3); }
+.ga-metric { display: flex; flex-direction: column; gap: 2px; }
+.ga-metric__label { font-family: var(--font-ui); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.ga-metric__value { font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+.ga-info__buy { width: 100%; }
+.ga-info__note { text-align: center; margin: 0; }
+
+/* ---------------------------------------------------------------- about -- */
+.ga-about { padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); align-items: flex-start; }
+.ga-about .a-eyebrow { margin-bottom: calc(var(--space-2) * -1 + var(--space-2)); }
+.ga-about__body { margin: 0; }
+.ga-about__body--clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.ga-about__body--anim { overflow: hidden; transition: max-height var(--dur-slow) var(--ease); }
+
+/* -------------------------------------------------------------- gallery -- */
+.ga-gallery { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.ga-gallery::-webkit-scrollbar { display: none; }
+.ga-gallery__track { display: flex; gap: var(--space-2); padding: 0 var(--space-4); width: max-content; }
+.ga-gallery__item { flex: none; height: 460px; border-radius: var(--radius-input); overflow: hidden; }
+.ga-gallery__item--n { width: 300px; }
+.ga-gallery__item--w { width: 440px; }
+.ga-gallery__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------------------------------------------------------------- route -- */
+.ga-route { padding: var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-6); }
+.ga-route__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.ga-route__map { position: relative; height: 300px; margin: 0 var(--space-4); border-radius: var(--radius-input); overflow: hidden; background: var(--color-surface); border: 1.5px solid var(--color-border); }
+.ga-route__map .maplibregl-map { border-radius: inherit; }
+.ga-route__cards { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
+.ga-route__cards::-webkit-scrollbar { display: none; }
+.ga-rcard { flex: 0 0 300px; width: 300px; scroll-snap-align: start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; transition: border-color var(--dur) var(--ease); }
+.ga-rcard.is-active { border-color: var(--color-accent); }
+.ga-rcard__img { width: 100%; height: 190px; object-fit: cover; display: block; }
+.ga-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
+.ga-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.12em; color: var(--color-text-muted); }
+.ga-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
+.ga-rcard__desc { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); }
+
+/* map markers — accent-ringed photo bubbles, same visuals as Concept B */
+.mpoi { width: 36px; height: 36px; cursor: pointer; }
+.mpoi__inner { position: relative; width: 100%; height: 100%; transition: transform var(--dur) var(--ease); }
+.mpoi.is-active { z-index: 3; }
+.mpoi.is-active .mpoi__inner { transform: scale(1.28); }
+.mpoi.is-active .poi__glow { opacity: 0.55; }
+.poi__photo { width: 100%; height: 100%; border-radius: var(--radius-pill); object-fit: cover; border: 1.5px solid var(--color-accent); display: block; }
+.poi__num { position: absolute; right: -4px; bottom: -4px; min-width: 16px; height: 16px; padding: 0 4px; display: grid; place-items: center; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: 10px; line-height: 1; }
+.poi__glow { position: absolute; inset: -8px; border-radius: var(--radius-pill); box-shadow: 0 0 0 2px var(--color-accent), 0 0 16px 2px var(--color-accent); opacity: 0; transition: opacity var(--dur) var(--ease); }
+
+/* -------------------------------------------------------------- formats -- */
+.ga-formats { padding: 0 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
+.ga-formats__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.ga-formats__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; }
+.ga-formats__rail::-webkit-scrollbar { display: none; }
+.ga-format { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); }
+.ga-format__icon { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-button); background: var(--color-accent-subtle); color: var(--color-accent); }
+.ga-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+.ga-format__sub { font-size: var(--size-caption); line-height: var(--lh-caption); }
+
+/* footer tweaks (a-foot is defined in concept-a.css; these support the flat markup) */
+.a-foot__title { margin: 0; }
+.a-foot__lang { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text); }
+.a-foot__social { display: flex; align-items: center; gap: var(--space-2); }
+.a-foot__legallinks { display: flex; align-items: center; gap: var(--space-3); }
+
+/* ------------------------------------------------------------- buy bar -- */
+.ga-buybar { position: fixed; left: 50%; bottom: 0; z-index: 45; width: 390px; max-width: 100%; transform: translateX(-50%) translateY(100%); display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 4%); backdrop-filter: blur(10px); border-top: 1.5px solid var(--color-border); transition: transform var(--dur-slow) var(--ease); }
+.ga-buybar.is-shown { transform: translateX(-50%) translateY(0); }
+.ga-buybar__price { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+.ga-buybar__amount { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-accent); }
+.ga-buybar .btn { flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ga-cover__bg { transform: none; }
+}
