@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=12">
-<link rel="stylesheet" href="styles/concept-a.css?v=2">
+<link rel="stylesheet" href="styles/concept-a.css?v=3">
 </head>
 <body>
 
@@ -37,28 +37,16 @@
 
 <main class="screen a-screen">
 
-  <!-- hero: editorial animation cycling four compositions -->
-  <section class="a-hero" aria-label="Observatory">
-    <div class="a-hero__slide ahs1">
-      <p class="a-hero__eou"><span class="ac">Explore.</span><br>Observe.<br>Understand.</p>
-      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
-      <div class="a-hero__img"><img src="assets/img/a/hero-1.jpg" alt="Duomo di Milano"></div>
-    </div>
-    <div class="a-hero__slide ahs2">
-      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
-      <div class="a-hero__img"><img src="assets/img/a/hero-2.jpg" alt="Colosseum, Rome"></div>
-      <p class="a-hero__eou">Explore.<br><span class="ac">Observe.</span><br>Understand.</p>
-    </div>
-    <div class="a-hero__slide ahs3">
-      <div class="a-hero__img"><img src="assets/img/a/hero-3.jpg" alt="Renaissance painting"></div>
-      <p class="a-hero__eou">Explore.<br>Observe.<br><span class="ac">Understand.</span></p>
-      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
-    </div>
-    <div class="a-hero__slide ahs4">
-      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
-      <div class="a-hero__img"><img src="assets/img/a/hero-4.jpg" alt="Venetian canal"></div>
-      <p class="a-hero__eou"><span class="ac">Explore.</span><br>Observe.<br>Understand.</p>
-    </div>
+  <!-- hero: editorial morph — headline + globe reposition, images wipe open, per state -->
+  <section class="a-hero" data-astate="1" aria-label="Observatory">
+    <div class="a-hero__pic a-hero__pic--1"><img src="assets/img/a/hero-1.jpg" alt="Duomo di Milano"></div>
+    <div class="a-hero__pic a-hero__pic--2"><img src="assets/img/a/hero-2.jpg" alt="Colosseum, Rome"></div>
+    <div class="a-hero__pic a-hero__pic--3"><img src="assets/img/a/hero-3.jpg" alt="Renaissance painting"></div>
+    <div class="a-hero__pic a-hero__pic--4"><img src="assets/img/a/hero-4.jpg" alt="Venetian canal"></div>
+    <p class="a-hero__line a-hero__line--e">Explore.</p>
+    <p class="a-hero__line a-hero__line--o">Observe.</p>
+    <p class="a-hero__line a-hero__line--u">Understand.</p>
+    <span class="a-hero__globe" aria-hidden="true"><span class="a-hero__globe-in logo logo--globe"></span></span>
   </section>
 
   <div class="a-herocta">
@@ -239,6 +227,14 @@
 </main>
 
 <script>
+  // hero: cycle the editorial states (CSS transitions morph everything between them)
+  (function () {
+    var hero = document.querySelector('.a-hero');
+    if (!hero || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var s = 1;
+    setInterval(function () { s = s % 4 + 1; hero.setAttribute('data-astate', String(s)); }, 3600);
+  })();
+
   // header: hidden at the top, slides in once the hero has scrolled away
   (function () {
     var menu = document.getElementById('aMenu');

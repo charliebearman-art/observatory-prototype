@@ -42,46 +42,65 @@
 .a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
 
 /* --------------------------------------------------------------------- hero --
-   Editorial animation: four compositions crossfade, each repositioning the
-   headline + rotating globe around a portrait/landscape image. */
+   Editorial morph (Figma smart-animate): one headline (3 lines) + one rotating
+   globe reposition between four states, while four image cards each WIPE open
+   (width/height 0 -> full) in their own state and wipe closed otherwise.
+   The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
 .a-hero { position: relative; height: 720px; overflow: hidden; background: var(--color-bg); }
-/* fade THROUGH the background: each composition fully clears before the next
-   appears, so the repositioned headline/globe never double up mid-transition */
-.a-hero__slide { position: absolute; inset: 0; opacity: 0; animation: a-hero-cycle 24s var(--ease) infinite; }
-.a-hero__slide:nth-child(1) { animation-delay: 0s; }
-.a-hero__slide:nth-child(2) { animation-delay: 6s; }
-.a-hero__slide:nth-child(3) { animation-delay: 12s; }
-.a-hero__slide:nth-child(4) { animation-delay: 18s; }
-@keyframes a-hero-cycle { 0% { opacity: 0; } 5% { opacity: 1; } 20% { opacity: 1; } 25% { opacity: 0; } 100% { opacity: 0; } }
+:root { --a-morph: 760ms; }
 
-.a-hero__img { position: absolute; overflow: hidden; border-radius: var(--radius-input); }
-.a-hero__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.a-hero__eou { position: absolute; margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); }
-.a-hero__eou .ac { color: var(--color-accent); }
-.a-hero__globe { position: absolute; width: 56px; height: 56px; color: var(--color-accent); animation: a-globe-spin 36s linear infinite; }
+/* image cards — a clip container whose size animates; the inner <img> is the full
+   size and anchored to the edge it reveals from, so the size change reads as a wipe */
+.a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--ease), height var(--a-morph) var(--ease); will-change: width, height; }
+.a-hero__pic img { position: absolute; display: block; object-fit: cover; }
+/* 1 Duomo — bottom-left, wipes up */
+.a-hero__pic--1 { left: var(--space-4); bottom: 32px; width: 358px; height: 0; }
+.a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; height: 495px; }
+/* 2 Colosseum — right, wipes left */
+.a-hero__pic--2 { right: var(--space-4); top: 32px; width: 0; height: 495px; }
+.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: 495px; }
+/* 3 painting — top-left, wipes down */
+.a-hero__pic--3 { left: var(--space-4); top: 32px; width: 358px; height: 0; }
+.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: 495px; }
+/* 4 Venice — bottom-left, wipes right */
+.a-hero__pic--4 { left: var(--space-4); bottom: 32px; width: 0; height: 495px; }
+.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: 495px; }
+.a-hero[data-astate="1"] .a-hero__pic--1 { height: 495px; }
+.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; }
+.a-hero[data-astate="3"] .a-hero__pic--3 { height: 495px; }
+.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; }
+
+/* headline — three lines that slide between states; the accent line changes */
+.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--ease), color calc(var(--a-morph) * 0.7) var(--ease); }
+.a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, 24px); }
+.a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, 543px); }
+.a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, 543px); }
+.a-hero[data-astate="4"] .a-hero__line--e { transform: translate(218px, 24px); }
+.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, 66px); }
+.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, 585px); }
+.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, 585px); }
+.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, 66px); }
+.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, 108px); }
+.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, 627px); }
+.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, 627px); }
+.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, 108px); }
+.a-hero[data-astate="1"] .a-hero__line--e,
+.a-hero[data-astate="4"] .a-hero__line--e { color: var(--color-accent); }
+.a-hero[data-astate="2"] .a-hero__line--o { color: var(--color-accent); }
+.a-hero[data-astate="3"] .a-hero__line--u { color: var(--color-accent); }
+
+/* rotating globe — outer element slides between states, inner element spins */
+.a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--ease); }
+.a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); animation: a-globe-spin 22s linear infinite; }
 @keyframes a-globe-spin { to { transform: rotate(360deg); } }
-
-/* composition 1 — headline top-left, globe top-right, tall image below */
-.ahs1 .a-hero__eou   { left: var(--space-4); top: 24px; }
-.ahs1 .a-hero__globe { right: var(--space-4); top: 26px; }
-.ahs1 .a-hero__img   { left: var(--space-4); top: 193px; width: 358px; height: 495px; }
-/* composition 2 — globe top-left, image on the right, headline bottom-left */
-.ahs2 .a-hero__globe { left: var(--space-4); top: 26px; }
-.ahs2 .a-hero__img   { right: var(--space-4); top: 24px; width: 214px; height: 664px; }
-.ahs2 .a-hero__eou   { left: var(--space-4); bottom: 24px; }
-/* composition 3 — image top, headline bottom-left, globe bottom-right */
-.ahs3 .a-hero__img   { left: var(--space-4); top: 24px; width: 358px; height: 470px; }
-.ahs3 .a-hero__eou   { left: var(--space-4); bottom: 24px; }
-.ahs3 .a-hero__globe { right: var(--space-4); bottom: 26px; }
-/* composition 4 — globe top-left, image, headline top-right (right-aligned) */
-.ahs4 .a-hero__globe { left: var(--space-4); top: 26px; }
-.ahs4 .a-hero__img   { right: var(--space-4); bottom: 24px; width: 214px; height: 560px; }
-.ahs4 .a-hero__eou   { right: var(--space-4); top: 24px; text-align: right; }
+.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, 32px); }
+.a-hero[data-astate="2"] .a-hero__globe { transform: translate(72px, 88px); }
+.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, 631px); }
+.a-hero[data-astate="4"] .a-hero__globe { transform: translate(373px, 688px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .a-hero__slide { animation: none; opacity: 0; }
-  .a-hero__slide:nth-child(1) { opacity: 1; }   /* hold the resting composition */
-  .a-globe-spin, .a-hero__globe { animation: none; }
+  .a-hero__pic, .a-hero__line, .a-hero__globe { transition: none; }
+  .a-hero__globe-in { animation: none; }
 }
 
 /* hero CTA that sits just under the hero */
