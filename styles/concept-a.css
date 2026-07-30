@@ -261,3 +261,5 @@
 .concept-nav a, .concept-nav span { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 3px; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); color: var(--color-text-muted); text-decoration: none; }
 .concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
 .concept-nav span { opacity: 0.4; }
+/* Desktop-only demo control, same as the .switch panel — hidden on the phone view. */
+@media (max-width: 760px) { .concept-nav { display: none; } }
