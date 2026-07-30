@@ -51,8 +51,10 @@
    let the leftover sub-pixel fall into the gap, so both edges land on whole pixels —
    otherwise a fractional flex width makes the right side of the border antialias thinner */
 @supports (width: round(down, 10.5px, 1px)) {
-  .pswitch { justify-content: space-between; }
-  .pswitch__back, .pswitch__next { flex: 0 0 auto; width: round(down, calc((100% - var(--space-2)) / 2), 1px); }
+  /* only when there are two buttons (Back + Next/To Object); a lone button keeps flex:1 and fills */
+  .pswitch:has(.pswitch__back) { justify-content: space-between; }
+  .pswitch:has(.pswitch__back) > .pswitch__back,
+  .pswitch:has(.pswitch__back) > .pswitch__next { flex: 0 0 auto; width: round(down, calc((100% - var(--space-2)) / 2), 1px); }
 }
 .pswitch__back { border: 1.5px solid var(--color-accent); background: none; color: var(--color-accent); }
 .pswitch__next { border: 0; background: var(--color-accent); color: var(--color-on-accent); }
