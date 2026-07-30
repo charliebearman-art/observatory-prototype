@@ -30,7 +30,7 @@
    under it. Confined to the content column. */
 .a-menu {
   position: fixed; top: var(--space-4); left: 50%; z-index: 40;
-  width: 358px; max-width: calc(100% - var(--space-8));
+  width: 358px; max-width: calc(100% - var(--space-4) * 2);
   transform: translateX(-50%) translateY(calc(-100% - var(--space-4)));
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
   padding: var(--space-4); border-radius: var(--radius-card);
