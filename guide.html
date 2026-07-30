@@ -397,11 +397,11 @@
     track.innerHTML = orig + orig + orig;        // triplicate: buffer on both sides for seamless looping either way
 
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var loopW = 0, speed = 0.5, pos = 0;         // pos: float accumulator (scrollLeft can round to int)
+    var loopW = 0, pxPerMs = 0, pos = 0;         // pos: float accumulator (scrollLeft can round to int)
     function norm(p) { if (!loopW) return p; if (p < loopW * 0.5) p += loopW; else if (p >= loopW * 1.5) p -= loopW; return p; }
     function measure() {
       loopW = track.children[n].offsetLeft;      // width of one copy = the seamless wrap distance
-      if (loopW) { speed = loopW / (48 * 60); if (gallery.scrollLeft < 1) gallery.scrollLeft = loopW; pos = gallery.scrollLeft; }  // start in the middle copy
+      if (loopW) { pxPerMs = loopW / 48000; if (gallery.scrollLeft < 1) gallery.scrollLeft = loopW; pos = gallery.scrollLeft; }  // one full copy in ~48s, start in the middle copy
     }
     requestAnimationFrame(measure);
     window.addEventListener('resize', measure);
@@ -427,8 +427,14 @@
     gallery.addEventListener('pointermove', function (e) { if (dx !== null && Math.abs(e.clientX - dx) > 6) pause(); });
     window.addEventListener('pointerup', function () { if (dx !== null) { dx = null; scheduleResume(); } });
 
-    function tick() {
-      if (!paused && loopW) { pos = norm(pos + speed); gallery.scrollLeft = pos; }
+    var last = 0;
+    function tick(t) {
+      if (last && !paused && loopW) {
+        var dt = Math.min(t - last, 50);         // time-based so speed is the same at 60/120/144Hz; clamp after a tab switch
+        pos = norm(pos + pxPerMs * dt);
+        gallery.scrollLeft = pos;
+      }
+      last = t;
       requestAnimationFrame(tick);
     }
     if (!reduce) requestAnimationFrame(tick);
