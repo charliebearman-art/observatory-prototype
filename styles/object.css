@@ -433,10 +433,14 @@
    full-screen brand loader shown while the object page loads; the mark is
    recoloured to --color-accent at runtime so it follows the palette. */
 .loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
-.loader__anim { width: 118px; height: 118px; opacity: 0; transition: opacity var(--dur) var(--ease); }
-/* the Lottie artwork is drawn right-of-centre in its own canvas; overflow keeps the
-   wide orbital from clipping, the translate (set in JS) recentres it */
+/* the Lottie artwork renders right-of-centre; the translate on the container
+   (lottie never touches it) recentres it, overflow:visible stops the wide orbital clipping */
+.loader__anim { width: 118px; height: 118px; opacity: 0; transform: translateX(-46%); transition: opacity var(--dur) var(--ease); }
 .loader__anim svg { display: block; overflow: visible; }
+/* recolour the mark to the guide's palette accent (covers every shape, incl. ones
+   that appear later in the animation; live so it follows a palette change) */
+.loader__anim svg [fill]:not([fill="none"]) { fill: var(--color-accent) !important; }
+.loader__anim svg [stroke]:not([stroke="none"]) { stroke: var(--color-accent) !important; }
 .loader.is-ready .loader__anim { opacity: 1; }
 .loader.is-hidden { opacity: 0; pointer-events: none; }
 /* hold the object-page intro (hero focus-in) until the loader lifts */

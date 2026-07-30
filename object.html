@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=34">
+<link rel="stylesheet" href="styles/object.css?v=35">
 <link rel="stylesheet" href="styles/poi.css?v=11">
 </head>
 <body>
@@ -38,37 +38,30 @@
     document.documentElement.classList.add('is-loading');
     document.documentElement.style.overflow = 'hidden';    // freeze the page behind the loader
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var start = Date.now(), MIN = 1100, CAP = 4000, hidden = false, anim = null;
+    var CAP = 7000, hidden = false, anim = null;
+    var loaded = (document.readyState === 'complete'), looped = false;
     function hide() {
       if (hidden) return; hidden = true;
       loader.classList.add('is-hidden');
       flush();                                             // reveal the page intro as the loader fades out
       setTimeout(function () { if (anim) anim.destroy(); loader.remove(); }, 460);
     }
-    function finish() { var wait = Math.max(0, MIN - (Date.now() - start)); setTimeout(hide, wait); }
+    // hold until the page has loaded AND the logo has run at least one full cycle
+    function maybeHide() { if (loaded && looped) hide(); }
+    if (!loaded) window.addEventListener('load', function () { loaded = true; maybeHide(); });
     if (reduce) { hide(); return; }                        // reduced motion: skip the animation, don't hold the page
-    function tint(svg) {                                    // recolour the mark to --color-accent (keeps fill="none" strokes intact)
-      var c = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim();
-      svg.querySelectorAll('[fill]').forEach(function (n) { if (n.getAttribute('fill') !== 'none') n.setAttribute('fill', c); });
-      svg.querySelectorAll('[stroke]').forEach(function (n) { if (n.getAttribute('stroke') !== 'none') n.setAttribute('stroke', c); });
-    }
     var s = document.createElement('script');
     s.src = 'assets/vendor/lottie.min.js';
     s.onload = function () {
       try {
         anim = lottie.loadAnimation({ container: document.getElementById('loaderAnim'), renderer: 'svg', loop: true, autoplay: true, path: 'assets/loader.json?v=1' });
-        anim.addEventListener('DOMLoaded', function () {
-          var svg = loader.querySelector('svg');
-          if (svg) { svg.style.transform = 'translateX(-46%)'; tint(svg); }   // artwork is right-of-centre in its canvas; nudge it back to centre
-          loader.classList.add('is-ready');
-        });
+        anim.addEventListener('DOMLoaded', function () { loader.classList.add('is-ready'); });   // colour + centring are pure CSS
+        anim.addEventListener('loopComplete', function () { looped = true; maybeHide(); });      // one full turn done
       } catch (e) { hide(); }
     };
     s.onerror = hide;                                       // no player → don't block the page
     document.head.appendChild(s);
-    if (document.readyState === 'complete') finish();
-    else window.addEventListener('load', finish);
-    setTimeout(hide, CAP);                                  // safety cap
+    setTimeout(hide, CAP);                                  // safety cap (covers a ~4.3s full loop + margin)
   })();
 </script>
 
