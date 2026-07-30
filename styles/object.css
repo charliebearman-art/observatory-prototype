@@ -428,3 +428,12 @@
     animation: none !important;
   }
 }
+
+/* ---------- page loader (Observatory logo, Lottie) ----------
+   full-screen brand loader shown while the object page loads; the mark is
+   recoloured to --color-accent at runtime so it follows the palette. */
+.loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--color-bg); transition: opacity var(--dur-slow) var(--ease); }
+.loader__anim { width: 168px; height: 168px; opacity: 0; transition: opacity var(--dur) var(--ease); }
+.loader__anim svg { display: block; width: 100% !important; height: 100% !important; }
+.loader.is-ready .loader__anim { opacity: 1; }
+.loader.is-hidden { opacity: 0; pointer-events: none; }

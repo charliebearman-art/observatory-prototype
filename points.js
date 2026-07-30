@@ -140,9 +140,10 @@
       return '<div class="facts pdesc__block"><h2 class="facts__title">' + esc(g.title) + '</h2>' +
         '<div class="facts__row' + (wide ? ' facts__row--single' : '') + '">' + g.facts.map(function (f) { return factCard(f, wide); }).join('') + '</div></div>';
     }).join('');
-    var sw = '<nav class="pswitch' + (pt.next ? ' pswitch--flow' : '') + '" aria-label="Points">';
+    var sw = '<nav class="pswitch" aria-label="Points">';
     if (n > 1) sw += '<button class="pswitch__back" data-nav="prev"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg>Back</button>';
     if (n < TOTAL) sw += '<a class="pswitch__next" data-nav="next">Next<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a>';
+    else sw += '<a class="pswitch__next" data-nav="object">To Object</a>';   // last point: return to the object card (next-object card still flows below)
     sw += '</nav>';
     var nextCard = pt.next ? '<div class="nextobj-wrap"><a class="nextobj" href="nav.html">' +
       '<img class="nextobj__thumb" src="' + esc(pt.next.img) + '" alt="">' +

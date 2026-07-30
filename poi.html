@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=32">
-<link rel="stylesheet" href="styles/poi.css?v=10">
+<link rel="stylesheet" href="styles/object.css?v=33">
+<link rel="stylesheet" href="styles/poi.css?v=11">
 </head>
 <body>
 
@@ -57,7 +57,7 @@
   </div>
 </div>
 
-<script src="points.js?v=6"></script>
+<script src="points.js?v=7"></script>
 <script>
   // pick the point from ?p=N (1-based), clamp to range
   var params = new URLSearchParams(location.search);
@@ -78,6 +78,7 @@
   var back = screen.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', function () { location.href = 'object.html?slide=' + slideOfPoint(i); });
   var prev = screen.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { go(n - 1); });
   var next = screen.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { go(n + 1); });
+  var toObj = screen.querySelector('[data-nav="object"]'); if (toObj) toObj.addEventListener('click', function () { location.href = 'object.html'; });
 
   // demo switch
   (function () {

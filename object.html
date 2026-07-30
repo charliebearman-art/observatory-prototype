@@ -10,10 +10,56 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=11">
-<link rel="stylesheet" href="styles/object.css?v=32">
-<link rel="stylesheet" href="styles/poi.css?v=10">
+<link rel="stylesheet" href="styles/object.css?v=33">
+<link rel="stylesheet" href="styles/poi.css?v=11">
 </head>
 <body>
+
+<!-- page loader: Observatory logo animation (Lottie), recoloured to the palette accent -->
+<div class="loader" id="loader" role="status" aria-label="Loading">
+  <div class="loader__anim" id="loaderAnim"></div>
+</div>
+<script>
+  (function () {
+    var loader = document.getElementById('loader');
+    if (!loader) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.documentElement.style.overflow = 'hidden';   // freeze the page behind the loader
+    var start = Date.now(), MIN = 1100, CAP = 4000, done = false, anim = null;
+    function unfreeze() { document.documentElement.style.overflow = ''; }
+    function hide() {
+      if (done) return; done = true;
+      loader.classList.add('is-hidden');
+      unfreeze();
+      setTimeout(function () { if (anim) anim.destroy(); loader.remove(); }, 460);
+    }
+    function finish() { var wait = Math.max(0, MIN - (Date.now() - start)); setTimeout(hide, wait); }
+    // reduced motion: skip the animation, don't hold the page
+    if (reduce) { hide(); return; }
+    function tint(svg) {                                    // recolour the mark to --color-accent (keeps fill="none" strokes intact)
+      var c = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim();
+      svg.querySelectorAll('[fill]').forEach(function (n) { if (n.getAttribute('fill') !== 'none') n.setAttribute('fill', c); });
+      svg.querySelectorAll('[stroke]').forEach(function (n) { if (n.getAttribute('stroke') !== 'none') n.setAttribute('stroke', c); });
+    }
+    var s = document.createElement('script');
+    s.src = 'assets/vendor/lottie.min.js';
+    s.onload = function () {
+      try {
+        anim = lottie.loadAnimation({ container: document.getElementById('loaderAnim'), renderer: 'svg', loop: true, autoplay: true, path: 'assets/loader.json?v=1' });
+        anim.addEventListener('DOMLoaded', function () {
+          var svg = loader.querySelector('svg');
+          if (svg) { svg.setAttribute('viewBox', '81 0 300 300'); tint(svg); }   // artwork sits ~81 units right of canvas centre; shift the viewBox to recentre
+          loader.classList.add('is-ready');
+        });
+      } catch (e) { hide(); }
+    };
+    s.onerror = hide;                                       // no player → don't block the page
+    document.head.appendChild(s);
+    if (document.readyState === 'complete') finish();
+    else window.addEventListener('load', finish);
+    setTimeout(hide, CAP);                                  // safety cap
+  })();
+</script>
 
 <!-- demo-only control: preview both theme axes -->
 <div class="switch">
@@ -370,7 +416,7 @@
   </div>
 </div>
 
-<script src="points.js?v=6"></script>
+<script src="points.js?v=7"></script>
 
 <script>
   // object-page audio player (shared helper from points.js)
@@ -541,6 +587,7 @@
       wireAudioIn(mount);
       var prev = mount.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { step(cur - 1); });
       var next = mount.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { step(cur + 1); });
+      var toObj = mount.querySelector('[data-nav="object"]'); if (toObj) toObj.addEventListener('click', exitPOI);   // last point "To Object" → back to the object card
     }
     function renderInto(n) {                       // full render (on enter)
       cur = n;

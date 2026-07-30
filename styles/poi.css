@@ -46,7 +46,6 @@
 
 /* ---------- point switcher (pinned bottom): Back (outlined) + Next (filled) ---------- */
 .pswitch { position: sticky; bottom: 0; z-index: 20; display: flex; gap: var(--space-2); padding: var(--space-2) var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 20%); backdrop-filter: blur(12px); }
-.pswitch--flow { position: static; }   /* last point: switcher flows so the next-object card can follow */
 .pswitch__back, .pswitch__next { flex: 1 1 0; height: 56px; border-radius: var(--radius-button); display: flex; align-items: center; justify-content: center; gap: var(--space-2); cursor: pointer; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
 .pswitch__back { border: 1.5px solid var(--color-accent); background: none; color: var(--color-accent); }
 .pswitch__next { border: 0; background: var(--color-accent); color: var(--color-on-accent); }
