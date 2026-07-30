@@ -112,6 +112,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .icon-btn--filled { background: var(--color-accent); color: var(--color-on-accent); }
 /* Outline variant sitting on top of a photograph — borders come from the media set. */
 .icon-btn--media { border: 1.5px solid var(--on-media-border); background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(4px); color: var(--on-media); }
+/* Scrim variant over a photo — a dark scrim behind the glyph (hero nav, cover back). */
+.icon-btn--scrim { border: 1.5px solid var(--on-media-border); background: var(--scrim); backdrop-filter: blur(4px); color: var(--on-media); }
 
 .text-btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
@@ -507,6 +509,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   /* over a photograph there is no palette surface to fall back on, so this one
      thickens the glass instead */
   .icon-btn--media:hover { background: var(--glass); border-color: var(--on-media); }
+  .icon-btn--scrim:hover { border-color: var(--on-media); }
 
   .text-btn:hover { color: var(--color-accent-hover); }
   /* the arrow leads the eye in the direction the link goes */

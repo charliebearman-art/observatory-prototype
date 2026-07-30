@@ -22,11 +22,8 @@
 .ohead__sub { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.14em; }
 .ohead__btns { display: flex; align-items: center; gap: var(--space-2); }
 /* near-transparent bordered icon buttons */
-.icon-btn--ghost-b {
-  width: 36px; height: 36px; border-radius: var(--radius-button);
-  background: rgba(255,255,255,0.01); border: 1.5px solid var(--color-border);
-  backdrop-filter: blur(4px); color: var(--color-accent);
-}
+/* header + hero-nav icon buttons now use the shared .icon-btn--outline / --scrim
+   components (base.css), so their hover matches the rest of the product */
 
 /* ---------- hero gallery (swipeable slides with POI hotspots) ----------
    Figma: image starts at y=52 while the 67px header sits above it, so the header
@@ -74,11 +71,6 @@
   .hotspot.is-in { animation: none; }
 }
 /* scrim gallery nav buttons over the media (bottom: 32px per Figma) */
-.icon-btn--scrim-b {
-  width: 40px; height: 40px; border-radius: var(--radius-button);
-  background: var(--scrim); border: 1.5px solid var(--on-media-border);
-  backdrop-filter: blur(4px); color: var(--on-media);
-}
 .ohero__nav { position: absolute; bottom: var(--space-6); z-index: 3; }
 .ohero__nav--back { left: var(--space-4); }
 .ohero__nav--next { right: var(--space-4); }
@@ -133,18 +125,11 @@
 .audio.is-playing .audio__thumb, .audio.is-scrubbing .audio__thumb { opacity: 1; }
 
 /* ---------- primary big button (Step by Step) ---------- */
-.btn-step {
-  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
-  height: 56px; padding: var(--space-4) var(--space-5);
-  background: var(--color-accent); color: var(--color-on-accent);
-  border-radius: var(--radius-button);
-  font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body);
-}
-.btn-step .icon { width: 24px; height: 24px; }
+/* Step by Step is the shared Primary button (.btn.btn--primary.btn--large) */
 /* pinned Step-by-Step bar: stays at the viewport bottom while scrolling the tabs,
    then settles into place just above the next-object card */
 .ostep { position: sticky; bottom: 0; z-index: 5; padding: var(--space-2) var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 12%); backdrop-filter: blur(12px); }
-.ostep .btn-step { width: 100%; }
+.ostep .btn { width: 100%; }
 
 /* ---------- info tabs ---------- */
 .otabs {
@@ -319,15 +304,7 @@
 .listrow__icon { flex: none; display: flex; align-items: center; justify-content: center; padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-accent); }
 .listrow__icon .icon { width: 24px; height: 24px; }
 
-/* ---------- secondary (outline) button ---------- */
-.btn-secondary {
-  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
-  height: 56px; padding: var(--space-4) var(--space-5);
-  border: 1.5px solid var(--color-accent); border-radius: var(--radius-button);
-  background: none; color: var(--color-accent);
-  font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body);
-}
-.btn-secondary .icon { width: 24px; height: 24px; }
+/* the "Buy on duomomilano.it" button uses the shared .btn.btn--secondary component */
 
 /* ---------- gallery bleed + misc fixes ---------- */
 /* horizontal sliders bleed to the screen edge on scroll (negative margin above),

@@ -87,9 +87,7 @@
   -webkit-mask: url(../assets/img/guide/cover-mark.svg) center / 100% 100% no-repeat;
   mask: url(../assets/img/guide/cover-mark.svg) center / 100% 100% no-repeat;
 }
-/* dark-scrim icon button that sits over media (the cover back arrow) */
-.icon-btn--scrim { background: var(--scrim); border: 1.5px solid var(--on-media-border); backdrop-filter: blur(4px); color: var(--on-media); }
-.icon-btn--scrim:hover { border-color: var(--on-media); }
+/* .icon-btn--scrim now lives in base.css (shared component) */
 .badge--city {
   display: inline-flex; align-items: center;
   padding: var(--space-1) var(--space-4);

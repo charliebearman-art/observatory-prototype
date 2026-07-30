@@ -124,9 +124,9 @@
     for (var s = 1; s <= TOTAL; s++) segs += '<span class="pprogress__seg' + (s <= n ? ' is-done' : '') + '"></span>';
     return '<header class="phead">' +
       '<div class="phead__bar">' +
-        '<button class="icon-btn icon-btn--ghost-b" data-nav="back" aria-label="Back"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg></button>' +
+        '<button class="icon-btn icon-btn--outline icon-btn--36" data-nav="back" aria-label="Back"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg></button>' +
         '<div class="phead__center"><span class="phead__title">Point ' + n + ' of ' + TOTAL + '</span><span class="phead__zone">' + esc(pt.zone) + '</span></div>' +
-        '<button class="icon-btn icon-btn--ghost-b" aria-label="Language"><svg class="icon"><use href="' + ICN + 'i-globe"></use></svg></button>' +
+        '<button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language"><svg class="icon"><use href="' + ICN + 'i-globe"></use></svg></button>' +
       '</div>' +
       '<div class="pprogress" aria-hidden="true">' + segs + '</div>' +
     '</header>';
@@ -141,9 +141,9 @@
         '<div class="facts__row' + (wide ? ' facts__row--single' : '') + '">' + g.facts.map(function (f) { return factCard(f, wide); }).join('') + '</div></div>';
     }).join('');
     var sw = '<nav class="pswitch" aria-label="Points">';
-    if (n > 1) sw += '<button class="pswitch__back" data-nav="prev"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg>Back</button>';
-    if (n < TOTAL) sw += '<a class="pswitch__next" data-nav="next">Next<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a>';
-    else sw += '<a class="pswitch__next" data-nav="object">To Object</a>';   // last point: return to the object card (next-object card still flows below)
+    if (n > 1) sw += '<button class="btn btn--secondary btn--large pswitch__back" data-nav="prev"><svg class="icon"><use href="' + ICN + 'i-arrow-left"></use></svg>Back</button>';
+    if (n < TOTAL) sw += '<a class="btn btn--primary btn--large pswitch__next" data-nav="next">Next<svg class="icon"><use href="' + ICN + 'i-arrow-right"></use></svg></a>';
+    else sw += '<a class="btn btn--primary btn--large pswitch__next" data-nav="object">To Object</a>';   // last point: return to the object card (next-object card still flows below)
     sw += '</nav>';
     var nextCard = pt.next ? '<div class="nextobj-wrap"><a class="nextobj" href="nav.html">' +
       '<img class="nextobj__thumb" src="' + esc(pt.next.img) + '" alt="">' +
