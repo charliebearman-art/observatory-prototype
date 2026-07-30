@@ -100,7 +100,7 @@
       </button>
     </div>
     <div class="odesc__audiowrap">
-      <div class="audio">
+      <div class="audio" data-src="assets/audio/object-intro.mp3">
         <button class="audio__play" aria-label="Play">
           <svg class="icon audio__ico audio__ico--play"><use href="assets/icons.svg?v=3#i-play"></use></svg>
           <svg class="icon audio__ico audio__ico--pause"><use href="assets/icons.svg?v=3#i-pause"></use></svg>
@@ -370,7 +370,7 @@
   </div>
 </div>
 
-<script src="points.js?v=5"></script>
+<script src="points.js?v=6"></script>
 
 <script>
   // object-page audio player (shared helper from points.js)
@@ -552,6 +552,7 @@
     // only the body, so the hero + description re-animate but the header does NOT.
     function step(n) {
       if (n < 1 || n > POINTS.length) { exitPOI(); return; }
+      if (window.stopAllAudio) window.stopAllAudio();   // stop this point's clip before it's re-rendered away
       cur = n;
       updatePointHead(mount, n - 1);
       mount.querySelector('.poibody').innerHTML = renderPointBody(n - 1);
@@ -567,6 +568,7 @@
       if (open) return;
       open = true;
       clearTimeout(retTimer); clearTimeout(hideTimer);
+      if (window.stopAllAudio) window.stopAllAudio();   // stop the object intro when a point opens
       renderInto(n);
       objScreen.classList.remove('is-returning');
       objScreen.style.visibility = '';
@@ -582,6 +584,7 @@
       if (!open) return;
       open = false;
       clearTimeout(hideTimer); clearTimeout(retTimer);
+      if (window.stopAllAudio) window.stopAllAudio();   // stop the point's clip when returning to the object
       gotoSlideOfCurrent();                         // land on the gallery slide holding this point
       window.scrollTo(0, 0);                        // return to the top (the map), even if step-by-step was tapped while scrolled down — hidden under the exit animation
       objScreen.style.visibility = '';             // reveal the object for the return

@@ -156,7 +156,7 @@
           '<span class="poi-eyebrow">' + ('0' + n).slice(-2) + '</span>' +
           '<h1 class="pdesc__title">' + esc(pt.title) + '</h1>' +
         '</div><p class="pdesc__text">' + esc(pt.desc) + '</p></div>' +
-        '<div class="audio">' +
+        '<div class="audio" data-src="assets/audio/poi-' + n + '.mp3">' +
           '<button class="audio__play" aria-label="Play">' +
             '<svg class="icon audio__ico audio__ico--play"><use href="' + ICN + 'i-play"></use></svg>' +
             '<svg class="icon audio__ico audio__ico--pause"><use href="' + ICN + 'i-pause"></use></svg>' +
@@ -183,28 +183,43 @@
   };
 
   /* ---------- shared behaviour (works on freshly-rendered content) ---------- */
+  // registry so only one clip plays at a time and orphaned clips (whose player
+  // was re-rendered/removed) can be stopped on navigation.
+  window.__audioReg = window.__audioReg || [];
+  window.stopAllAudio = function () {
+    window.__audioReg = window.__audioReg.filter(function (r) { r.stop(); return r.node.isConnected; });
+  };
   window.wireAudio = function (audio) {
     if (audio.__wired) return; audio.__wired = true;
     var btn = audio.querySelector('.audio__play');
     var fill = audio.querySelector('.audio__fill'), thumb = audio.querySelector('.audio__thumb');
     var timeEl = audio.querySelector('.audio__time');
+    var track = audio.querySelector('.audio__track');
+    var src = audio.getAttribute('data-src');
+    // duration from the label until real metadata arrives (keeps the "0:55" chip correct on first paint)
     var parts = (timeEl ? timeEl.textContent : '0:55').split(':');
     var dur = (+parts[0]) * 60 + (+parts[1]) || 55;
-    var playing = false, elapsed = 0, last = 0, raf;
+    var el = new Audio(); el.preload = 'metadata'; if (src) el.src = src;
+    function fmt(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
     function render() {
-      var pct = Math.min(elapsed / dur, 1) * 100; fill.style.width = pct + '%'; thumb.style.left = pct + '%';
-      var rem = Math.max(0, Math.ceil(dur - elapsed));
-      if (timeEl) timeEl.textContent = Math.floor(rem / 60) + ':' + ('0' + (rem % 60)).slice(-2);
+      var cur = el.currentTime || 0, pct = dur ? Math.min(cur / dur, 1) * 100 : 0;
+      fill.style.width = pct + '%'; thumb.style.left = pct + '%';
+      if (timeEl) timeEl.textContent = fmt(dur - cur);   // counts down remaining
     }
-    function pause() { playing = false; audio.classList.remove('is-playing'); btn.setAttribute('aria-label', 'Play'); cancelAnimationFrame(raf); }
-    function tick(ts) { if (!last) last = ts; elapsed += (ts - last) / 1000; last = ts; render(); if (elapsed >= dur) { pause(); elapsed = 0; render(); return; } raf = requestAnimationFrame(tick); }
-    btn.addEventListener('click', function () { if (playing) { pause(); return; } playing = true; audio.classList.add('is-playing'); btn.setAttribute('aria-label', 'Pause'); last = 0; raf = requestAnimationFrame(tick); });
-    var track = audio.querySelector('.audio__track'), scrubbing = false, wasPlaying = false;
-    function seekAt(x) { var r = track.getBoundingClientRect(); elapsed = Math.min(1, Math.max(0, (x - r.left) / r.width)) * dur; render(); }
-    track.addEventListener('pointerdown', function (e) { e.preventDefault(); scrubbing = true; wasPlaying = playing; if (playing) cancelAnimationFrame(raf); audio.classList.add('is-scrubbing'); try { track.setPointerCapture(e.pointerId); } catch (_) {} seekAt(e.clientX); });
+    function stop() { el.pause(); audio.classList.remove('is-playing'); btn.setAttribute('aria-label', 'Play'); }
+    function play() { window.stopAllAudio(); el.play().catch(function () {}); audio.classList.add('is-playing'); btn.setAttribute('aria-label', 'Pause'); }
+    el.addEventListener('loadedmetadata', function () { if (isFinite(el.duration) && el.duration > 0) dur = el.duration; render(); });
+    el.addEventListener('timeupdate', function () { if (!scrubbing) render(); });
+    el.addEventListener('ended', function () { stop(); el.currentTime = 0; render(); });
+    btn.addEventListener('click', function () { if (el.paused) play(); else stop(); });
+    var scrubbing = false, wasPlaying = false;
+    function seekAt(x) { var r = track.getBoundingClientRect(); el.currentTime = Math.min(1, Math.max(0, (x - r.left) / r.width)) * (dur || 0); render(); }
+    track.addEventListener('pointerdown', function (e) { e.preventDefault(); scrubbing = true; wasPlaying = !el.paused; el.pause(); audio.classList.add('is-scrubbing'); try { track.setPointerCapture(e.pointerId); } catch (_) {} seekAt(e.clientX); });
     track.addEventListener('pointermove', function (e) { if (scrubbing) seekAt(e.clientX); });
-    function endScrub() { if (!scrubbing) return; scrubbing = false; audio.classList.remove('is-scrubbing'); if (wasPlaying && elapsed < dur) { last = 0; raf = requestAnimationFrame(tick); } }
+    function endScrub() { if (!scrubbing) return; scrubbing = false; audio.classList.remove('is-scrubbing'); if (wasPlaying) play(); }
     track.addEventListener('pointerup', endScrub); track.addEventListener('pointercancel', endScrub);
+    window.__audioReg.push({ node: audio, stop: stop });
+    render();
   };
   window.wireAudioIn = function (scope) { (scope || document).querySelectorAll('.audio').forEach(window.wireAudio); };
 
