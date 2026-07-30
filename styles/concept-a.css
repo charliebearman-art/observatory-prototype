@@ -55,22 +55,27 @@
    size and anchored to the edge it reveals from, so the size change reads as a wipe */
 .a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--ease), height var(--a-morph) var(--ease); will-change: width, height; }
 .a-hero__pic img { position: absolute; display: block; object-fit: cover; }
-/* 1 Duomo — bottom-left, wipes up */
-.a-hero__pic--1 { left: var(--space-4); bottom: 32px; width: 358px; height: 0; }
+/* Each image grows from a small corner POINT (width+height) into place and collapses
+   back to a line, anchored to a fixed corner — matching the Figma per-state geometry. */
+/* Pic 1 Duomo — bottom-left anchor; collapses to a full-width bottom line (1D) */
+.a-hero__pic--1 { left: 16px; bottom: 32px; width: 358px; height: 0; }
 .a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; height: 495px; }
-/* 2 Colosseum — right, wipes left */
-.a-hero__pic--2 { right: var(--space-4); top: 32px; width: 0; height: 495px; }
-.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: 495px; }
-/* 3 painting — top-left, wipes down */
-.a-hero__pic--3 { left: var(--space-4); top: 32px; width: 358px; height: 0; }
-.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: 495px; }
-/* 4 Venice — bottom-left, wipes right */
-.a-hero__pic--4 { left: var(--space-4); bottom: 32px; width: 0; height: 495px; }
-.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: 495px; }
 .a-hero[data-astate="1"] .a-hero__pic--1 { height: 495px; }
-.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; }
-.a-hero[data-astate="3"] .a-hero__pic--3 { height: 495px; }
-.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; }
+/* Pic 2 Colosseum — top-right anchor; grows from a top-right point (2D) */
+.a-hero__pic--2 { right: 16px; top: 32px; width: 0; height: 495px; }
+.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: 495px; }
+.a-hero[data-astate="1"] .a-hero__pic--2 { height: 56px; }
+.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: 495px; }
+/* Pic 3 painting — top-left anchor; grows from a top-left point (2D) */
+.a-hero__pic--3 { left: 16px; top: 32px; width: 0; height: 56px; }
+.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: 495px; }
+.a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: 495px; }
+.a-hero[data-astate="4"] .a-hero__pic--3 { width: 358px; height: 0; }
+/* Pic 4 Venice — bottom-left anchor; grows from a bottom-left point (2D) */
+.a-hero__pic--4 { left: 16px; bottom: 32px; width: 0; height: 56px; }
+.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: 495px; }
+.a-hero[data-astate="1"] .a-hero__pic--4 { height: 495px; }
+.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: 495px; }
 
 /* headline — three lines that slide between states; the accent line changes */
 .a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--ease), color calc(var(--a-morph) * 0.7) var(--ease); }
