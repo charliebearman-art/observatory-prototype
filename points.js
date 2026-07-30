@@ -231,7 +231,7 @@
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var cards = [], idx = 0, anim = false;
 
-    function navBtn(kind, icon) { return '<button class="factmodal__navbtn" data-act="' + kind + '" aria-label="' + kind + '"><svg class="icon"><use href="' + ICN + icon + '"></use></svg></button>'; }
+    function navBtn(kind, icon) { return '<button class="icon-btn icon-btn--outline" data-act="' + kind + '" aria-label="' + kind + '"><svg class="icon"><use href="' + ICN + icon + '"></use></svg></button>'; }
     function paint() {
       var c = cards[idx];
       if (eb) eb.textContent = c.dataset.eyebrow || 'Interesting fact';
