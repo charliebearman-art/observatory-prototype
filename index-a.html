@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=12">
-<link rel="stylesheet" href="styles/concept-a.css?v=3">
+<link rel="stylesheet" href="styles/concept-a.css?v=4">
 </head>
 <body>
 
@@ -129,20 +129,24 @@
   <!-- featured guides -->
   <section class="a-featured">
     <div class="a-featured__head">
-      <div>
-        <p class="a-eyebrow">Featured guides</p>
+      <p class="a-eyebrow">Featured guides</p>
+      <div class="a-featured__row">
         <h2 class="a-featured__title t-h1">Popular in Italy</h2>
+        <a class="text-btn" href="#"><span>All</span>
+          <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-right"></use></svg>
+        </a>
       </div>
-      <a class="text-btn" href="#"><span>All</span>
-        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-right"></use></svg>
-      </a>
     </div>
     <div class="a-featured__rail">
       <article class="a-guide">
-        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-quarter.jpg" alt=""></div>
-        <div class="a-guide__body">
-          <h3 class="a-guide__title">The City You Don’t Understand at First</h3>
-          <p class="a-guide__teaser">Slip past the galleries into the hidden cortili where Milan still paints.</p>
+        <img class="a-guide__img" src="assets/img/guide-quarter.jpg" alt="">
+        <span class="a-guide__badge">Milan</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">The City You Don’t Understand at First</h3>
+            <p class="a-guide__teaser">Slip past the galleries into the hidden cortili where Milan still paints</p>
+          </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">210 $</span>
             <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
@@ -150,10 +154,14 @@
         </div>
       </article>
       <article class="a-guide">
-        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-ritual.jpg" alt=""></div>
-        <div class="a-guide__body">
-          <h3 class="a-guide__title">An Evening the City Keeps for Itself</h3>
-          <p class="a-guide__teaser">Follow the aperitivo hour from the canals to the last lit window.</p>
+        <img class="a-guide__img" src="assets/img/guide-disappear.jpg" alt="">
+        <span class="a-guide__badge">Milan</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">Where Milan Goes to Disappear</h3>
+            <p class="a-guide__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
+          </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">180 $</span>
             <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
@@ -161,12 +169,31 @@
         </div>
       </article>
       <article class="a-guide">
-        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-rooftops.jpg" alt=""></div>
-        <div class="a-guide__body">
-          <h3 class="a-guide__title">The Quarter Behind the Galleries</h3>
-          <p class="a-guide__teaser">Climb to the marble terraces most visitors never think to reach.</p>
+        <img class="a-guide__img" src="assets/img/guide-ritual.jpg" alt="">
+        <span class="a-guide__badge">Milan</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">The Six O’Clock Ritual</h3>
+            <p class="a-guide__teaser">Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
+          </div>
           <div class="a-guide__foot">
-            <span class="a-guide__price">195 $</span>
+            <span class="a-guide__price">80 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="a-guide">
+        <img class="a-guide__img" src="assets/img/guide-rooftops.jpg" alt="">
+        <span class="a-guide__badge">Rome</span>
+        <div class="a-guide__scrim" aria-hidden="true"></div>
+        <div class="a-guide__text">
+          <div class="a-guide__texthead">
+            <h3 class="a-guide__title">Rome from the Rooftops</h3>
+            <p class="a-guide__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta</p>
+          </div>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">190 $</span>
             <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
           </div>
         </div>
@@ -197,8 +224,8 @@
 
   <!-- footer -->
   <footer class="a-foot">
-    <a class="logo logo--full a-foot__lockup" href="#" aria-label="Observatory TS"></a>
-    <div class="a-foot__cta">
+    <div class="a-foot__promo">
+      <a class="logo logo--full a-foot__lockup" href="#" aria-label="Observatory TS"></a>
       <h2 class="t-h1 t-balance">Ready to Start <span class="ac">a New Journey?</span></h2>
       <div class="a-foot__btns">
         <a class="btn btn--primary btn--large" href="#">Let’s go
@@ -212,16 +239,18 @@
     <nav class="a-foot__nav">
       <a href="#">About</a><a href="#">Guides</a><a href="#">How it works</a><a href="#">Contact</a>
     </nav>
-    <div class="a-foot__row">
-      <span class="row"><svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg><span class="t-body">English</span></span>
-      <span class="row" style="gap:var(--space-2)">
-        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></a>
-        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></a>
-      </span>
-    </div>
-    <div class="a-foot__legal">
-      <span class="t-caption">© 2026 Observatory</span>
-      <span class="row" style="gap:var(--space-3)"><a class="t-caption" href="#">Terms</a><a class="t-caption" href="#">Privacy</a></span>
+    <div class="a-foot__group2">
+      <div class="a-foot__row">
+        <span class="row"><svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg><span class="t-body">English</span></span>
+        <span class="row">
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></a>
+          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></a>
+        </span>
+      </div>
+      <div class="a-foot__legal">
+        <span>© 2026 Observatory</span>
+        <span class="row" style="gap:var(--space-3)"><a href="#">Terms</a><a href="#">Privacy</a></span>
+      </div>
     </div>
   </footer>
 </main>

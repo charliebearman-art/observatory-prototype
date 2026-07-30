@@ -22,8 +22,8 @@
 /* globe-only mark (rotates in the hero); the .logo mask components stay for the lockups */
 .logo--globe { width: 56px; height: 56px; -webkit-mask: url(../assets/img/a/globe.svg) center / contain no-repeat; mask: url(../assets/img/a/globe.svg) center / contain no-repeat; background: currentColor; }
 
-/* shared right-aligned eyebrow used by the A blocks */
-.a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-muted); margin: 0; }
+/* shared eyebrow used by the A blocks — accent per Figma */
+.a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin: 0; }
 
 /* ------------------------------------------------------------------ header --
    Not shown at the top of the page — slides down only once the hero scrolls
@@ -108,63 +108,71 @@
 .a-herocta .btn { width: 100%; }
 
 /* ---------------------------------------------------------- about (What is) --
-   Reuses the .block / .rail benefit cards; adds the logo lockup + a text block. */
-.a-about { padding-top: var(--space-6); }
-.a-about__lockup { color: var(--color-accent); margin: 0 var(--space-4) var(--space-5); }
-.a-about__head { padding: 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-6); }
+   Surface panel (radius 8, 48px top/bottom); the benefit cards inside are the
+   darker page colour with a 1.5px border, per Figma. */
+.a-about { background: var(--color-surface); border-radius: var(--radius-input); padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
+.a-about__lockup { color: var(--color-accent); }
+.a-about__head { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; }
 .a-about__head h2 { margin: 0; }
 .a-about__head .ac { color: var(--color-accent); }
+.a-about .rail { gap: var(--space-2); padding: 0; width: 100%; }
+.a-about .benefit { flex: 0 0 253px; width: 253px; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
+.a-about .benefit__body { padding: var(--space-5) var(--space-4); gap: var(--space-2); }
+.a-about .benefit__body h3 { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-accent); }
 
 /* --------------------------------------------------------- featured guides --
-   Image-forward cards in a horizontal rail: cover + city badge, then title,
-   teaser, price and an arrow button. */
-.a-featured { padding: var(--space-8) 0 var(--space-6); }
-.a-featured__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding: 0 var(--space-4) var(--space-5); }
-.a-featured__head .a-eyebrow { margin-bottom: var(--space-2); }
+   Image-fill cards with a solid text panel at the bottom (title, teaser,
+   40px price + arrow button). Block bg = page bg. */
+.a-featured { padding: var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-6); }
+.a-featured__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.a-featured__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
 .a-featured__title { margin: 0; }
-.a-featured__rail { display: flex; gap: var(--space-4); overflow-x: auto; padding: 0 var(--space-4) var(--space-2); scrollbar-width: none; scroll-snap-type: x mandatory; }
+.a-featured__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .a-featured__rail::-webkit-scrollbar { display: none; }
 
-.a-guide { flex: 0 0 320px; scroll-snap-align: start; display: flex; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
-.a-guide__media { position: relative; aspect-ratio: 320 / 300; overflow: hidden; }
-.a-guide__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.a-guide__badge { position: absolute; left: var(--space-3); top: var(--space-3); display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); border-radius: var(--radius-button); background: var(--glass); backdrop-filter: blur(6px); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; }
-.a-guide__body { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); flex: 1; }
+.a-guide { position: relative; flex: 0 0 318px; height: 500px; scroll-snap-align: start; border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+.a-guide__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.a-guide__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 310px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
+.a-guide__badge { position: relative; align-self: flex-start; margin: var(--space-4); display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.a-guide__text { position: relative; background: var(--color-bg); border-radius: var(--radius-card) var(--radius-card) 0 0; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.a-guide__texthead { display: flex; flex-direction: column; gap: var(--space-2); }
 .a-guide__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
 .a-guide__teaser { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
-.a-guide__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: auto; }
-.a-guide__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: 1; color: var(--color-accent); }
+.a-guide__foot { display: flex; align-items: center; justify-content: space-between; }
+.a-guide__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-accent); }
 
 /* --------------------------------------------------- the world, city by city --
-   A two-column grid of small city rows (thumbnail + name). */
-.a-cities { padding: var(--space-6) var(--space-4) var(--space-8); }
-.a-cities__head { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+   Surface panel; two-column wrap of city chips (48px photo + name). */
+.a-cities { background: var(--color-surface); border-radius: var(--radius-input); padding: var(--space-8) var(--space-4); display: flex; flex-direction: column; gap: var(--space-6); }
+.a-cities__head { display: flex; flex-direction: column; gap: var(--space-4); }
 .a-cities__title { margin: 0; }
-.a-cities__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
-.a-city { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2); padding-right: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); color: var(--color-text); cursor: pointer; transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
-.a-city__thumb { width: 52px; height: 44px; flex: none; border-radius: var(--radius-inner-4, 2px); overflow: hidden; }
+.a-cities__grid { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.a-city { flex: 1 1 0; min-width: 120px; display: flex; align-items: center; gap: var(--space-3); padding: 4px 20px 4px 4px; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text); cursor: pointer; transition: border-color var(--dur-fast) var(--ease); }
+.a-city__thumb { width: 48px; height: 48px; flex: none; overflow: hidden; }
 .a-city__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.a-city__name { font-size: var(--size-body); line-height: var(--lh-body); }
-.a-cities__more { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; height: 56px; border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); color: var(--color-text-muted); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); cursor: pointer; }
+.a-city__name { font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.a-cities__more { flex: 1 1 0; min-width: 120px; height: 56px; display: flex; align-items: center; justify-content: center; padding: 4px 20px; background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text-muted); font-family: var(--font-text); font-size: var(--size-body); cursor: pointer; }
 @media (hover: hover) and (pointer: fine) {
   .a-city:hover { border-color: var(--color-accent); }
   .a-cities__more:hover { color: var(--color-text); border-color: var(--color-accent); }
 }
 
 /* -------------------------------------------------------------------- footer --
-   Centred: logo lockup, serif CTA, two buttons, nav, social + legal. */
-.a-foot { padding: var(--space-8) var(--space-4) var(--space-6); display: flex; flex-direction: column; align-items: center; gap: var(--space-6); text-align: center; background: color-mix(in oklab, var(--color-bg), #000 22%); }
+   Centred: lockup, serif CTA, two buttons, nav, language/social + legal.
+   No dividers, no panel background (page bg). */
+.a-foot { padding: var(--space-8) 20px var(--space-6); display: flex; flex-direction: column; align-items: center; gap: var(--space-5); text-align: center; }
+.a-foot__promo { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); width: 100%; }
 .a-foot__lockup { color: var(--color-accent); }
-.a-foot__cta { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); width: 100%; }
-.a-foot__cta h2 { margin: 0; }
-.a-foot__cta .ac { color: var(--color-accent); }
-.a-foot__btns { display: flex; gap: var(--space-3); width: 100%; }
-.a-foot__btns .btn { flex: 1 1 0; }
-.a-foot__nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4) var(--space-5); }
-.a-foot__nav a { color: var(--color-text); font-size: var(--size-body); line-height: var(--lh-body); }
-.a-foot__row { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
-.a-foot__legal { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-.a-foot__legal .t-caption { color: var(--color-text-muted); }
+.a-foot__promo h2 { margin: 0; }
+.a-foot__promo .ac { color: var(--color-accent); }
+.a-foot__btns { display: flex; gap: var(--space-2); width: 100%; }
+.a-foot__btns .btn { flex: 1 1 0; min-width: 0; }
+.a-foot__nav { display: flex; flex-wrap: wrap; justify-content: center; column-gap: var(--space-4); }
+.a-foot__nav a { color: var(--color-text); font-size: var(--size-body); line-height: var(--lh-body); padding: var(--space-2) 0; }
+.a-foot__group2 { display: flex; flex-direction: column; gap: var(--space-5); width: 100%; }
+.a-foot__row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.a-foot__legal { display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.a-foot__legal a { color: var(--color-text-muted); }
 .a-foot .row { display: flex; align-items: center; gap: var(--space-2); }
 
 /* concept switcher (demo): jump between the concept versions */
