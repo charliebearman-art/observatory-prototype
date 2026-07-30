@@ -49,11 +49,11 @@
    (width/height 0 -> full) in their own state and wipe closed otherwise.
    The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
 .a-hero { position: relative; height: 720px; overflow: hidden; background: var(--color-bg); }
-:root { --a-morph: 680ms; }
+:root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
 /* image cards — a clip container whose size animates; the inner <img> is the full
    size and anchored to the edge it reveals from, so the size change reads as a wipe */
-.a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--ease), height var(--a-morph) var(--ease); will-change: width, height; }
+.a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--a-ease), height var(--a-morph) var(--a-ease); will-change: width, height; }
 .a-hero__pic img { position: absolute; display: block; object-fit: cover; }
 /* Each image grows from a small corner POINT (width+height) into place and collapses
    back to a line, anchored to a fixed corner — matching the Figma per-state geometry. */
@@ -66,11 +66,11 @@
 .a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: 495px; }
 .a-hero[data-astate="1"] .a-hero__pic--2 { height: 56px; }
 .a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: 495px; }
-/* Pic 3 painting — top-left anchor; grows from a top-left point (2D) */
+/* Pic 3 painting — top-left anchor; grows from and collapses back to a top-left point
+   (kept collapsed to 0-width in every non-S3 state so it never flashes mid-transition) */
 .a-hero__pic--3 { left: 16px; top: 32px; width: 0; height: 56px; }
 .a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: 495px; }
 .a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: 495px; }
-.a-hero[data-astate="4"] .a-hero__pic--3 { width: 358px; height: 0; }
 /* Pic 4 Venice — bottom-left anchor; grows from a bottom-left point (2D) */
 .a-hero__pic--4 { left: 16px; bottom: 32px; width: 0; height: 56px; }
 .a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: 495px; }
@@ -78,7 +78,7 @@
 .a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: 495px; }
 
 /* headline — three lines that slide between states; the accent line changes */
-.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--ease), color calc(var(--a-morph) * 0.7) var(--ease); }
+.a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--a-ease), color calc(var(--a-morph) * 0.7) var(--a-ease); }
 .a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, 32px); }
 .a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, 551px); }
 .a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, 551px); }
@@ -101,8 +101,8 @@
    rectangle so every move is a pure horizontal or vertical slide (never diagonal).
    The inner element rotates ONLY during a transition: JS bumps --gr on each state
    change and it eases over the morph, then stays still while the state is held. */
-.a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--ease); }
-.a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); transform: rotate(var(--gr, 0deg)); transition: transform var(--a-morph) var(--ease); }
+.a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--a-ease); }
+.a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); transform: rotate(var(--gr, 0deg)); transition: transform var(--a-morph) var(--a-ease); }
 .a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, 32px); }   /* top-right */
 .a-hero[data-astate="2"] .a-hero__globe { transform: translate(16px, 32px); }    /* top-left */
 .a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, 632px); }   /* bottom-left */
@@ -113,7 +113,9 @@
 }
 
 /* hero CTA that sits just under the hero */
-.a-herocta { padding: var(--space-4); }
+/* Hero already leaves 32px below its last image, so top padding is 0 — this yields a
+   balanced 32px above the button and 32px below it, on the 4-grid. */
+.a-herocta { padding: 0 var(--space-4) var(--space-6); }
 .a-herocta .btn { width: 100%; }
 
 /* ---------------------------------------------------------- about (What is) --
