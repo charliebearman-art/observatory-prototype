@@ -1,0 +1,155 @@
+/* ============================================================================
+   Concept A — "Archival": a second, editorial concept for the Home page.
+   Fonts, radii and type come from tokens.css [data-concept="a"] (Cormorant
+   Garamond display + Jost text). Colour is FIXED here (no dynamic palette per
+   the concept). Reuses base.css components (.btn, .icon-btn, .logo, .rail /
+   .benefit orbit cards, the reveal system) and overrides only what changes.
+   ============================================================================ */
+
+/* fixed colour scheme (Figma: Главная · Концепт A) */
+[data-palette="archive"] {
+  --color-bg: #1a1a1c;
+  --color-surface: #262625;
+  --color-text: #f2f0ec;
+  --color-text-muted: #9b9791;
+  --color-accent: #cbb68c;
+  --color-on-accent: #1a1a1c;
+  --color-border: #3a3a38;
+  --color-accent-hover: #d8c8a5;
+  --color-accent-subtle: #2a2620;
+}
+
+/* globe-only mark (rotates in the hero); the .logo mask components stay for the lockups */
+.logo--globe { width: 56px; height: 56px; -webkit-mask: url(../assets/img/a/globe.svg) center / contain no-repeat; mask: url(../assets/img/a/globe.svg) center / contain no-repeat; background: currentColor; }
+
+/* shared right-aligned eyebrow used by the A blocks */
+.a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-muted); margin: 0; }
+
+/* ------------------------------------------------------------------ header --
+   Not shown at the top of the page — slides down only once the hero scrolls
+   under it. Confined to the content column. */
+.a-menu {
+  position: fixed; top: 0; left: 50%; width: 390px; max-width: 100%; z-index: 40;
+  transform: translateX(-50%) translateY(-100%);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in oklab, var(--color-bg), transparent 6%);
+  backdrop-filter: blur(14px); border-bottom: 1px solid var(--color-border);
+  opacity: 0; transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.a-menu.is-visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+.a-menu .logo--short { width: 64px; color: var(--color-accent); }
+.a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
+
+/* --------------------------------------------------------------------- hero --
+   Editorial animation: four compositions crossfade, each repositioning the
+   headline + rotating globe around a portrait/landscape image. */
+.a-hero { position: relative; height: 720px; overflow: hidden; background: var(--color-bg); }
+/* fade THROUGH the background: each composition fully clears before the next
+   appears, so the repositioned headline/globe never double up mid-transition */
+.a-hero__slide { position: absolute; inset: 0; opacity: 0; animation: a-hero-cycle 24s var(--ease) infinite; }
+.a-hero__slide:nth-child(1) { animation-delay: 0s; }
+.a-hero__slide:nth-child(2) { animation-delay: 6s; }
+.a-hero__slide:nth-child(3) { animation-delay: 12s; }
+.a-hero__slide:nth-child(4) { animation-delay: 18s; }
+@keyframes a-hero-cycle { 0% { opacity: 0; } 5% { opacity: 1; } 20% { opacity: 1; } 25% { opacity: 0; } 100% { opacity: 0; } }
+
+.a-hero__img { position: absolute; overflow: hidden; border-radius: var(--radius-input); }
+.a-hero__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.a-hero__eou { position: absolute; margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); }
+.a-hero__eou .ac { color: var(--color-accent); }
+.a-hero__globe { position: absolute; width: 56px; height: 56px; color: var(--color-accent); animation: a-globe-spin 36s linear infinite; }
+@keyframes a-globe-spin { to { transform: rotate(360deg); } }
+
+/* composition 1 — headline top-left, globe top-right, tall image below */
+.ahs1 .a-hero__eou   { left: var(--space-4); top: 24px; }
+.ahs1 .a-hero__globe { right: var(--space-4); top: 26px; }
+.ahs1 .a-hero__img   { left: var(--space-4); top: 193px; width: 358px; height: 495px; }
+/* composition 2 — globe top-left, image on the right, headline bottom-left */
+.ahs2 .a-hero__globe { left: var(--space-4); top: 26px; }
+.ahs2 .a-hero__img   { right: var(--space-4); top: 24px; width: 214px; height: 664px; }
+.ahs2 .a-hero__eou   { left: var(--space-4); bottom: 24px; }
+/* composition 3 — image top, headline bottom-left, globe bottom-right */
+.ahs3 .a-hero__img   { left: var(--space-4); top: 24px; width: 358px; height: 470px; }
+.ahs3 .a-hero__eou   { left: var(--space-4); bottom: 24px; }
+.ahs3 .a-hero__globe { right: var(--space-4); bottom: 26px; }
+/* composition 4 — globe top-left, image, headline top-right (right-aligned) */
+.ahs4 .a-hero__globe { left: var(--space-4); top: 26px; }
+.ahs4 .a-hero__img   { right: var(--space-4); bottom: 24px; width: 214px; height: 560px; }
+.ahs4 .a-hero__eou   { right: var(--space-4); top: 24px; text-align: right; }
+
+@media (prefers-reduced-motion: reduce) {
+  .a-hero__slide { animation: none; opacity: 0; }
+  .a-hero__slide:nth-child(1) { opacity: 1; }   /* hold the resting composition */
+  .a-globe-spin, .a-hero__globe { animation: none; }
+}
+
+/* hero CTA that sits just under the hero */
+.a-herocta { padding: var(--space-4); }
+.a-herocta .btn { width: 100%; }
+
+/* ---------------------------------------------------------- about (What is) --
+   Reuses the .block / .rail benefit cards; adds the logo lockup + a text block. */
+.a-about { padding-top: var(--space-6); }
+.a-about__lockup { color: var(--color-accent); margin: 0 var(--space-4) var(--space-5); }
+.a-about__head { padding: 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-6); }
+.a-about__head h2 { margin: 0; }
+.a-about__head .ac { color: var(--color-accent); }
+
+/* --------------------------------------------------------- featured guides --
+   Image-forward cards in a horizontal rail: cover + city badge, then title,
+   teaser, price and an arrow button. */
+.a-featured { padding: var(--space-8) 0 var(--space-6); }
+.a-featured__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding: 0 var(--space-4) var(--space-5); }
+.a-featured__head .a-eyebrow { margin-bottom: var(--space-2); }
+.a-featured__title { margin: 0; }
+.a-featured__rail { display: flex; gap: var(--space-4); overflow-x: auto; padding: 0 var(--space-4) var(--space-2); scrollbar-width: none; scroll-snap-type: x mandatory; }
+.a-featured__rail::-webkit-scrollbar { display: none; }
+
+.a-guide { flex: 0 0 320px; scroll-snap-align: start; display: flex; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
+.a-guide__media { position: relative; aspect-ratio: 320 / 300; overflow: hidden; }
+.a-guide__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.a-guide__badge { position: absolute; left: var(--space-3); top: var(--space-3); display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); border-radius: var(--radius-button); background: var(--glass); backdrop-filter: blur(6px); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; }
+.a-guide__body { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); flex: 1; }
+.a-guide__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
+.a-guide__teaser { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+.a-guide__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: auto; }
+.a-guide__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: 1; color: var(--color-accent); }
+
+/* --------------------------------------------------- the world, city by city --
+   A two-column grid of small city rows (thumbnail + name). */
+.a-cities { padding: var(--space-6) var(--space-4) var(--space-8); }
+.a-cities__head { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+.a-cities__title { margin: 0; }
+.a-cities__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.a-city { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2); padding-right: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); color: var(--color-text); cursor: pointer; transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+.a-city__thumb { width: 52px; height: 44px; flex: none; border-radius: var(--radius-inner-4, 2px); overflow: hidden; }
+.a-city__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.a-city__name { font-size: var(--size-body); line-height: var(--lh-body); }
+.a-cities__more { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; height: 56px; border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); color: var(--color-text-muted); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .a-city:hover { border-color: var(--color-accent); }
+  .a-cities__more:hover { color: var(--color-text); border-color: var(--color-accent); }
+}
+
+/* -------------------------------------------------------------------- footer --
+   Centred: logo lockup, serif CTA, two buttons, nav, social + legal. */
+.a-foot { padding: var(--space-8) var(--space-4) var(--space-6); display: flex; flex-direction: column; align-items: center; gap: var(--space-6); text-align: center; background: color-mix(in oklab, var(--color-bg), #000 22%); }
+.a-foot__lockup { color: var(--color-accent); }
+.a-foot__cta { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); width: 100%; }
+.a-foot__cta h2 { margin: 0; }
+.a-foot__cta .ac { color: var(--color-accent); }
+.a-foot__btns { display: flex; gap: var(--space-3); width: 100%; }
+.a-foot__btns .btn { flex: 1 1 0; }
+.a-foot__nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4) var(--space-5); }
+.a-foot__nav a { color: var(--color-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.a-foot__row { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
+.a-foot__legal { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.a-foot__legal .t-caption { color: var(--color-text-muted); }
+.a-foot .row { display: flex; align-items: center; gap: var(--space-2); }
+
+/* concept switcher (demo): jump between the concept versions */
+.concept-nav { position: fixed; left: var(--space-3); bottom: var(--space-3); z-index: 60; display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-button); background: color-mix(in oklab, var(--color-bg), transparent 8%); backdrop-filter: blur(10px); border: 1px solid var(--color-border); }
+.concept-nav a, .concept-nav span { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 3px; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); color: var(--color-text-muted); text-decoration: none; }
+.concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
+.concept-nav span { opacity: 0.4; }

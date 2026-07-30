@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" data-concept="a" data-palette="archive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a1c">
+<title>Observatory — Home · Concept A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=12">
+<link rel="stylesheet" href="styles/concept-a.css?v=2">
+</head>
+<body>
+
+<!-- concept switcher (demo): jump between concepts -->
+<nav class="concept-nav" aria-label="Concept">
+  <a href="index-a.html" aria-current="page">A</a>
+  <a href="index.html">B</a>
+  <span aria-disabled="true" title="Concept C — coming">C</span>
+</nav>
+
+<!-- header: hidden at the top, slides in on scroll -->
+<header class="a-menu" id="aMenu">
+  <a class="logo logo--short" href="#" aria-label="Observatory TS"></a>
+  <div class="a-menu__actions">
+    <a class="btn btn--primary btn--compact" href="#">Log in</a>
+    <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
+    </button>
+    <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Menu">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-burger"></use></svg>
+    </button>
+  </div>
+</header>
+
+<main class="screen a-screen">
+
+  <!-- hero: editorial animation cycling four compositions -->
+  <section class="a-hero" aria-label="Observatory">
+    <div class="a-hero__slide ahs1">
+      <p class="a-hero__eou"><span class="ac">Explore.</span><br>Observe.<br>Understand.</p>
+      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
+      <div class="a-hero__img"><img src="assets/img/a/hero-1.jpg" alt="Duomo di Milano"></div>
+    </div>
+    <div class="a-hero__slide ahs2">
+      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
+      <div class="a-hero__img"><img src="assets/img/a/hero-2.jpg" alt="Colosseum, Rome"></div>
+      <p class="a-hero__eou">Explore.<br><span class="ac">Observe.</span><br>Understand.</p>
+    </div>
+    <div class="a-hero__slide ahs3">
+      <div class="a-hero__img"><img src="assets/img/a/hero-3.jpg" alt="Renaissance painting"></div>
+      <p class="a-hero__eou">Explore.<br>Observe.<br><span class="ac">Understand.</span></p>
+      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
+    </div>
+    <div class="a-hero__slide ahs4">
+      <span class="a-hero__globe logo logo--globe" aria-hidden="true"></span>
+      <div class="a-hero__img"><img src="assets/img/a/hero-4.jpg" alt="Venetian canal"></div>
+      <p class="a-hero__eou"><span class="ac">Explore.</span><br>Observe.<br>Understand.</p>
+    </div>
+  </section>
+
+  <div class="a-herocta">
+    <a class="btn btn--primary btn--large" href="#">Start a New Journey</a>
+  </div>
+
+  <!-- what is observatory -->
+  <section class="a-about">
+    <a class="logo logo--full a-about__lockup" href="#" aria-label="Observatory TS"></a>
+    <div class="a-about__head">
+      <h2 class="t-h1 t-balance">A Travel Companion <span class="ac">You’ve Dreamed of</span></h2>
+      <p class="t-body t-muted">Observatory turns a city into a story you can walk through — curated routes, real places, and the context that makes them matter.</p>
+      <a class="text-btn" href="#"><span>Learn more</span>
+        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+      </a>
+    </div>
+
+    <div class="rail">
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="orbit" aria-hidden="true">
+            <div class="orbit__wheel">
+              <img class="orbit__track" src="assets/img/anim-dashed.png" alt="">
+              <span class="orbit__stop" style="--station:180deg;--phase:0ms"><span class="orbit__ring"><img src="assets/img/orbit-milan.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:270deg;--phase:calc(var(--orbit-cycle) * -0.75)"><span class="orbit__ring"><img src="assets/img/orbit-istanbul.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:0deg;--phase:calc(var(--orbit-cycle) * -0.5)"><span class="orbit__ring"><img src="assets/img/orbit-prague.jpg" alt=""></span></span>
+              <span class="orbit__stop" style="--station:90deg;--phase:calc(var(--orbit-cycle) * -0.25)"><span class="orbit__ring"><img src="assets/img/orbit-santorini.jpg" alt=""></span></span>
+            </div>
+          </div>
+          <span class="anim-label t-body t-muted" style="--phase:0ms">MILAN</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.75)">ISTANBUL</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.5)">PRAGUE</span>
+          <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.25)">SANTORINI</span>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Explore.</h3>
+          <p class="t-body t-muted">Pick a travel guide crafted by people who know it — every route curated, never auto-generated.</p>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="obs" aria-hidden="true">
+            <img class="obs__route" src="assets/img/obs-path.svg" alt="">
+            <span class="obs__pin" style="--obs-track:obs-follow-a"><img src="assets/img/obs-galleria.png" alt=""></span>
+            <span class="obs__pin" style="--obs-track:obs-follow-b"><img src="assets/img/obs-scala.png" alt=""></span>
+            <span class="obs__pin" style="--obs-track:obs-follow-c"><img src="assets/img/obs-castello.png" alt=""></span>
+            <span class="obs__pin obs__pin--lead" style="--obs-track:obs-lead"><img src="assets/img/obs-duomo.jpg" alt=""></span>
+          </div>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Observe.</h3>
+          <p class="t-body t-muted">Follow it at your own pace and notice the streets, corners and details you'd usually walk past.</p>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="benefit__slot">
+          <div class="und" aria-hidden="true">
+            <span class="und__hero"><img src="assets/img/und-duomo.jpg" alt=""></span>
+            <span class="und__spot" style="--spot-track:und-spot-1;--open-track:und-open-1">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-1.png" alt="">
+            </span>
+            <span class="und__spot" style="--spot-track:und-spot-2;--open-track:und-open-2">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-2.png" alt="">
+            </span>
+            <span class="und__spot" style="--spot-track:und-spot-3;--open-track:und-open-3">
+              <img src="assets/img/und-dot.svg" alt=""><img src="assets/img/und-spot-3.png" alt="">
+            </span>
+          </div>
+        </div>
+        <div class="benefit__body">
+          <h3 class="t-h3">Understand.</h3>
+          <p class="t-body t-muted">Hear the story behind each place — the history and the meaning. Leave knowing the city, not just seeing it.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- featured guides -->
+  <section class="a-featured">
+    <div class="a-featured__head">
+      <div>
+        <p class="a-eyebrow">Featured guides</p>
+        <h2 class="a-featured__title t-h1">Popular in Italy</h2>
+      </div>
+      <a class="text-btn" href="#"><span>All</span>
+        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-right"></use></svg>
+      </a>
+    </div>
+    <div class="a-featured__rail">
+      <article class="a-guide">
+        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-quarter.jpg" alt=""></div>
+        <div class="a-guide__body">
+          <h3 class="a-guide__title">The City You Don’t Understand at First</h3>
+          <p class="a-guide__teaser">Slip past the galleries into the hidden cortili where Milan still paints.</p>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">210 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="a-guide">
+        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-ritual.jpg" alt=""></div>
+        <div class="a-guide__body">
+          <h3 class="a-guide__title">An Evening the City Keeps for Itself</h3>
+          <p class="a-guide__teaser">Follow the aperitivo hour from the canals to the last lit window.</p>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">180 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="a-guide">
+        <div class="a-guide__media"><span class="a-guide__badge">Milan</span><img src="assets/img/guide-rooftops.jpg" alt=""></div>
+        <div class="a-guide__body">
+          <h3 class="a-guide__title">The Quarter Behind the Galleries</h3>
+          <p class="a-guide__teaser">Climb to the marble terraces most visitors never think to reach.</p>
+          <div class="a-guide__foot">
+            <span class="a-guide__price">195 $</span>
+            <a class="icon-btn icon-btn--outline" href="guide.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- the world, city by city -->
+  <section class="a-cities">
+    <div class="a-cities__head">
+      <p class="a-eyebrow">Guides around the world</p>
+      <h2 class="a-cities__title t-h1 t-balance">The World, City by City</h2>
+    </div>
+    <div class="a-cities__grid">
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-milan.jpg" alt=""></span><span class="a-city__name">Milan</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-rome.jpg" alt=""></span><span class="a-city__name">Rome</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-lisbon.jpg" alt=""></span><span class="a-city__name">Lisbon</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-paris.jpg" alt=""></span><span class="a-city__name">Paris</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-tokyo.jpg" alt=""></span><span class="a-city__name">Tokyo</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-athens.jpg" alt=""></span><span class="a-city__name">Athens</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-porto.jpg" alt=""></span><span class="a-city__name">Porto</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-vienna.jpg" alt=""></span><span class="a-city__name">Vienna</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-seville.jpg" alt=""></span><span class="a-city__name">Seville</span></button>
+      <button class="a-city"><span class="a-city__thumb"><img src="assets/img/city-oslo.jpg" alt=""></span><span class="a-city__name">Oslo</span></button>
+      <button class="a-cities__more">+24 more</button>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="a-foot">
+    <a class="logo logo--full a-foot__lockup" href="#" aria-label="Observatory TS"></a>
+    <div class="a-foot__cta">
+      <h2 class="t-h1 t-balance">Ready to Start <span class="ac">a New Journey?</span></h2>
+      <div class="a-foot__btns">
+        <a class="btn btn--primary btn--large" href="#">Let’s go
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+        </a>
+        <a class="btn btn--secondary btn--large" href="#">Log in
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <nav class="a-foot__nav">
+      <a href="#">About</a><a href="#">Guides</a><a href="#">How it works</a><a href="#">Contact</a>
+    </nav>
+    <div class="a-foot__row">
+      <span class="row"><svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg><span class="t-body">English</span></span>
+      <span class="row" style="gap:var(--space-2)">
+        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></a>
+        <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></a>
+      </span>
+    </div>
+    <div class="a-foot__legal">
+      <span class="t-caption">© 2026 Observatory</span>
+      <span class="row" style="gap:var(--space-3)"><a class="t-caption" href="#">Terms</a><a class="t-caption" href="#">Privacy</a></span>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // header: hidden at the top, slides in once the hero has scrolled away
+  (function () {
+    var menu = document.getElementById('aMenu');
+    var hero = document.querySelector('.a-hero');
+    if (!menu || !hero) return;
+    new IntersectionObserver(function (e) {
+      menu.classList.toggle('is-visible', !e[0].isIntersecting);
+    }, { rootMargin: '-72px 0px 0px 0px' }).observe(hero);
+  })();
+
+  // reveal on scroll — sections rise + fade in as they enter (shared base.css system)
+  (function () {
+    var groups = [
+      ['.a-about__head', ':scope > *', 70],
+      ['.rail', ':scope > *', 90],
+      ['.a-featured__head', ':scope > *', 60],
+      ['.a-featured__rail', ':scope > *', 80],
+      ['.a-cities__head', ':scope > *', 60],
+      ['.a-cities__grid', ':scope > *', 40],
+      ['.a-foot', ':scope > *', 70]
+    ];
+    groups.forEach(function (g) {
+      document.querySelectorAll(g[0]).forEach(function (box) {
+        var kids = box.querySelectorAll(g[1]); if (!kids.length) return;
+        box.setAttribute('data-reveal-group', '');
+        kids.forEach(function (el, i) { el.style.setProperty('--reveal-delay', i * g[2] + 'ms'); el.setAttribute('data-reveal', ''); });
+      });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+    var LAST = { 'reveal-rise': 1, 'reveal-fade': 1 };
+    document.addEventListener('animationend', function (e) {
+      if (LAST[e.animationName] && e.target.hasAttribute('data-reveal')) e.target.classList.add('is-settled');
+    });
+  })();
+</script>
+</body>
+</html>
