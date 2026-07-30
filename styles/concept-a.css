@@ -49,7 +49,7 @@
    (width/height 0 -> full) in their own state and wipe closed otherwise.
    The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
 .a-hero { position: relative; height: 720px; overflow: hidden; background: var(--color-bg); }
-:root { --a-morph: 760ms; }
+:root { --a-morph: 680ms; }
 
 /* image cards — a clip container whose size animates; the inner <img> is the full
    size and anchored to the edge it reveals from, so the size change reads as a wipe */
@@ -86,10 +86,11 @@
 .a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, 635px); }
 .a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, 635px); }
 .a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, 116px); }
-.a-hero[data-astate="1"] .a-hero__line--e,
-.a-hero[data-astate="4"] .a-hero__line--e { color: var(--color-accent); }
-.a-hero[data-astate="2"] .a-hero__line--o { color: var(--color-accent); }
-.a-hero[data-astate="3"] .a-hero__line--u { color: var(--color-accent); }
+/* the accent travels down the lines across the cycle: S1 none, S2 Explore,
+   S3 Observe, S4 Understand (per the reference recording) */
+.a-hero[data-astate="2"] .a-hero__line--e { color: var(--color-accent); }
+.a-hero[data-astate="3"] .a-hero__line--o { color: var(--color-accent); }
+.a-hero[data-astate="4"] .a-hero__line--u { color: var(--color-accent); }
 
 /* rotating globe — outer element slides between states, inner element spins */
 .a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--ease); }
