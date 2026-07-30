@@ -128,22 +128,16 @@
 .about__toggle .icon { transition: transform var(--dur) var(--ease); }
 .about__toggle[aria-expanded="true"] .icon { transform: rotate(180deg); }
 
-/* ---------- gallery (looping marquee) ---------- */
-.gallery { overflow: hidden; }
-.gallery__track {
-  display: flex; gap: var(--space-2); width: max-content;
-  animation: gallery-scroll 48s linear infinite;
-}
-.gallery:hover .gallery__track { animation-play-state: paused; }
+/* ---------- gallery (auto-scrolling marquee, JS-driven, swipeable) ----------
+   scroll-based (not a transform animation) so the user can swipe freely; the
+   auto-scroll (guide.html) just nudges scrollLeft and resumes after a swipe. */
+.gallery { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.gallery::-webkit-scrollbar { display: none; }
+.gallery__track { display: flex; gap: var(--space-2); width: max-content; }
 .gallery__item { height: 260px; flex: none; overflow: hidden; }
 .gallery__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gallery__item--w { width: 400px; }
 .gallery__item--n { width: 180px; }
-@keyframes gallery-scroll { to { transform: translateX(calc(-50% - var(--space-2) / 2)); } }
-@media (prefers-reduced-motion: reduce) {
-  .gallery { overflow-x: auto; }
-  .gallery__track { animation: none; }
-}
 
 /* ---------- the route ---------- */
 .route { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }

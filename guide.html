@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=10">
-<link rel="stylesheet" href="styles/guide.css?v=24">
+<link rel="stylesheet" href="styles/guide.css?v=25">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 </head>
@@ -131,7 +131,7 @@
   <!-- gallery (looping) -->
   <section class="gallery" aria-label="Gallery">
     <div class="gallery__track" id="galleryTrack">
-      <!-- items are duplicated once by JS for a seamless loop -->
+      <!-- items are triplicated by JS for a seamless two-way loop -->
       <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-1.jpg" alt=""></span>
       <span class="gallery__item gallery__item--w"><img src="assets/img/guide/gal-2.jpg" alt=""></span>
       <span class="gallery__item gallery__item--n"><img src="assets/img/guide/gal-3.jpg" alt=""></span>
@@ -386,10 +386,52 @@
     });
   })();
 
-  // gallery: duplicate the strip once so the marquee loops seamlessly
+  // gallery: continuous auto-scroll that never fully stops. Tapping doesn't pause it;
+  // a swipe takes over (native scroll) and auto-scroll resumes from where it was left.
   (function () {
+    var gallery = document.querySelector('.gallery');
     var track = document.getElementById('galleryTrack');
-    track.innerHTML += track.innerHTML;
+    if (!gallery || !track) return;
+    var n = track.children.length;
+    var orig = track.innerHTML;
+    track.innerHTML = orig + orig + orig;        // triplicate: buffer on both sides for seamless looping either way
+
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var loopW = 0, speed = 0.5, pos = 0;         // pos: float accumulator (scrollLeft can round to int)
+    function norm(p) { if (!loopW) return p; if (p < loopW * 0.5) p += loopW; else if (p >= loopW * 1.5) p -= loopW; return p; }
+    function measure() {
+      loopW = track.children[n].offsetLeft;      // width of one copy = the seamless wrap distance
+      if (loopW) { speed = loopW / (48 * 60); if (gallery.scrollLeft < 1) gallery.scrollLeft = loopW; pos = gallery.scrollLeft; }  // start in the middle copy
+    }
+    requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+
+    // during a manual swipe, keep the native scroll within the middle copy so it loops both ways
+    gallery.addEventListener('scroll', function () {
+      if (!paused || !loopW) return;
+      var s = gallery.scrollLeft, w = norm(s);
+      if (Math.abs(w - s) > 0.5) gallery.scrollLeft = w;
+    }, { passive: true });
+
+    var paused = false, resumeTimer;
+    function pause() { paused = true; clearTimeout(resumeTimer); }
+    function scheduleResume() { clearTimeout(resumeTimer); resumeTimer = setTimeout(function () { paused = false; pos = gallery.scrollLeft; }, 800); }  // resume from where the swipe left off
+    // touch: a tap (no move) never pauses; a swipe pauses, then auto resumes after it settles
+    gallery.addEventListener('touchmove', pause, { passive: true });
+    gallery.addEventListener('touchend', scheduleResume, { passive: true });
+    gallery.addEventListener('touchcancel', scheduleResume, { passive: true });
+    gallery.addEventListener('wheel', function () { pause(); scheduleResume(); }, { passive: true });
+    // mouse drag (desktop): pause once it actually moves
+    var dx = null;
+    gallery.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') dx = e.clientX; });
+    gallery.addEventListener('pointermove', function (e) { if (dx !== null && Math.abs(e.clientX - dx) > 6) pause(); });
+    window.addEventListener('pointerup', function () { if (dx !== null) { dx = null; scheduleResume(); } });
+
+    function tick() {
+      if (!paused && loopW) { pos = norm(pos + speed); gallery.scrollLeft = pos; }
+      requestAnimationFrame(tick);
+    }
+    if (!reduce) requestAnimationFrame(tick);
   })();
 
   // route: real MapLibre map + markers <-> cards
