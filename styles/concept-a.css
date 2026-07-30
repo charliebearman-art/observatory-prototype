@@ -26,72 +26,88 @@
 .a-eyebrow { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin: 0; }
 
 /* ------------------------------------------------------------------ header --
-   Static bar at the very top of the hero, in flow with the animation and CTA
-   below it — the whole hero is one screen. Scrolls away with the page. */
-.a-hero__bar {
-  flex: 0 0 auto;
+   Not shown at the top of the page — slides down and pins only once the hero
+   scrolls under it. Confined to the content column. */
+.a-menu {
+  position: fixed; top: var(--space-4); left: 50%; z-index: 40;
+  width: 358px; max-width: calc(100% - var(--space-4) * 2);
+  transform: translateX(-50%) translateY(calc(-100% - var(--space-4)));
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-4); border-radius: var(--radius-card);
+  background: color-mix(in oklab, var(--color-bg), transparent 8%);
+  backdrop-filter: blur(6px); border: 1.5px solid var(--color-border);
+  opacity: 0; pointer-events: none;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
-.a-hero__bar .logo--short { width: 68px; color: var(--color-accent); }
-.a-hero__actions { display: flex; align-items: center; gap: var(--space-2); }
+.a-menu.is-visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.a-menu .logo--short { width: 68px; color: var(--color-accent); }
+.a-menu__actions { display: flex; align-items: center; gap: var(--space-2); }
 
 /* --------------------------------------------------------------------- hero --
    Editorial morph (Figma smart-animate): one headline (3 lines) + one rotating
    globe reposition between four states, while four image cards each WIPE open
    (width/height 0 -> full) in their own state and wipe closed otherwise.
    The state is cycled by JS via [data-astate]; CSS transitions do the morph. */
-/* The hero is one screen: header (auto) + stage (fills the rest) + CTA (auto). */
+/* The hero is one screen: the floating header pins on scroll (hidden at the top,
+   so it never covers the animation there); the hero itself is a flex column —
+   stage (fills) + CTA (auto) — so the button always sits within the first screen. */
 .a-hero { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--color-bg); }
-/* Stage is the leftover space; the canvas is the fixed 390x720 design frame, scaled
-   as a whole by JS (--hero-scale) and centred, so no morph coordinate ever changes. */
+/* Stage is the leftover space. The canvas is the 390-wide design frame; its HEIGHT —
+   and every vertical coordinate inside it — is driven by --a-vscale (JS: available
+   height / 720, capped at 1). So on a shorter screen the image containers OPEN to a
+   shorter height, while the full width and the entire morph mechanic stay as designed.
+   Widths and horizontal positions never change. */
 .a-hero__stage { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; }
 .a-hero__canvas {
-  position: absolute; top: 0; left: 50%; width: 390px; height: 720px;
-  transform: translateX(-50%) scale(var(--hero-scale, 1)); transform-origin: top center;
+  --v: var(--a-vscale, 1);
+  --a-open: calc(495px * var(--v));   /* image open height */
+  --a-cap:  calc(56px * var(--v));    /* collapsed leading edge */
+  --a-in:   calc(32px * var(--v));    /* top / bottom inset */
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: calc(720px * var(--v)); transform: translateY(-50%);
 }
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
 
 /* image cards — a clip container whose size animates; the inner <img> is the full
-   size and anchored to the edge it reveals from, so the size change reads as a wipe */
+   size and anchored to the edge it reveals from, so the size change reads as a wipe.
+   Open height + inset scale with --v; widths stay fixed. */
 .a-hero__pic { position: absolute; overflow: hidden; border-radius: var(--radius-input); transition: width var(--a-morph) var(--a-ease), height var(--a-morph) var(--a-ease); will-change: width, height; }
 .a-hero__pic img { position: absolute; display: block; object-fit: cover; }
-/* Each image grows from a small corner POINT (width+height) into place and collapses
-   back to a line, anchored to a fixed corner — matching the Figma per-state geometry. */
 /* Pic 1 Duomo — bottom-left anchor; collapses to a full-width bottom line (1D) */
-.a-hero__pic--1 { left: 16px; bottom: 32px; width: 358px; height: 0; }
-.a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; height: 495px; }
-.a-hero[data-astate="1"] .a-hero__pic--1 { height: 495px; }
+.a-hero__pic--1 { left: 16px; bottom: var(--a-in); width: 358px; height: 0; }
+.a-hero__pic--1 img { left: 0; bottom: 0; width: 358px; height: var(--a-open); }
+.a-hero[data-astate="1"] .a-hero__pic--1 { height: var(--a-open); }
 /* Pic 2 Colosseum — top-right anchor; grows from a top-right point (2D) */
-.a-hero__pic--2 { right: 16px; top: 32px; width: 0; height: 495px; }
-.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: 495px; }
-.a-hero[data-astate="1"] .a-hero__pic--2 { height: 56px; }
-.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: 495px; }
+.a-hero__pic--2 { right: 16px; top: var(--a-in); width: 0; height: var(--a-open); }
+.a-hero__pic--2 img { right: 0; top: 0; width: 286px; height: var(--a-open); }
+.a-hero[data-astate="1"] .a-hero__pic--2 { height: var(--a-cap); }
+.a-hero[data-astate="2"] .a-hero__pic--2 { width: 286px; height: var(--a-open); }
 /* Pic 3 painting — top-left anchor; grows from and collapses back to a top-left point
    (kept collapsed to 0-width in every non-S3 state so it never flashes mid-transition) */
-.a-hero__pic--3 { left: 16px; top: 32px; width: 0; height: 56px; }
-.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: 495px; }
-.a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: 495px; }
+.a-hero__pic--3 { left: 16px; top: var(--a-in); width: 0; height: var(--a-cap); }
+.a-hero__pic--3 img { left: 0; top: 0; width: 358px; height: var(--a-open); }
+.a-hero[data-astate="3"] .a-hero__pic--3 { width: 358px; height: var(--a-open); }
 /* Pic 4 Venice — bottom-left anchor; grows from a bottom-left point (2D) */
-.a-hero__pic--4 { left: 16px; bottom: 32px; width: 0; height: 56px; }
-.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: 495px; }
-.a-hero[data-astate="1"] .a-hero__pic--4 { height: 495px; }
-.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: 495px; }
+.a-hero__pic--4 { left: 16px; bottom: var(--a-in); width: 0; height: var(--a-cap); }
+.a-hero__pic--4 img { left: 0; bottom: 0; width: 286px; height: var(--a-open); }
+.a-hero[data-astate="1"] .a-hero__pic--4 { height: var(--a-open); }
+.a-hero[data-astate="4"] .a-hero__pic--4 { width: 286px; height: var(--a-open); }
 
-/* headline — three lines that slide between states; the accent line changes */
+/* headline — three lines that slide between states; the accent line changes.
+   Vertical offsets scale with --v; horizontal offsets are fixed. */
 .a-hero__line { position: absolute; left: 0; top: 0; margin: 0; white-space: nowrap; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); transition: transform var(--a-morph) var(--a-ease), color calc(var(--a-morph) * 0.7) var(--a-ease); }
-.a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, 32px); }
-.a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, 551px); }
-.a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, 551px); }
-.a-hero[data-astate="4"] .a-hero__line--e { transform: translate(218px, 32px); }
-.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, 74px); }
-.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, 593px); }
-.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, 593px); }
-.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, 74px); }
-.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, 116px); }
-.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, 635px); }
-.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, 635px); }
-.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, 116px); }
+.a-hero[data-astate="1"] .a-hero__line--e { transform: translate(16px, calc(32px * var(--v))); }
+.a-hero[data-astate="2"] .a-hero__line--e { transform: translate(16px, calc(551px * var(--v))); }
+.a-hero[data-astate="3"] .a-hero__line--e { transform: translate(218px, calc(551px * var(--v))); }
+.a-hero[data-astate="4"] .a-hero__line--e { transform: translate(218px, calc(32px * var(--v))); }
+.a-hero[data-astate="1"] .a-hero__line--o { transform: translate(16px, calc(74px * var(--v))); }
+.a-hero[data-astate="2"] .a-hero__line--o { transform: translate(16px, calc(593px * var(--v))); }
+.a-hero[data-astate="3"] .a-hero__line--o { transform: translate(207px, calc(593px * var(--v))); }
+.a-hero[data-astate="4"] .a-hero__line--o { transform: translate(207px, calc(74px * var(--v))); }
+.a-hero[data-astate="1"] .a-hero__line--u { transform: translate(16px, calc(116px * var(--v))); }
+.a-hero[data-astate="2"] .a-hero__line--u { transform: translate(16px, calc(635px * var(--v))); }
+.a-hero[data-astate="3"] .a-hero__line--u { transform: translate(142px, calc(635px * var(--v))); }
+.a-hero[data-astate="4"] .a-hero__line--u { transform: translate(142px, calc(116px * var(--v))); }
 /* the accent travels down the lines across the cycle: S1 none, S2 Explore,
    S3 Observe, S4 Understand (per the reference recording) */
 .a-hero[data-astate="2"] .a-hero__line--e { color: var(--color-accent); }
@@ -100,14 +116,15 @@
 
 /* globe — sits in the empty corner of each composition; the four positions form a
    rectangle so every move is a pure horizontal or vertical slide (never diagonal).
+   Its Y scales with --v (X fixed); the 56px mark itself keeps a constant size.
    The inner element rotates ONLY during a transition: JS bumps --gr on each state
    change and it eases over the morph, then stays still while the state is held. */
 .a-hero__globe { position: absolute; left: 0; top: 0; width: 56px; height: 56px; transition: transform var(--a-morph) var(--a-ease); }
 .a-hero__globe-in { display: block; width: 56px; height: 56px; color: var(--color-accent); transform: rotate(var(--gr, 0deg)); transition: transform var(--a-morph) var(--a-ease); }
-.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, 32px); }   /* top-right */
-.a-hero[data-astate="2"] .a-hero__globe { transform: translate(16px, 32px); }    /* top-left */
-.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, 632px); }   /* bottom-left */
-.a-hero[data-astate="4"] .a-hero__globe { transform: translate(318px, 632px); }  /* bottom-right */
+.a-hero[data-astate="1"] .a-hero__globe { transform: translate(318px, calc(32px * var(--v))); }   /* top-right */
+.a-hero[data-astate="2"] .a-hero__globe { transform: translate(16px, calc(32px * var(--v))); }    /* top-left */
+.a-hero[data-astate="3"] .a-hero__globe { transform: translate(16px, calc(632px * var(--v))); }   /* bottom-left */
+.a-hero[data-astate="4"] .a-hero__globe { transform: translate(318px, calc(632px * var(--v))); }  /* bottom-right */
 
 @media (prefers-reduced-motion: reduce) {
   .a-hero__pic, .a-hero__line, .a-hero__globe, .a-hero__globe-in { transition: none; }
@@ -159,14 +176,19 @@
 .a-featured__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .a-featured__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
 .a-featured__title { margin: 0; }
-.a-featured__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
+/* Inset scroller: the track sits 16px from both screen edges and clips there, so the
+   cards keep a 16px gutter on the right (and left) instead of a flex scroll container
+   dropping its trailing padding and letting the last card butt against the edge. */
+.a-featured__rail { display: flex; gap: var(--space-2); overflow-x: auto; margin-inline: var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .a-featured__rail::-webkit-scrollbar { display: none; }
 
 .a-guide { position: relative; flex: 0 0 318px; height: 500px; scroll-snap-align: start; border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
 .a-guide__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .a-guide__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 310px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
 .a-guide__badge { position: relative; align-self: flex-start; margin: var(--space-4); display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
-.a-guide__text { position: relative; background: var(--color-bg); border-radius: var(--radius-card) var(--radius-card) 0 0; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+/* Flush top edge over the image — rounded top corners exposed the full-height image
+   behind them in the corner notches (visible as a peek at the right corner). */
+.a-guide__text { position: relative; background: var(--color-bg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
 .a-guide__texthead { display: flex; flex-direction: column; gap: var(--space-2); }
 .a-guide__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
 .a-guide__teaser { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
