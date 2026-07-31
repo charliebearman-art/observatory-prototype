@@ -13,13 +13,14 @@
    Photo (482) sits behind; a frosted --color-surface panel with rounded top corners
    overlaps its bottom and carries the badges/title/sub + price card (per Figma). */
 .ga-cover { position: relative; background: var(--color-bg); }
-.ga-cover__media { position: relative; z-index: 0; height: 482px; overflow: hidden; }
-.ga-cover__bg { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateY(var(--parallax, 0)); will-change: transform; }
+/* photo stays pinned to the top of the screen while the panel/content scrolls over it */
+.ga-cover__media { position: sticky; top: 0; z-index: 0; height: 482px; overflow: hidden; }
+.ga-cover__bg { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ga-cover__top { position: absolute; top: var(--space-5); left: var(--space-4); right: var(--space-4); display: flex; align-items: center; justify-content: space-between; z-index: 2; }
-.ga-lang { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-button); background: var(--scrim); backdrop-filter: blur(4px); border: 1.5px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
+.ga-lang { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1.5px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
 
 /* surface panel overlaps the photo's bottom by 113px (photo 482 -> panel top 369) */
-.ga-cover__panel { position: relative; z-index: 1; margin-top: -113px; background: var(--color-surface); backdrop-filter: blur(4px); border-radius: var(--radius-card) var(--radius-card) 0 0; padding: var(--space-6) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5); }
+.ga-cover__panel { position: relative; z-index: 1; margin-top: -113px; background: var(--color-surface); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border-radius: var(--radius-card) var(--radius-card) 0 0; padding: var(--space-6) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5); }
 .ga-cover__copy { display: flex; flex-direction: column; gap: var(--space-4); }
 .ga-cover__badges { display: flex; align-items: center; gap: var(--space-1); align-self: flex-start; }
 .ga-cover__mark { width: 32px; height: 32px; display: block; }
@@ -112,18 +113,20 @@
 
 /* ---------------------------------------------------------------- route --
    head (16 inset) · 32 · full-bleed map (293) · 32 · route cards. */
+/* The route + Formats share one surface подложка (per Figma), full-bleed with a card radius */
+.ga-routewrap { background: var(--color-surface); border-radius: var(--radius-card); overflow: hidden; }
 .ga-route { padding: var(--space-8) 0 0; display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-route__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .ga-route__map { position: relative; height: 293px; overflow: hidden; background: var(--color-surface); }
 .ga-route__cards { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .ga-route__cards::-webkit-scrollbar { display: none; }
-.ga-rcard { flex: 0 0 300px; width: 300px; scroll-snap-align: start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; transition: border-color var(--dur) var(--ease); }
+.ga-rcard { flex: 0 0 210px; width: 210px; scroll-snap-align: start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; transition: border-color var(--dur) var(--ease); }
 .ga-rcard.is-active { border-color: var(--color-accent); }
-.ga-rcard__img { width: 100%; height: 168px; object-fit: cover; display: block; }
-.ga-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
-.ga-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); letter-spacing: 0.12em; color: var(--color-text-muted); }
-.ga-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
-.ga-rcard__desc { margin: 0; font-size: var(--size-body); line-height: var(--lh-body); }
+.ga-rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }
+.ga-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.ga-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-accent); }
+.ga-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
+.ga-rcard__desc { margin: 0; font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
 
 /* map markers — accent-ringed photo bubbles */
 .mpoi { width: 36px; height: 36px; cursor: pointer; }
@@ -137,14 +140,16 @@
 
 /* -------------------------------------------------------------- formats --
    32 above (from the route cards) · head (16 inset) · card rail · 48 below. */
-.ga-formats { padding: var(--space-6) 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
+.ga-formats { padding: var(--space-8) 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-formats__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .ga-formats__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; }
 .ga-formats__rail::-webkit-scrollbar { display: none; }
-.ga-format { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); }
-.ga-format__icon { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-button); background: var(--color-accent-subtle); color: var(--color-accent); }
-.ga-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
-.ga-format__sub { font-size: var(--size-caption); line-height: var(--lh-caption); }
+/* pill with a solid accent icon square on the left, then title + sub (per Figma) */
+.ga-format { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-1) var(--space-5) var(--space-1) var(--space-1); background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-button); }
+.ga-format__icon { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: var(--radius-inner-4); background: var(--color-accent); color: var(--color-on-accent); }
+.ga-format__text { display: flex; flex-direction: column; gap: var(--space-1); }
+.ga-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); white-space: nowrap; }
+.ga-format__sub { font-size: var(--size-caption); line-height: var(--lh-caption); white-space: nowrap; }
 
 /* footer tweaks (a-foot is defined in concept-a.css; support the flat markup here) */
 .a-foot__title { margin: 0; }
@@ -153,11 +158,18 @@
 .a-foot__legallinks { display: flex; align-items: center; gap: var(--space-3); }
 
 /* ------------------------------------------------------------- buy bar -- */
-.ga-buybar { position: fixed; left: 50%; bottom: 0; z-index: 45; width: 390px; max-width: 100%; transform: translateX(-50%) translateY(100%); display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 4%); backdrop-filter: blur(10px); border-top: 1.5px solid var(--color-border); transition: transform var(--dur-slow) var(--ease); }
+/* floating rounded pill, 16px off the bottom (per Figma «Закреп цены») */
+.ga-buybar { position: fixed; left: 50%; bottom: var(--space-4); z-index: 45; width: 358px; max-width: calc(100% - var(--space-4) * 2); transform: translateX(-50%) translateY(calc(100% + var(--space-4))); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 8%); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); transition: transform var(--dur-slow) var(--ease); }
 .ga-buybar.is-shown { transform: translateX(-50%) translateY(0); }
-.ga-buybar__price { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
-.ga-buybar__amount { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-accent); }
+.ga-buybar__price { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ga-buybar__amount { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-accent); }
 .ga-buybar .btn { flex: none; }
+
+/* ------------------------------------------------------- floating menu --
+   Reuses the concept-A .a-menu pill; hidden at the top of the guide (the cover
+   has its own back/lang controls) and slides in the moment the page scrolls. */
+.a-menu--float { opacity: 0; transform: translateX(-50%) translateY(-12px); pointer-events: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.a-menu--float.is-shown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   .ga-cover__bg { transform: none; }

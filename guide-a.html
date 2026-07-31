@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=13">
-<link rel="stylesheet" href="styles/concept-a.css?v=23">
-<link rel="stylesheet" href="styles/guide-a.css?v=9">
+<link rel="stylesheet" href="styles/base.css?v=14">
+<link rel="stylesheet" href="styles/concept-a.css?v=24">
+<link rel="stylesheet" href="styles/guide-a.css?v=11">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
@@ -27,6 +27,20 @@
   <a href="index.html">B</a>
   <span aria-disabled="true" title="Concept C — coming">C</span>
 </nav>
+
+<!-- floating menu: hidden at the top, slides in as soon as the page scrolls -->
+<header class="a-menu a-menu--float" id="gaMenu" aria-hidden="true">
+  <a class="logo logo--short" href="index-a.html" aria-label="Observatory TS"></a>
+  <div class="a-menu__actions">
+    <a class="btn btn--primary btn--compact" href="#">Log in</a>
+    <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
+    </button>
+    <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Menu">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-burger"></use></svg>
+    </button>
+  </div>
+</header>
 
 <main class="screen a-screen">
 
@@ -98,7 +112,8 @@
     <span class="ga-gallery__wide"><img src="assets/img/guide/gal-6.jpg" alt=""></span>
   </section>
 
-  <!-- the route -->
+  <!-- the route + formats share one surface подложка (per Figma) -->
+  <div class="ga-routewrap">
   <section class="ga-route">
     <div class="ga-route__head">
       <p class="a-eyebrow">The route</p>
@@ -131,6 +146,7 @@
       <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-text"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Text</div><div class="ga-format__sub t-muted">Read at your own pace</div></div></div>
     </div>
   </section>
+  </div>
 
   <!-- featured guides (reuse Concept A component) -->
   <section class="a-featured">
@@ -254,15 +270,19 @@
     function play() {
       if (panel && badges) {
         var cw = panel.clientWidth - 32;          // panel content width (minus 16px padding)
-        var gw = badges.offsetWidth;              // globe + MILAN group width
         var milan = badges.querySelector('.ga-city');
         var mark = badges.querySelector('.ga-cover__mark');
         var mw = milan ? milan.offsetWidth : 80;  // MILAN badge width
         var kw = mark ? mark.offsetWidth : 32;    // globe chip width
         var gap = 4;                              // badges gap (--space-1)
-        // centre the whole group, and (separately) centre the MILAN badge on its own
-        cover.style.setProperty('--rc', Math.max(0, Math.round((cw - gw) / 2)) + 'px');
-        cover.style.setProperty('--rc-milan', Math.max(0, Math.round(cw / 2 - (kw + gap + mw / 2))) + 'px');
+        var S = 1.5;                              // bloom scale (matches ga-r-badge)
+        var om = kw + gap + mw / 2;               // MILAN centre within the group
+        // Scale the group around MILAN's own centre so MILAN stays put while it blooms.
+        badges.style.transformOrigin = Math.round(om) + 'px 50%';
+        // --rc-milan: translateX so MILAN sits dead-centre (scale-independent with this origin).
+        cover.style.setProperty('--rc-milan', Math.max(0, Math.round(cw / 2 - om)) + 'px');
+        // --rc: translateX so the whole group is centred while scaled S (origin = MILAN centre).
+        cover.style.setProperty('--rc', Math.max(0, Math.round(cw / 2 - om + S * (kw + gap) / 2)) + 'px');
       }
       cover.classList.add('is-in');
     }
@@ -270,22 +290,16 @@
     else window.addEventListener('load', play);
   })();
 
-  // hero photo parallax — the img lags the scroll while the cover is in view
+  // floating menu — hidden at the very top, revealed as soon as the page scrolls
   (function () {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var img = document.querySelector('.ga-cover__bg');
-    var cover = document.querySelector('.ga-cover');
-    if (!img || !cover) return;
-    var ticking = false;
+    var menu = document.getElementById('gaMenu');
+    if (!menu) return;
     function upd() {
-      ticking = false;
-      var y = window.scrollY;
-      if (y > cover.offsetHeight) return;
-      img.style.setProperty('--parallax', Math.min(y * 0.16, 24) + 'px');
+      var on = window.scrollY > 8;
+      menu.classList.toggle('is-shown', on);
+      menu.setAttribute('aria-hidden', on ? 'false' : 'true');
     }
-    addEventListener('scroll', function () {
-      if (!ticking) { requestAnimationFrame(upd); ticking = true; }
-    }, { passive: true });
+    addEventListener('scroll', upd, { passive: true });
     upd();
   })();
 
@@ -449,15 +463,18 @@
     var ginfo = document.getElementById('gaInfo');
     var footEnd = document.getElementById('footEnd');
     var bar = document.getElementById('buybar');
-    if (!ginfo || !footEnd || !bar) return;
-    var pastGinfo = false, atEnd = false;
+    if (!ginfo || !bar) return;
+    var atEnd = false;
     function update() {
+      // show the moment the hero price card has scrolled up past the top of the screen
+      var pastGinfo = ginfo.getBoundingClientRect().bottom <= 0;
       var show = pastGinfo && !atEnd;
       bar.classList.toggle('is-shown', show);
       bar.setAttribute('aria-hidden', String(!show));
     }
-    new IntersectionObserver(function (e) { pastGinfo = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; update(); }, { threshold: 0 }).observe(ginfo);
-    new IntersectionObserver(function (e) { atEnd = e[0].isIntersecting; update(); }, { threshold: 0 }).observe(footEnd);
+    if (footEnd) new IntersectionObserver(function (e) { atEnd = e[0].isIntersecting; update(); }, { threshold: 0 }).observe(footEnd);
+    addEventListener('scroll', update, { passive: true });
+    update();
   })();
 
   // reveal-on-scroll
