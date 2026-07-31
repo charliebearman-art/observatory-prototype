@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-concept="c" data-palette="ivory">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4efe6">
+<title>Point — Duomo di Milano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=13">
+<link rel="stylesheet" href="styles/object.css?v=37">
+<link rel="stylesheet" href="styles/poi.css?v=14">
+<link rel="stylesheet" href="styles/object-c.css?v=1">
+</head>
+<body>
+
+<main class="screen poi-screen" id="poiScreen"></main>
+
+<!-- fact modal (bottom sheet) -->
+<div class="factmodal" id="factModal" hidden role="dialog" aria-modal="true" aria-labelledby="fmTitle">
+  <div class="factmodal__scrim" data-close></div>
+  <div class="factmodal__sheet">
+    <div class="factmodal__card">
+      <div class="factmodal__head">
+        <span class="factmodal__eyebrow">Interesting fact</span>
+        <h2 class="factmodal__title" id="fmTitle"></h2>
+      </div>
+      <div class="factmodal__figure">
+        <img class="factmodal__img" id="fmImg" src="" alt="">
+        <p class="factmodal__text" id="fmText"></p>
+      </div>
+    </div>
+    <div class="factmodal__nav"></div>
+  </div>
+</div>
+
+<script src="points.js?v=8"></script>
+<script>
+  // pick the point from ?p=N (1-based), clamp to range
+  var params = new URLSearchParams(location.search);
+  var total = POINTS.length;
+  var n = Math.max(1, Math.min(total, parseInt(params.get('p'), 10) || 1));
+  var i = n - 1;
+  var screen = document.getElementById('poiScreen');
+  screen.innerHTML = renderPointInner(i);
+  document.title = POINTS[i].title.split('—')[0].trim() + ' — Duomo di Milano';
+
+  // behaviours
+  var modal = initFactModal(document.getElementById('factModal'));
+  wireFacts(screen, modal.open);
+  wireAudioIn(screen);
+
+  // navigation: header back → object; prev/next → adjacent points (edges → object / nav)
+  function go(np) { if (np < 1) { location.href = 'object-c.html'; } else if (np > total) { location.href = 'nav-c.html'; } else { location.href = 'poi-c.html?p=' + np; } }
+  var back = screen.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', function () { location.href = 'object-c.html?slide=' + slideOfPoint(i); });
+  var prev = screen.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { go(n - 1); });
+  var next = screen.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { go(n + 1); });
+  var toObj = screen.querySelector('[data-nav="object"]'); if (toObj) toObj.addEventListener('click', function () { location.href = 'object-c.html'; });
+
+  // demo switch
+  (function () {
+    var box = document.querySelector('.switch');
+    if (!box) return;
+    box.querySelector('.switch__toggle').addEventListener('click', function () {
+      var open = box.classList.toggle('switch--open'); this.setAttribute('aria-expanded', String(open));
+    });
+    var meta = document.querySelector('meta[name="theme-color"]');
+    box.querySelectorAll('.switch__panel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.documentElement.setAttribute('data-' + b.dataset.set, b.dataset.val);
+        box.querySelectorAll('.switch__panel button[data-set="' + b.dataset.set + '"]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        var bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim();
+        if (bg) meta.setAttribute('content', bg);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
