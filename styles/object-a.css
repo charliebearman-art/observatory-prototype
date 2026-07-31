@@ -76,3 +76,10 @@
 /* ---- Object "Numbers" tab — Concept A (Figma 1198-8655) ---- */
 /* the big stat numbers are H2 (32), not H3 (24) */
 .numcard__big { font-size: var(--size-h2); line-height: var(--lh-h2); }
+
+/* ---- POI page (poi-a) — Concept A (Figma 1198-12156 / modal 1198-12237) ----
+   the point title and the fact-modal title are H2 (32), not H3 (24). The
+   "Interesting Facts" heading and fact-card titles inherit the shared .facts__title
+   / .fact__title overrides above. */
+.pdesc__title { font-size: var(--size-h2); line-height: var(--lh-h2); }
+.factmodal__title { font-size: var(--size-h2); line-height: var(--lh-h2); }
