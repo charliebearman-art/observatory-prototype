@@ -112,3 +112,8 @@
    browser requests Manrope 400 (not loaded) and falls back to a system font. */
 .cblock__lead, .cguide__teaser, .cguide .glass, .ccity__name,
 .cfoot__nav a, .cfoot__lang, .cfoot__legal { font-weight: var(--font-text-weight); }
+
+/* page canvas: a warm neutral behind the 390px column so the ivory mockup stands
+   out instead of blending into the page background */
+html, body { background: #d0c8ba; }
+.screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
