@@ -75,7 +75,7 @@
   wireAudioIn(screen);
 
   // navigation: header back → object; prev/next → adjacent points (edges → object / nav)
-  function go(np) { if (np < 1) { location.href = 'object-a.html'; } else if (np > total) { location.href = 'nav.html'; } else { location.href = 'poi-a.html?p=' + np; } }
+  function go(np) { if (np < 1) { location.href = 'object-a.html'; } else if (np > total) { location.href = 'nav-a.html'; } else { location.href = 'poi-a.html?p=' + np; } }
   var back = screen.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', function () { location.href = 'object-a.html?slide=' + slideOfPoint(i); });
   var prev = screen.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { go(n - 1); });
   var next = screen.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { go(n + 1); });
