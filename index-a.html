@@ -334,18 +334,20 @@
     // the morph cycle only begins once the first-load reveal has played
     function startMorph() {
       var s = 1, rot = 0;
-      setInterval(function () {
+      function step() {
         s = s % 4 + 1;
         hero.setAttribute('data-astate', String(s));
         rot += 90;                                        // quarter-turn per transition; static while held
         if (gin) gin.style.setProperty('--gr', rot + 'deg');
-      }, 2300);
+      }
+      step();                                             // first transition right after the reveal — no 2.3s wait
+      setInterval(step, 2300);
     }
     var began = false;
     function begin() {
       if (began) return; began = true;
       hero.classList.add('is-in');                        // play the reveal
-      setTimeout(startMorph, 1750);                       // then start morphing (after the reveal settles)
+      setTimeout(startMorph, 1650);                       // then start morphing the moment it settles
     }
     if (window.__introWillPlay) {                         // wait for the logo splash to finish…
       document.addEventListener('ah:go', begin, { once: true });
