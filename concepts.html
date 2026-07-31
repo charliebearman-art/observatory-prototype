@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-concept="c" data-palette="ivory">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#d0c8ba">
+<title>Observatory — Choose a concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=15">
+<style>
+  /* concept-router: a small hub to pick one of the three visual directions.
+     Concept-neutral layout on the warm demo canvas; each card previews the
+     concept it leads to via its own fonts + accent. */
+  html, body { background: #d0c8ba; }
+  .router { min-height: 100svh; box-sizing: border-box; max-width: 720px; margin: 0 auto;
+    display: flex; flex-direction: column; justify-content: center; gap: var(--space-8);
+    padding: var(--space-8) var(--space-4); }
+  .router__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); text-align: center; }
+  .router__logo { width: 240px; max-width: 80%; height: 40px; color: #2c2822;
+    background: currentColor; -webkit-mask: url(assets/img/logo-full.svg) no-repeat center / contain; mask: url(assets/img/logo-full.svg) no-repeat center / contain; }
+  .router__title { margin: 0; font-family: "Manrope", sans-serif; font-weight: 700; font-size: var(--size-h2); line-height: var(--lh-h2); color: #2c2822; }
+  .router__sub { margin: 0; max-width: 44ch; font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
+
+  .router__grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .router__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .router *, .router *::before, .router *::after { box-sizing: border-box; }
+  .rcard { display: flex; flex-direction: column; gap: var(--space-4); min-height: 210px;
+    padding: var(--space-5); background: #fbf8f2; border: 1.5px solid #e6dfd2; border-radius: 16px;
+    text-decoration: none; color: inherit; transition: transform .2s cubic-bezier(.22,.61,.36,1), border-color .2s, box-shadow .2s; }
+  .rcard:hover { transform: translateY(-4px); border-color: var(--rc, #2c2822); box-shadow: 0 12px 32px rgba(44,40,34,.12); }
+  .rcard__letter { width: 56px; height: 56px; flex: none; display: grid; place-items: center;
+    border-radius: 14px; background: var(--rc, #2c2822); color: #fbf8f2;
+    font-size: 28px; line-height: 1; }
+  .rcard__body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1 1 auto; }
+  .rcard__name { margin: 0; font-size: var(--size-h3); line-height: var(--lh-h3); color: #2c2822; }
+  .rcard__kicker { font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: .14em; text-transform: uppercase; color: #9a8a6e; }
+  .rcard__desc { margin: 0; font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
+  .rcard__go { display: inline-flex; align-items: center; gap: var(--space-2); font-family: "Manrope", sans-serif; font-weight: 600; font-size: var(--size-body); color: var(--rc, #2c2822); }
+  .rcard__go .icon { width: 20px; height: 20px; transition: transform .2s var(--ease); }
+  .rcard:hover .rcard__go .icon { transform: translateX(4px); }
+
+  /* each card wears its concept's display font + accent */
+  .rcard--a { --rc: #cbb68c; }
+  .rcard--a .rcard__name { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 32px; }
+  .rcard--b { --rc: #2e6fb0; }
+  .rcard--b .rcard__name { font-family: "Golos Text", sans-serif; font-weight: 600; }
+  .rcard--c { --rc: #2c2822; }
+  .rcard--c .rcard__name { font-family: "Manrope", sans-serif; font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="router">
+  <header class="router__head">
+    <span class="router__logo" role="img" aria-label="Observatory"></span>
+    <h1 class="router__title">Choose a concept</h1>
+    <p class="router__sub">Three visual directions for the same product — same content, different character. Pick one to explore end to end.</p>
+  </header>
+
+  <nav class="router__grid" aria-label="Concepts">
+    <a class="rcard rcard--a" href="index-a.html">
+      <span class="rcard__letter">A</span>
+      <div class="rcard__body">
+        <span class="rcard__kicker">Concept A</span>
+        <h2 class="rcard__name">The Archive</h2>
+        <p class="rcard__desc">Serif and quiet — a warm, editorial reading room.</p>
+      </div>
+      <span class="rcard__go">Open<svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
+    </a>
+
+    <a class="rcard rcard--b" href="index.html">
+      <span class="rcard__letter">B</span>
+      <div class="rcard__body">
+        <span class="rcard__kicker">Concept B</span>
+        <h2 class="rcard__name">Light</h2>
+        <p class="rcard__desc">Clean and airy — the calm, everyday interface.</p>
+      </div>
+      <span class="rcard__go">Open<svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
+    </a>
+
+    <a class="rcard rcard--c" href="index-c.html">
+      <span class="rcard__letter">C</span>
+      <div class="rcard__body">
+        <span class="rcard__kicker">Concept C</span>
+        <h2 class="rcard__name">Cinematic</h2>
+        <p class="rcard__desc">Bold and ivory — big type, immersive imagery.</p>
+      </div>
+      <span class="rcard__go">Open<svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
+    </a>
+  </nav>
+</main>
+</body>
+</html>
