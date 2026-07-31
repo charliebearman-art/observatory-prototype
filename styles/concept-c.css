@@ -137,3 +137,10 @@ html, body { background: #d0c8ba; }
 .concept-nav a { width: 34px; height: 34px; display: grid; place-items: center; border-radius: var(--radius-inner-4); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); color: var(--color-text-muted); text-decoration: none; }
 .concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
 @media (max-width: 760px) { .concept-nav { display: none; } }
+
+/* Explore/Observe animations: the dashed lines use the palette border colour
+   (the shared assets are baked #E8E7E4; swap for ivory-tinted copies). The ring
+   / pin borders already animate to var(--color-border) in base.css. */
+.chero ~ * .orbit__track,
+.cblock .orbit__track { content: url(../assets/img/c/anim-dashed.png); }
+.cblock .obs__route { content: url(../assets/img/c/obs-path.svg); }

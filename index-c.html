@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
-<link rel="stylesheet" href="styles/concept-c.css?v=12">
+<link rel="stylesheet" href="styles/concept-c.css?v=13">
 <style>
   /* first-load intro: the full Observatory logo animation (Lottie), recoloured to
      the palette accent. Wide frame so the "observatory TS" reveal fits; it then
@@ -331,13 +331,14 @@
   // only once this runs, so a script failure leaves the page fully readable.
   (function () {
     var groups = [
-      ['.block__title', ':scope > *', 60],
-      ['.block__head', ':scope > *', 60],
-      ['.rail', ':scope > *', 80],
-      ['.tags', ':scope > *', 55, 'pop'],
-      ['.footer__promo', ':scope > *', 60],
-      ['.footer__nav', ':scope > a', 40],
-      ['.footer__legal', ':scope > *', 60]
+      ['.cblock__head', ':scope > *', 70],   // eyebrow → title → lead
+      ['.cbenefits', ':scope > *', 110],     // Explore / Observe / Understand rows
+      ['.cfeat__rail', ':scope > *', 90],    // featured cards
+      ['.ccities__grid', ':scope > *', 35],  // city rows
+      ['.cfoot__promo', ':scope > *', 60],
+      ['.cfoot__nav', ':scope > a', 40],
+      ['.cfoot__bars', ':scope > *', 90],
+      ['.cfoot__meta', ':scope > *', 60]
     ];
 
     groups.forEach(function (group) {
