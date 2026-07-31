@@ -1,0 +1,25 @@
+/* ============================================================================
+   Concept A — Object & POI pages (object-a.html / poi-a.html).
+   These reuse the Concept B layout/JS from object.css + poi.css, but render in
+   the Concept A identity: Cormorant display + the "night" archive palette. Only
+   the deltas from the Figma redesign (nodes 1198-10565 / 1198-10566) live here;
+   the Concept B pages (object.html / poi.html) are untouched.
+   ============================================================================ */
+
+/* archive palette (the Concept A "Night" colours) — copied so we don't have to
+   pull in the whole concept-a.css homepage stylesheet */
+[data-palette="archive"] {
+  --color-bg: #1a1a1c;
+  --color-surface: #262625;
+  --color-text: #f2f0ec;
+  --color-text-muted: #9b9791;
+  --color-accent: #cbb68c;
+  --color-on-accent: #1a1a1c;
+  --color-border: #3a3a38;
+  --color-accent-hover: #d8c8a5;
+  --color-accent-subtle: #2a2620;
+}
+
+/* Audio player — the play tile is a sharp accent square (per Figma), not a pill.
+   It sits inside the 4px-padded bar, so it takes the inner-4 radius (= 0 in A). */
+.audio__play { border-radius: var(--radius-inner-4); }

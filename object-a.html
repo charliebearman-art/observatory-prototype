@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en" data-concept="a" data-palette="archive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14110c">
+<title>Duomo di Milano — Observatory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css?v=7">
+<link rel="stylesheet" href="styles/base.css?v=13">
+<link rel="stylesheet" href="styles/object.css?v=37">
+<link rel="stylesheet" href="styles/poi.css?v=14">
+<link rel="stylesheet" href="styles/object-a.css?v=1">
+</head>
+<body>
+
+<!-- page loader: Observatory logo animation (Lottie), recoloured to the palette accent -->
+<div class="loader" id="loader" role="status" aria-label="Loading">
+  <div class="loader__anim" id="loaderAnim"></div>
+</div>
+<script>
+  // gate the object-page intro animations until the loader lifts
+  window.__loaderDone = false;
+  window.__loaderCbs = [];
+  window.afterLoader = function (cb) { if (window.__loaderDone) cb(); else window.__loaderCbs.push(cb); };
+  (function () {
+    var loader = document.getElementById('loader');
+    function flush() {                                      // release the page: run intro animations now
+      if (window.__loaderDone) return;
+      window.__loaderDone = true;
+      document.documentElement.classList.remove('is-loading');
+      document.documentElement.style.overflow = '';
+      window.__loaderCbs.forEach(function (cb) { try { cb(); } catch (e) {} });
+      window.__loaderCbs = [];
+    }
+    if (!loader) { flush(); return; }
+    document.documentElement.classList.add('is-loading');
+    document.documentElement.style.overflow = 'hidden';    // freeze the page behind the loader
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var CAP = 7000, hidden = false, anim = null;
+    var loaded = (document.readyState === 'complete'), looped = false;
+    function hide() {
+      if (hidden) return; hidden = true;
+      loader.classList.add('is-hidden');
+      flush();                                             // reveal the page intro as the loader fades out
+      setTimeout(function () { if (anim) anim.destroy(); loader.remove(); }, 460);
+    }
+    // hold until the page has loaded AND the logo has run at least one full cycle
+    function maybeHide() { if (loaded && looped) hide(); }
+    if (!loaded) window.addEventListener('load', function () { loaded = true; maybeHide(); });
+    if (reduce) { hide(); return; }                        // reduced motion: skip the animation, don't hold the page
+    var s = document.createElement('script');
+    s.src = 'assets/vendor/lottie.min.js';
+    s.onload = function () {
+      try {
+        anim = lottie.loadAnimation({ container: document.getElementById('loaderAnim'), renderer: 'svg', loop: true, autoplay: true, path: 'assets/loader.json?v=1' });
+        anim.addEventListener('DOMLoaded', function () { loader.classList.add('is-ready'); });   // colour + centring are pure CSS
+        anim.addEventListener('loopComplete', function () { looped = true; maybeHide(); });      // one full turn done
+      } catch (e) { hide(); }
+    };
+    s.onerror = hide;                                       // no player → don't block the page
+    document.head.appendChild(s);
+    setTimeout(hide, CAP);                                  // safety cap (covers a ~4.3s full loop + margin)
+  })();
+</script>
+
+<!-- demo-only control: preview both theme axes -->
+<div class="switch">
+  <div class="switch__panel">
+    <div class="switch__group">
+      <span class="switch__label">Concept</span>
+      <button data-set="concept" data-val="a" aria-pressed="true">A</button>
+      <button data-set="concept" data-val="b">B</button>
+      <button data-set="concept" data-val="c">C</button>
+    </div>
+    <div class="switch__group">
+      <span class="switch__label">Place</span>
+      <button data-set="palette" data-val="cosmos">Cosmos</button>
+      <button data-set="palette" data-val="santorini">Santorini</button>
+      <button data-set="palette" data-val="terracotta">Rome</button>
+      <button data-set="palette" data-val="krem">Krem</button>
+      <button data-set="palette" data-val="duomo" aria-pressed="true">Duomo</button>
+      <button data-set="palette" data-val="night">Night</button>
+    </div>
+  </div>
+  <button class="switch__toggle" aria-expanded="false" aria-label="Показать переключатель темы">
+    <svg class="icon"><use href="assets/icons.svg?v=3#i-grid"></use></svg>
+  </button>
+</div>
+
+<main class="screen object-screen">
+
+  <!-- header: object title + language + exit -->
+  <header class="ohead">
+    <div class="ohead__titles">
+      <span class="ohead__title">#1 Duomo di Milano</span>
+      <span class="ohead__sub" id="oheadSub">Exterior</span>
+    </div>
+    <div class="ohead__btns">
+      <button class="icon-btn icon-btn--outline icon-btn--36" aria-label="Language">
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
+      </button>
+      <a class="icon-btn icon-btn--outline icon-btn--36" href="nav.html" aria-label="Exit object">
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-x"></use></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- hero: swipeable gallery of views, each with numbered POI hotspots (→ point page) -->
+  <section class="ohero">
+    <div class="ohero__track" id="heroTrack">
+      <div class="ohero__slide ohero__slide--facade">
+        <img src="assets/img/object/hero-duomo.jpg" alt="Duomo di Milano — main façade">
+        <a class="hotspot" href="poi-a.html" style="--x:50%;--y:42.7%" aria-label="Point 1">1</a>
+      </div>
+      <div class="ohero__slide ohero__slide--plan">
+        <img src="assets/img/object/gallery-plan.jpg" alt="Duomo floor plan">
+        <a class="hotspot" href="poi-a.html" style="--x:50%;--y:26.6%" aria-label="Point 4">4</a>
+        <a class="hotspot" href="poi-a.html" style="--x:calc(50% + 72px);--y:32.3%" aria-label="Point 6">6</a>
+        <a class="hotspot" href="poi-a.html" style="--x:50%;--y:40.5%" aria-label="Point 5">5</a>
+        <a class="hotspot" href="poi-a.html" style="--x:calc(50% + 52px);--y:47.7%" aria-label="Point 3">3</a>
+        <a class="hotspot" href="poi-a.html" style="--x:50%;--y:67.95%" aria-label="Point 2">2</a>
+        <a class="hotspot" href="poi-a.html" style="--x:calc(50% - 39px);--y:81.8%" aria-label="Point 7">7</a>
+      </div>
+      <div class="ohero__slide ohero__slide--terraces">
+        <img src="assets/img/object/gallery-terraces.jpg" alt="Duomo terraces">
+        <a class="hotspot" href="poi-a.html" style="--x:50%;--y:55%" aria-label="Point 8">8</a>
+      </div>
+    </div>
+    <button class="icon-btn icon-btn--scrim ohero__nav ohero__nav--back" id="heroBack" hidden aria-label="Previous view">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-left"></use></svg>
+    </button>
+    <button class="icon-btn icon-btn--scrim ohero__nav ohero__nav--next" id="heroNext" aria-label="Next view">
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+    </button>
+  </section>
+
+  <!-- content sheet: slides up over the pinned hero on scroll -->
+  <div class="osheet">
+
+  <!-- description + audio + step-by-step -->
+  <section class="odesc">
+    <div class="odesc__head">
+      <h1 class="odesc__title">Duomo di Milano</h1>
+      <p class="odesc__body odesc__body--clamp" id="odescBody">This is not just a cathedral. It’s a story of obsession, engineering and power — a building raised over almost six hundred years that reshaped an entire city. To carry marble down from the Alps, canals were cut across half of Lombardy. Napoleon crowned himself here. An 18th-century solar meridian still keeps time on its floor. And, officially, the Duomo has never been finished.</p>
+      <button class="odesc__more text-btn" aria-expanded="false" aria-controls="odescBody">
+        <span>More</span>
+        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-down"></use></svg>
+      </button>
+    </div>
+    <div class="odesc__audiowrap">
+      <div class="audio" data-src="assets/audio/object-intro.mp3">
+        <button class="audio__play" aria-label="Play">
+          <svg class="icon audio__ico audio__ico--play"><use href="assets/icons.svg?v=3#i-play"></use></svg>
+          <svg class="icon audio__ico audio__ico--pause"><use href="assets/icons.svg?v=3#i-pause"></use></svg>
+        </button>
+        <div class="audio__body">
+          <div class="audio__row"><span class="audio__label">Play Intro</span><span class="audio__time">0:55</span></div>
+          <div class="audio__track"><span class="audio__rail"></span><span class="audio__fill"></span><span class="audio__thumb"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- info tabs -->
+  <section class="otabs">
+    <div class="tabs" role="tablist" aria-label="Object information">
+      <span class="tabs__pill" aria-hidden="true"></span>
+      <button class="tabs__btn" role="tab" aria-selected="true"  aria-controls="tab-about"   id="t-about">About</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-origins" id="t-origins">Origins</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-numbers" id="t-numbers">Numbers</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" aria-controls="tab-visit"   id="t-visit">Visit</button>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="tabpanel" role="tabpanel" id="tab-about" aria-labelledby="t-about">
+      <div class="charslider">
+        <div class="charcard"><span class="charcard__k">Location</span><span class="charcard__v">Piazza del Duomo, Milano</span></div>
+        <div class="charcard"><span class="charcard__k">Full Name</span><span class="charcard__v">Cattedrale di Santa Maria Nascente</span></div>
+        <div class="charcard"><span class="charcard__k">Type</span><span class="charcard__v">Active Catholic cathedral</span></div>
+        <div class="charcard"><span class="charcard__k">Style</span><span class="charcard__v">Gothic &amp; Neo-Gothic</span></div>
+      </div>
+
+      <div class="facts">
+        <h2 class="facts__title">Interesting Facts</h2>
+        <div class="facts__row">
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-1.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">A Milanese way to say “never”</h3>
+              <div class="fact__reveal"><p class="fact__text">Milanese have a saying — “lungo come la fabbrica del Duomo,” as long as the building of the Duomo — for anything that drags on forever.</p></div>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-2.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">Even Leonardo couldn’t get it built</h3>
+              <div class="fact__reveal"><p class="fact__text">Leonardo da Vinci submitted a design for the cathedral’s central spire in 1487 — and, like many, was ultimately turned down.</p></div>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-3.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">A church 1,600 years older, below</h3>
+              <div class="fact__reveal"><p class="fact__text">Beneath the floor lie the remains of Santa Tecla and the 4th-century baptistery where, tradition says, Saint Ambrose baptised Saint Augustine.</p></div>
+            </div>
+          </article>
+          <article class="fact" tabindex="0">
+            <img class="fact__img" src="assets/img/object/fact-4.jpg" alt="">
+            <div class="fact__scrim"></div>
+            <div class="fact__top"><button class="fact__toggle" aria-label="Expand"><svg class="icon"><use href="assets/icons.svg?v=3#i-plus"></use></svg></button></div>
+            <div class="fact__body">
+              <h3 class="fact__title">Some of the tallest glass on Earth</h3>
+              <div class="fact__reveal"><p class="fact__text">The Duomo’s stained-glass windows are among the largest in the world, some panels rising over 20 metres from floor to tracery.</p></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <div class="tabpanel" role="tabpanel" id="tab-origins" aria-labelledby="t-origins" hidden>
+      <div class="oblock">
+        <h2 class="oblock__h">Commissioned by Gian Galeazzo Visconti</h2>
+        <figure class="org-figure">
+          <div class="org-figure__imgwrap"><img class="org-figure__img" src="assets/img/object/org-visconti.jpg" alt="Gian Galeazzo Visconti"></div>
+          <figcaption class="org-figure__text oblock__text">In 1386 the ruler of Milan Gian Galeazzo Visconti and Archbishop Antonio da Saluzzo resolved to raise a cathedral worthy of the city. The Veneranda Fabbrica del Duomo has overseen the work ever since — some 300 people at its founding.</figcaption>
+        </figure>
+      </div>
+
+      <div class="oblock">
+        <h2 class="oblock__h">Six centuries in the making</h2>
+        <div class="timeline">
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot tl-dot--accent"></span></span>
+            <div class="tl-body"><span class="tl-year tl-year--accent">1386</span><span class="tl-desc">Construction begins — Gian Galeazzo Visconti’s vision.</span></div>
+            <img class="tl-era" src="assets/img/object/org-visconti.jpg" alt="">
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1387</span><span class="tl-desc">Simone da Orsenigo takes charge of the works.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1389</span><span class="tl-desc">Nicolas de Bonaventure brings the rayonnant Gothic from France.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1480 – 1490</span><span class="tl-desc">Leonardo da Vinci enters the dispute over the crossing tower.</span></div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot"></span></span>
+            <div class="tl-body"><span class="tl-year">1805 – 1813</span><span class="tl-desc">The façade is completed, on Napoleon’s order.</span></div>
+            <img class="tl-era" src="assets/img/object/org-era.jpg" alt="">
+          </div>
+          <div class="tl-row">
+            <span class="tl-point"><span class="tl-dot tl-dot--accent"></span></span>
+            <div class="tl-body"><span class="tl-year tl-year--accent">1965</span><span class="tl-desc">The last bronze door is set — nearly 600 years on.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oblock">
+        <div class="oblock__intro">
+          <h2 class="oblock__h">Not one architect —<br>six centuries of them</h2>
+          <p class="oblock__text">There is no single author. Dozens of masters shaped the Duomo across six hundred years.</p>
+        </div>
+        <div class="arch-cards">
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-1.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Simone da Orsenigo</h3><p class="arch-card__desc">The first design of the cathedral — Milan, 1387.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-2.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Nicolas de Bonaventure</h3><p class="arch-card__desc">In 1389 the Frenchman brought the rayonnant Gothic; then Jean Mignot of Paris, and a long line of engineers.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-3.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Leonardo da Vinci</h3><p class="arch-card__desc">In the 1480s he joined the dispute over the crossing tower — the tiburio. His designs were never built.</p></div>
+          </article>
+          <article class="arch-card">
+            <img class="arch-card__img" src="assets/img/object/org-arch-4.jpg" alt="">
+            <div class="arch-card__text"><h3 class="arch-card__title">Carlo Amati &amp; Zanoia</h3><p class="arch-card__desc">The façade — Carlo Amati and Giuseppe Zanoia.</p></div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <!-- NUMBERS -->
+    <div class="tabpanel" role="tabpanel" id="tab-numbers" aria-labelledby="t-numbers" hidden>
+      <div class="numgrid">
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">The Madonnina crowns the highest 108 m spire</span>
+          <div class="numcard__imgwrap"><img class="numcard__img" style="inset:0;width:100%;height:100%;object-fit:contain;object-position:center 60%" src="assets/img/object/num-madonnina.png" alt=""></div>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">135</span>
+          <span class="numcard__sub">Marble spires bristle across the roof</span>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">3 400</span>
+          <span class="numcard__sub">Statues watch from every ledge</span>
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">96 Gargoyles and monsters carry off the rain</span>
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:203.8%;top:-41.48%;left:-17.29%;width:100%" src="assets/img/object/num-gargoyle.png" alt=""></div>
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">157 m long — and 93 m across the transept</span>
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:243.66%;top:-46.38%;left:-18.09%;width:135.15%" src="assets/img/object/num-cathedral.png" alt=""></div>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">~ 12 000 m²</span>
+          <span class="numcard__sub">The biggest church in Italy</span>
+        </div>
+        <div class="numcard numcard--num">
+          <span class="numcard__up">up to</span>
+          <span class="numcard__big">~ 600 000</span>
+          <span class="numcard__sub">Candoglia marble blocks</span>
+        </div>
+        <div class="numcard numcard--illus">
+          <span class="numcard__cap">1,000+ m³ of Serizzo granite in the foundations</span>
+          <div class="numcard__imgwrap"><img class="numcard__img" style="height:230.29%;top:-57.25%;left:-6.5%;width:113%" src="assets/img/object/num-granite.png" alt=""></div>
+        </div>
+      </div>
+    </div>
+    <!-- VISIT -->
+    <div class="tabpanel" role="tabpanel" id="tab-visit" aria-labelledby="t-visit" hidden>
+      <div class="visit-block">
+        <h2 class="oblock__h">Hours &amp; Address</h2>
+        <div class="visit-list">
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Hours</span><span class="listrow__v">09:00–19:00 · last entry 18:10</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-clock"></use></svg></span>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Address</span><span class="listrow__v">Piazza del Duomo, 20122 Milano MI, Italy</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-map-pin"></use></svg></span>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Duration</span><span class="listrow__v">45–90 min inside · +1 h terraces</span></div>
+            <span class="listrow__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-eye"></use></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="visit-block">
+        <h2 class="oblock__h">Tickets</h2>
+        <div class="visit-list">
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Tickets Duomo + Museum</span><span class="listrow__v">€10 adult / €5 reduced (ages 6–18), free under 5.</span></div>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Tickets Terraces</span><span class="listrow__v">On foot ~€10, elevator ~€14 (separate ticket!).</span></div>
+          </div>
+          <div class="listrow">
+            <div class="listrow__text"><span class="listrow__k">Duomo Pass</span><span class="listrow__v">€20–30 · all-in (cathedral + terraces + museum + archaeological area)</span></div>
+          </div>
+        </div>
+        <a class="btn btn--secondary btn--large" href="#">Buy on duomomilano.it
+          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step by Step: pinned while scrolling, settles between the tabs and next-object -->
+  <div class="ostep">
+    <a class="btn btn--primary btn--large btn-step" href="poi-a.html">Step by Step
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+    </a>
+  </div>
+
+  <!-- next on the route -->
+  <div class="nextobj-wrap">
+    <a class="nextobj" href="nav.html">
+      <img class="nextobj__thumb" src="assets/img/object/next-galleria.jpg" alt="">
+      <div class="nextobj__text">
+        <span class="nextobj__eyebrow">Next on the route</span>
+        <h2 class="nextobj__name">Galleria Vittorio Emanuele II</h2>
+      </div>
+      <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+    </a>
+  </div>
+
+  </div><!-- /.osheet -->
+
+</main>
+
+<!-- point-of-interest view: shown in-page (no navigation) with a morph transition -->
+<!-- point-of-interest view: rendered in-page (no navigation) from points.js -->
+<div class="poiov" id="poiOverlay" aria-hidden="true">
+  <main class="screen poi-screen" id="poiMount"></main>
+
+  <!-- fact modal (bottom sheet) -->
+  <div class="factmodal" id="factModal" hidden role="dialog" aria-modal="true" aria-labelledby="fmTitle">
+    <div class="factmodal__scrim" data-close></div>
+    <div class="factmodal__sheet">
+      <div class="factmodal__card">
+        <div class="factmodal__head">
+          <span class="factmodal__eyebrow">Interesting fact</span>
+          <h2 class="factmodal__title" id="fmTitle"></h2>
+        </div>
+        <div class="factmodal__figure">
+          <img class="factmodal__img" id="fmImg" src="" alt="">
+          <p class="factmodal__text" id="fmText"></p>
+        </div>
+      </div>
+      <div class="factmodal__nav"></div>
+    </div>
+  </div>
+</div>
+
+<script src="points.js?v=8"></script>
+
+<script>
+  // object-page audio player (shared helper from points.js)
+  if (window.wireAudioIn) wireAudioIn(document);
+
+  // hero gallery: prev/next arrows scroll the slide track; arrows hide at the ends.
+  // also pops each slide's POI points in, ordered by their number.
+  (function () {
+    var track = document.getElementById('heroTrack');
+    var back = document.getElementById('heroBack'), next = document.getElementById('heroNext');
+    var sub = document.getElementById('oheadSub');
+    var SUBS = ['Exterior', 'Interior', 'Terraces'];   // per slide, matches Figma
+    if (!track) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function slideW() { return track.querySelector('.ohero__slide').getBoundingClientRect().width; }
+
+    // points pop in with a soft bounce, ordered by their number, staggered
+    var lit = [];
+    function lightSpots(slide, base) {
+      var spots = [].slice.call(slide.querySelectorAll('.hotspot'));
+      spots.sort(function (a, b) { return (+a.textContent || 0) - (+b.textContent || 0); });
+      spots.forEach(function (el, k) { el.style.setProperty('--hs-delay', (base + k * 90) + 'ms'); el.classList.add('is-in'); });
+    }
+    function litSlide(slide, base) {
+      if (!slide || lit.indexOf(slide) >= 0) return;
+      lit.push(slide); lightSpots(slide, base);
+    }
+    // first slide: after the loader lifts, wait for the hero focus-in to settle, then pop its points
+    if (track.children[0]) {
+      lit.push(track.children[0]);
+      var popFirst = function () { if (reduce) lightSpots(track.children[0], 0); else setTimeout(function () { lightSpots(track.children[0], 0); }, 780); };
+      window.afterLoader ? window.afterLoader(popFirst) : popFirst();
+    }
+
+    function update() {
+      var i = Math.round(track.scrollLeft / slideW());
+      var last = track.children.length - 1;
+      back.hidden = i <= 0;
+      next.hidden = i >= last;
+      if (sub && SUBS[i]) sub.textContent = SUBS[i];
+      litSlide(track.children[i], 150);                // pop points when a slide is first reached
+    }
+    next.addEventListener('click', function () { track.scrollBy({ left: slideW(), behavior: 'smooth' }); });
+    back.addEventListener('click', function () { track.scrollBy({ left: -slideW(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
+    update();
+    // arriving from a point's "Back" (poi.html?...→object.html?slide=N): open that slide
+    var qs = parseInt(new URLSearchParams(location.search).get('slide'), 10);
+    if (qs > 0) requestAnimationFrame(function () { track.scrollLeft = qs * slideW(); update(); });
+  })();
+
+  // description expand / collapse with an animated height reveal
+  (function () {
+    var btn = document.querySelector('.odesc__more');
+    var body = document.getElementById('odescBody');
+    if (!btn) return;
+    var label = btn.querySelector('span');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var open = false, busy = false;
+    function collapsedHeight() { return Math.round(parseFloat(getComputedStyle(body).lineHeight) * 2); }  // 2-line clamp
+    btn.addEventListener('click', function () {
+      if (busy) return;
+      open = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Less' : 'More';
+      if (reduce) { body.classList.toggle('odesc__body--clamp', !open); return; }
+      busy = true;
+      body.classList.add('odesc__body--anim');
+      if (open) {
+        var from = body.clientHeight;                        // current 2-line clamp height
+        body.classList.remove('odesc__body--clamp');
+        var to = body.scrollHeight;                          // full height
+        body.style.maxHeight = from + 'px';
+        body.getBoundingClientRect();                        // reflow so the start sticks
+        body.style.maxHeight = to + 'px';
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.style.maxHeight = 'none'; body.classList.remove('odesc__body--anim'); busy = false;
+        });
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';     // pin full height
+        body.getBoundingClientRect();
+        body.style.maxHeight = collapsedHeight() + 'px';     // animate down to 2 lines
+        body.addEventListener('transitionend', function te() {
+          body.removeEventListener('transitionend', te);
+          body.classList.add('odesc__body--clamp'); body.style.maxHeight = ''; body.classList.remove('odesc__body--anim'); busy = false;
+        });
+      }
+    });
+  })();
+
+  // tabs: switch panels + slide the active pill (iOS segmented control)
+  (function () {
+    var container = document.querySelector('.tabs');
+    var tabs = [].slice.call(container.querySelectorAll('.tabs__btn'));
+    function movePill() {
+      var i = tabs.indexOf(container.querySelector('[aria-selected="true"]'));
+      if (i >= 0) container.style.setProperty('--tab-i', i);   // pill slides via CSS transform
+    }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (x) {
+          var on = x === t;
+          x.setAttribute('aria-selected', String(on));
+          document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+        });
+        movePill();
+        // reveal the blocks that are already in view in the newly shown panel
+        // (the scroll observer handles the ones still below the fold)
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        requestAnimationFrame(function () {
+          var vh = window.innerHeight;
+          panel.querySelectorAll('[data-reveal-self]').forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < vh && r.bottom > 0) el.classList.add('is-revealed');
+          });
+        });
+      });
+    });
+    movePill();
+  })();
+
+  // reveal on scroll: sections rise + fade in as they enter the viewport
+  (function () {
+    var groups = [['.odesc', 60], ['.nextobj-wrap', 0]];
+    groups.forEach(function (g) {
+      document.querySelectorAll(g[0]).forEach(function (box) {
+        box.setAttribute('data-reveal-group', '');
+        [].forEach.call(box.children, function (el, i) { el.style.setProperty('--reveal-delay', i * g[1] + 'ms'); el.setAttribute('data-reveal', ''); });
+      });
+    });
+    // info tabs: reveal the tab bar as a group
+    var otabs = document.querySelector('.otabs');
+    if (otabs) { otabs.setAttribute('data-reveal-group', ''); var bar = otabs.querySelector('.tabs'); if (bar) bar.setAttribute('data-reveal', ''); }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.tabpanel').forEach(function (panel) {
+      [].forEach.call(panel.children, function (el) { el.setAttribute('data-reveal-self', ''); });
+    });
+    // start observing only after the loader lifts, so above-the-fold sections
+    // actually animate in for the user instead of revealing behind the loader
+    var observe = function () {
+      document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+      document.querySelectorAll('.tabpanel [data-reveal-self]').forEach(function (el) { io.observe(el); });
+    };
+    window.afterLoader ? window.afterLoader(observe) : observe();
+  })();
+
+  // interesting facts (object tabs): expand the card in place (not a modal)
+  (function () {
+    document.querySelectorAll('.otabs .fact').forEach(function (card) {
+      var toggle = card.querySelector('.fact__toggle');
+      function flip(e) { e.preventDefault(); e.stopPropagation(); card.classList.toggle('is-open'); }
+      toggle.addEventListener('click', flip);
+      card.addEventListener('click', function (e) { if (e.target === card || e.target.classList.contains('fact__img') || e.target.classList.contains('fact__scrim')) card.classList.toggle('is-open'); });
+    });
+  })();
+
+  // ============ in-page point (POI) view: rendered from points.js + morph transition ============
+  (function () {
+    var poiov = document.getElementById('poiOverlay');
+    var objScreen = document.querySelector('.object-screen');
+    if (!poiov || !objScreen || !window.renderPointInner) return;
+    var mount = poiov.querySelector('#poiMount');
+    var modal = initFactModal(poiov.querySelector('#factModal'));
+    var track = document.getElementById('heroTrack');
+    var open = false, cur = 1, retTimer = null, hideTimer = null;
+
+    function wireBody() {
+      wireFacts(mount, modal.open);
+      wireAudioIn(mount);
+      var prev = mount.querySelector('[data-nav="prev"]'); if (prev) prev.addEventListener('click', function () { step(cur - 1); });
+      var next = mount.querySelector('[data-nav="next"]'); if (next) next.addEventListener('click', function () { step(cur + 1); });
+      var toObj = mount.querySelector('[data-nav="object"]'); if (toObj) toObj.addEventListener('click', exitPOI);   // last point "To Object" → back to the object card
+    }
+    function renderInto(n) {                       // full render (on enter)
+      cur = n;
+      mount.innerHTML = renderPointInner(n - 1);
+      var back = mount.querySelector('[data-nav="back"]'); if (back) back.addEventListener('click', exitPOI);
+      wireBody();
+    }
+    // prev/next: keep the header (update its text in place, no animation) and replace
+    // only the body, so the hero + description re-animate but the header does NOT.
+    function step(n) {
+      if (n < 1 || n > POINTS.length) { exitPOI(); return; }
+      if (window.stopAllAudio) window.stopAllAudio();   // stop this point's clip before it's re-rendered away
+      cur = n;
+      updatePointHead(mount, n - 1);
+      mount.querySelector('.poibody').innerHTML = renderPointBody(n - 1);
+      wireBody();
+      poiov.scrollTop = 0;
+    }
+    function gotoSlideOfCurrent() {                // set the object gallery to this point's slide
+      if (!track) return;
+      var sw = track.querySelector('.ohero__slide'); if (!sw) return;
+      track.scrollLeft = slideOfPoint(cur - 1) * sw.getBoundingClientRect().width;
+    }
+    function enterPOI(n) {
+      if (open) return;
+      open = true;
+      clearTimeout(retTimer); clearTimeout(hideTimer);
+      if (window.stopAllAudio) window.stopAllAudio();   // stop the object intro when a point opens
+      renderInto(n);
+      objScreen.classList.remove('is-returning');
+      objScreen.style.visibility = '';
+      objScreen.classList.add('is-leaving');       // object hero blurs + enlarges away
+      poiov.classList.remove('is-out');
+      poiov.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      poiov.classList.add('is-in');                // point view appears; header stretches, contents build in
+      poiov.scrollTop = 0;                          // reset AFTER is-in makes it display:flex — a hidden element ignores scrollTop and keeps its old scroll
+      hideTimer = setTimeout(function () { objScreen.style.visibility = 'hidden'; }, 900);
+    }
+    function exitPOI() {
+      if (!open) return;
+      open = false;
+      clearTimeout(hideTimer); clearTimeout(retTimer);
+      if (window.stopAllAudio) window.stopAllAudio();   // stop the point's clip when returning to the object
+      gotoSlideOfCurrent();                         // land on the gallery slide holding this point
+      window.scrollTo(0, 0);                        // return to the top (the map), even if step-by-step was tapped while scrolled down — hidden under the exit animation
+      objScreen.style.visibility = '';             // reveal the object for the return
+      objScreen.classList.remove('is-leaving');
+      objScreen.classList.add('is-returning');     // object hero + header/desc fade back in
+      poiov.classList.add('is-out');               // point contents blur out, header shrinks
+      poiov.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // is-returning is intentionally NOT removed here (see fix: it would re-trigger reveal-rise)
+      retTimer = setTimeout(function () { poiov.classList.remove('is-in', 'is-out'); }, 460);
+    }
+
+    // hotspots open their numbered point; "Step by Step" opens the first point
+    document.querySelectorAll('.hotspot').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); enterPOI(parseInt(el.textContent, 10) || 1); });
+    });
+    document.querySelectorAll('.btn-step').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); enterPOI(1); });
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) exitPOI(); });
+  })();
+
+  // demo switch
+  (function () {
+    var box = document.querySelector('.switch');
+    if (!box) return;
+    box.querySelector('.switch__toggle').addEventListener('click', function () {
+      var open = box.classList.toggle('switch--open');
+      this.setAttribute('aria-expanded', String(open));
+    });
+    var meta = document.querySelector('meta[name="theme-color"]');
+    box.querySelectorAll('.switch__panel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.documentElement.setAttribute('data-' + b.dataset.set, b.dataset.val);
+        box.querySelectorAll('.switch__panel button[data-set="' + b.dataset.set + '"]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        var bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim();
+        if (bg) meta.setAttribute('content', bg);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
