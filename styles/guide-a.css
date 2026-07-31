@@ -91,9 +91,11 @@
   from { opacity: 0; filter: blur(8px); transform: translateY(18px); }
   to   { opacity: 1; filter: blur(0);   transform: translateY(0); }
 }
+/* opacity-only — a transform on this (the back/lang buttons' container) would
+   break the children's backdrop-filter blur in Safari, so the top just fades in */
 @keyframes ga-r-top {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ---------------------------------------------------------------- about --
@@ -118,8 +120,10 @@
 .ga-route { padding: var(--space-8) 0 0; display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-route__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .ga-route__map { position: relative; height: 293px; overflow: hidden; background: var(--color-surface); }
-.ga-route__cards { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
+.ga-route__cards { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 0 0 var(--space-4); scroll-padding-inline: var(--space-4); scrollbar-width: none; scroll-snap-type: x mandatory; }
 .ga-route__cards::-webkit-scrollbar { display: none; }
+/* trailing 16px gap — padding-right is dropped on flex scroll containers, so pin it to the last card */
+.ga-route__cards > :last-child { margin-inline-end: var(--space-4); }
 .ga-rcard { flex: 0 0 210px; width: 210px; scroll-snap-align: start; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; cursor: pointer; transition: border-color var(--dur) var(--ease); }
 .ga-rcard.is-active { border-color: var(--color-accent); }
 .ga-rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }

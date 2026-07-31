@@ -10,7 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
-<link rel="stylesheet" href="styles/concept-a.css?v=25">
+<link rel="stylesheet" href="styles/concept-a.css?v=26">
+<script>
+  /* arm the first-load hero reveal before paint (skipped under reduced motion) */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('ah-armed');
+</script>
 </head>
 <body>
 
@@ -146,7 +150,7 @@
       </div>
     </div>
     <div class="a-featured__rail">
-      <article class="a-guide">
+      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
         <img class="a-guide__img" src="assets/img/guide-quarter.jpg" alt="">
         <span class="a-guide__badge">Milan</span>
         <div class="a-guide__scrim" aria-hidden="true"></div>
@@ -157,11 +161,11 @@
           </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">210 $</span>
-            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
       </article>
-      <article class="a-guide">
+      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
         <img class="a-guide__img" src="assets/img/guide-disappear.jpg" alt="">
         <span class="a-guide__badge">Milan</span>
         <div class="a-guide__scrim" aria-hidden="true"></div>
@@ -172,11 +176,11 @@
           </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">180 $</span>
-            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
       </article>
-      <article class="a-guide">
+      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
         <img class="a-guide__img" src="assets/img/guide-ritual.jpg" alt="">
         <span class="a-guide__badge">Milan</span>
         <div class="a-guide__scrim" aria-hidden="true"></div>
@@ -187,11 +191,11 @@
           </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">80 $</span>
-            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
       </article>
-      <article class="a-guide">
+      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
         <img class="a-guide__img" src="assets/img/guide-rooftops.jpg" alt="">
         <span class="a-guide__badge">Rome</span>
         <div class="a-guide__scrim" aria-hidden="true"></div>
@@ -202,7 +206,7 @@
           </div>
           <div class="a-guide__foot">
             <span class="a-guide__price">190 $</span>
-            <a class="icon-btn icon-btn--outline" href="guide-a.html" aria-label="Open guide"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></a>
+            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
       </article>
@@ -271,14 +275,16 @@
     if (!intro) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var seen = false; try { seen = sessionStorage.getItem('obsIntroA') === '1'; } catch (e) {}
-    if (reduce || seen) { intro.remove(); return; }         // once per session; skip under reduced motion
+    if (reduce || seen) { intro.remove(); window.__introWillPlay = false; return; }   // once per session; skip under reduced motion
     try { sessionStorage.setItem('obsIntroA', '1'); } catch (e) {}
+    window.__introWillPlay = true;                           // the hero reveal waits for us
     document.documentElement.style.overflow = 'hidden';
     var anim = null, done = false;
     function hide() {
       if (done) return; done = true;
       intro.classList.add('is-hidden');
       document.documentElement.style.overflow = '';
+      document.dispatchEvent(new Event('ah:go'));            // kick off the hero reveal
       setTimeout(function () { if (anim) anim.destroy(); intro.remove(); }, 460);
     }
     var s = document.createElement('script');
@@ -324,13 +330,29 @@
     addEventListener('resize', fit);
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(stage);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var s = 1, rot = 0;
-    setInterval(function () {
-      s = s % 4 + 1;
-      hero.setAttribute('data-astate', String(s));
-      rot += 90;                                          // quarter-turn per transition; static while held
-      if (gin) gin.style.setProperty('--gr', rot + 'deg');
-    }, 2300);
+
+    // the morph cycle only begins once the first-load reveal has played
+    function startMorph() {
+      var s = 1, rot = 0;
+      setInterval(function () {
+        s = s % 4 + 1;
+        hero.setAttribute('data-astate', String(s));
+        rot += 90;                                        // quarter-turn per transition; static while held
+        if (gin) gin.style.setProperty('--gr', rot + 'deg');
+      }, 2300);
+    }
+    var began = false;
+    function begin() {
+      if (began) return; began = true;
+      hero.classList.add('is-in');                        // play the reveal
+      setTimeout(startMorph, 1750);                       // then start morphing (after the reveal settles)
+    }
+    if (window.__introWillPlay) {                         // wait for the logo splash to finish…
+      document.addEventListener('ah:go', begin, { once: true });
+      setTimeout(begin, 9000);                            // …with a safety cap
+    } else {                                              // …or reveal straight away on repeat visits
+      requestAnimationFrame(begin);
+    }
   })();
 
   // reveal on scroll — sections rise + fade in as they enter (shared base.css system)
