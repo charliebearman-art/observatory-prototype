@@ -6,7 +6,7 @@
    ============================================================================ */
 
 /* section heading shared by the guide blocks (Cormorant display, 40 = h1) */
-.ga-h2 { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
+.ga-h2 { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); text-wrap: balance; }
 .ga-h2 .ac { color: var(--color-accent); }
 
 /* ---------------------------------------------------------------- cover --
@@ -142,10 +142,10 @@
    32 above (from the route cards) · head (16 inset) · card rail · 48 below. */
 .ga-formats { padding: var(--space-8) 0 var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
 .ga-formats__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
-.ga-formats__rail { display: flex; gap: var(--space-2); overflow-x: auto; padding: 0 var(--space-4); scrollbar-width: none; }
-.ga-formats__rail::-webkit-scrollbar { display: none; }
+/* stacked full-width rows (per Figma — concept A is not a slider) */
+.ga-formats__rail { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-4); }
 /* pill with a solid accent icon square on the left, then title + sub (per Figma) */
-.ga-format { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-1) var(--space-5) var(--space-1) var(--space-1); background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-button); }
+.ga-format { width: 100%; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-1) var(--space-5) var(--space-1) var(--space-1); background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-button); }
 .ga-format__icon { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: var(--radius-inner-4); background: var(--color-accent); color: var(--color-on-accent); }
 .ga-format__text { display: flex; flex-direction: column; gap: var(--space-1); }
 .ga-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); white-space: nowrap; }

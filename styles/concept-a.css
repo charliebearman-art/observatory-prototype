@@ -264,7 +264,7 @@
 .a-foot__btns { display: flex; gap: var(--space-2); width: 100%; }
 .a-foot__btns .btn { flex: 1 1 0; min-width: 0; }
 .a-foot__nav { display: flex; flex-wrap: wrap; justify-content: center; column-gap: var(--space-4); }
-.a-foot__nav a { color: var(--color-text); font-size: var(--size-body); line-height: var(--lh-body); padding: var(--space-2) 0; }
+.a-foot__nav a { color: var(--color-text-muted); font-size: var(--size-body); line-height: var(--lh-body); padding: var(--space-2) 0; }
 .a-foot__group2 { display: flex; flex-direction: column; gap: var(--space-5); width: 100%; }
 .a-foot__row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 .a-foot__legal { display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }

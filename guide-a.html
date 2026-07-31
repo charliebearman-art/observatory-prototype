@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
-<link rel="stylesheet" href="styles/concept-a.css?v=24">
-<link rel="stylesheet" href="styles/guide-a.css?v=11">
+<link rel="stylesheet" href="styles/concept-a.css?v=25">
+<link rel="stylesheet" href="styles/guide-a.css?v=12">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
@@ -137,7 +137,7 @@
   <section class="ga-formats">
     <div class="ga-formats__head">
       <p class="a-eyebrow">Formats</p>
-      <h2 class="ga-h2">How you’ll experience it</h2>
+      <h2 class="ga-h2">How you’ll experience&nbsp;it</h2>
     </div>
     <div class="ga-formats__rail">
       <div class="ga-format"><span class="ga-format__icon"><svg class="icon"><use href="assets/icons.svg?v=3#i-interactive"></use></svg></span><div class="ga-format__text"><div class="ga-format__title">Interactive</div><div class="ga-format__sub t-muted">Tap the details to dig in</div></div></div>
@@ -481,10 +481,11 @@
   (function () {
     var groups = [
       ['.ga-about', ':scope > *', 70],
+      ['.ga-gallery', ':scope > *', 90],
       ['.ga-route__head', ':scope > *', 80],
       ['.ga-route__cards', ':scope > *', 60],
       ['.ga-formats__head', ':scope > *', 70],
-      ['.ga-formats__rail', ':scope > *', 60],
+      ['.ga-formats__rail', ':scope > *', 80],
       ['.a-featured__head', ':scope > *', 60],
       ['.a-featured__rail', ':scope > *', 80],
       ['.a-foot', ':scope > *', 60]
@@ -496,10 +497,13 @@
         kids.forEach(function (el, i) { el.style.setProperty('--reveal-delay', i * g[2] + 'ms'); el.setAttribute('data-reveal', ''); });
       });
     });
+    // standalone blocks (no stagger): the route map
+    var mapEl2 = document.querySelector('.ga-route__map');
+    if (mapEl2) mapEl2.setAttribute('data-reveal-self', '');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
     }, { threshold: 0.14 });
-    document.querySelectorAll('[data-reveal-group]').forEach(function (el) { io.observe(el); });
+    document.querySelectorAll('[data-reveal-group], [data-reveal-self]').forEach(function (el) { io.observe(el); });
   })();
 </script>
 </body>
