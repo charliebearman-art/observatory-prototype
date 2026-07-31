@@ -84,22 +84,23 @@
 .a-hero--nofx .a-hero__globe,
 .a-hero--nofx .a-hero__globe-in { transition: none; }
 
-/* first-load hero reveal — plays once, before the morph cycle begins. Only opacity/
-   filter (and CTA translate) animate, so the morph's own transforms are never fought. */
+/* first-load hero reveal — plays once, before the morph cycle begins. Fade only:
+   a lingering filter/transform on the pics (from `both`) forces iOS Safari to
+   re-rasterize the rounded, clipped layer as it later morphs width/height, which
+   shows up as blur + white-band / line artifacts. Opacity leaves no such layer. */
 .ah-armed .a-hero__pic,
 .ah-armed .a-hero__line,
 .ah-armed .a-hero__globe,
 .ah-armed .a-herocta { opacity: 0; }
-.a-hero.is-in .a-hero__pic--1 { animation: ah-in 900ms var(--a-ease, ease) 60ms both; }
-.a-hero.is-in .a-hero__pic--2 { animation: ah-in 900ms var(--a-ease, ease) 140ms both; }
-.a-hero.is-in .a-hero__pic--3 { animation: ah-in 900ms var(--a-ease, ease) 220ms both; }
-.a-hero.is-in .a-hero__pic--4 { animation: ah-in 900ms var(--a-ease, ease) 300ms both; }
+.a-hero.is-in .a-hero__pic--1 { animation: ah-fade 900ms var(--a-ease, ease) 60ms both; }
+.a-hero.is-in .a-hero__pic--2 { animation: ah-fade 900ms var(--a-ease, ease) 140ms both; }
+.a-hero.is-in .a-hero__pic--3 { animation: ah-fade 900ms var(--a-ease, ease) 220ms both; }
+.a-hero.is-in .a-hero__pic--4 { animation: ah-fade 900ms var(--a-ease, ease) 300ms both; }
 .a-hero.is-in .a-hero__line--e { animation: ah-fade 700ms var(--a-ease, ease) 560ms both; }
 .a-hero.is-in .a-hero__line--o { animation: ah-fade 700ms var(--a-ease, ease) 680ms both; }
 .a-hero.is-in .a-hero__line--u { animation: ah-fade 700ms var(--a-ease, ease) 800ms both; }
 .a-hero.is-in .a-hero__globe   { animation: ah-fade 700ms var(--a-ease, ease) 740ms both; }
 .a-hero.is-in .a-herocta       { animation: ah-rise 700ms var(--a-ease, ease) 960ms both; }
-@keyframes ah-in   { from { opacity: 0; filter: blur(14px); } to { opacity: 1; filter: blur(0); } }
 @keyframes ah-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes ah-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 :root { --a-morph: 820ms; --a-ease: cubic-bezier(0.65, 0, 0.35, 1); }
