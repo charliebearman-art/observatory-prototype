@@ -50,7 +50,12 @@
 .tabs { border-radius: var(--radius-input); }
 .tabs__pill, .tabs__btn { border-radius: var(--radius-button); }
 
-/* Interesting Facts cards: title is H3 (24, was 20); the "+" gets the 24px top
-   space and the title the 16px bottom space (per Figma) */
+/* Interesting Facts cards: title is H3 (24, was 20).
+   Per Figma the title sits at the TOP and the "+" at the bottom-right (the
+   Concept B layout has them the other way round), so we reorder the two blocks
+   and flip the scrim to darken the top where the title now lives. */
 .fact__title { font-size: var(--size-h3); line-height: var(--lh-h3); }
 .fact { padding: var(--space-5) var(--space-4) var(--space-4); }
+.fact__body { order: -1; z-index: 1; }  /* order -1 moves it before the media in paint order — lift it back on top */
+.fact__scrim { background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
+.fact.is-open .fact__scrim { background: linear-gradient(to top, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
