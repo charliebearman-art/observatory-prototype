@@ -79,7 +79,9 @@
 .facts__row > .fact:last-child { border-right: 0; }
 
 /* ---- Step by Step: accent bar, 76px tall, with a square inverse arrow badge ---- */
-.ostep { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
+/* pull the accent bar up 1px so it overlaps the fact card above it — closes the
+   hairline ivory seam that iOS Safari renders between the card and the sticky bar */
+.ostep { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; margin-top: -1px; }
 .btn-step { width: 100%; height: 76px; border-radius: 0; justify-content: space-between; gap: var(--space-5); padding: 0 var(--space-4); }
 .btn-step .icon { flex: none; box-sizing: border-box; width: 56px; height: 44px; padding: 10px 16px;
   background: var(--color-on-accent); color: var(--color-accent); border-radius: var(--radius-inner-4); }
@@ -156,6 +158,9 @@
    arrow badge, flush under the ticket list. ---- */
 .visit-list { gap: 0; }
 .listrow { border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; padding: var(--space-4); }
+/* close the Hours & Address list under its last row (Duration) — the Tickets list
+   below is closed by the "Buy" bar's own top border instead */
+.visit-block:first-of-type .visit-list .listrow:last-child { border-bottom: 1.5px solid var(--color-border); }
 .visit-block > .btn { width: 100%; height: auto; margin-top: calc(var(--space-5) * -1);
   border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-radius: 0;
   background: transparent; color: var(--color-text); justify-content: space-between; gap: var(--space-5); padding: var(--space-4); }

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=17">
+<link rel="stylesheet" href="styles/base.css?v=18">
 <link rel="stylesheet" href="styles/concept-a.css?v=29">
 <script src="guide-card.js?v=1"></script>
 <script>
@@ -155,10 +155,10 @@
     <div class="a-featured__rail" id="aFeaturedRail"></div>
     <script>
       renderGuideCards('#aFeaturedRail', [
-        { img: 'assets/img/guide-quarter.jpg',   city: 'Milan', title: 'The City You Don’t Understand at First', teaser: 'Slip past the galleries into the hidden cortili where Milan still paints', price: '210 $' },
-        { img: 'assets/img/guide-disappear.jpg', city: 'Milan', title: 'Where Milan Goes to Disappear', teaser: 'Cross the water by ferry to the villas and gardens Milan built to escape itself.', price: '180 $' },
-        { img: 'assets/img/guide-ritual.jpg',    city: 'Milan', title: 'The Six O’Clock Ritual', teaser: 'Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.', price: '80 $' },
-        { img: 'assets/img/guide-rooftops.jpg',  city: 'Rome',  title: 'Rome from the Rooftops', teaser: 'Read the city from its roofs — domes, bell towers and 2,000 years of terracotta', price: '190 $' }
+        { img: 'assets/img/guide-quarter.jpg',   city: 'Milan', title: 'The City You Don’t Understand at First', teaser: 'Slip past the galleries into the hidden cortili where Milan still paints', price: '$210' },
+        { img: 'assets/img/guide-disappear.jpg', city: 'Milan', title: 'Where Milan Goes to Disappear', teaser: 'Cross the water by ferry to the villas and gardens Milan built to escape itself.', price: '$180' },
+        { img: 'assets/img/guide-ritual.jpg',    city: 'Milan', title: 'The Six O’Clock Ritual', teaser: 'Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.', price: '$80' },
+        { img: 'assets/img/guide-rooftops.jpg',  city: 'Rome',  title: 'Rome from the Rooftops', teaser: 'Read the city from its roofs — domes, bell towers and 2,000 years of terracotta', price: '$190' }
       ]);
     </script>
   </section>
@@ -224,9 +224,8 @@
     var intro = document.getElementById('intro');
     if (!intro) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var seen = false; try { seen = sessionStorage.getItem('obsIntroA') === '1'; } catch (e) {}
-    if (reduce || seen) { intro.remove(); window.__introWillPlay = false; return; }   // once per session; skip under reduced motion
-    try { sessionStorage.setItem('obsIntroA', '1'); } catch (e) {}
+    // TEMP (client demo): play the intro on every home open, not once per session.
+    if (reduce) { intro.remove(); window.__introWillPlay = false; return; }   // skip only under reduced motion
     window.__introWillPlay = true;                           // the hero reveal waits for us
     document.documentElement.style.overflow = 'hidden';
     var anim = null, done = false;

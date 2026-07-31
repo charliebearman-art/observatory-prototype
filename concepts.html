@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
-<link rel="stylesheet" href="styles/base.css?v=17">
+<link rel="stylesheet" href="styles/base.css?v=18">
 <style>
   /* concept-router: небольшой хаб для выбора одного из трёх визуальных направлений.
      Нейтральная раскладка на тёплом демо-канвасе; каждая карточка превьюит концепт,
@@ -51,14 +51,33 @@
   .rcard--c { --rc: #2c2822; }
   .rcard--c .rcard__name { font-family: "Manrope", sans-serif; font-weight: 700; }
 
-  /* о прототипе */
+  /* о прототипе — аккордеоны */
   .notes { width: 100%; background: #fbf8f2; border: 1.5px solid #e6dfd2; border-radius: 16px;
-    padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
-  .notes__title { margin: 0; font-family: "Manrope", sans-serif; font-weight: 700; font-size: var(--size-title); line-height: var(--lh-title); color: #2c2822; }
-  .note { display: flex; flex-direction: column; gap: var(--space-1); }
-  .note__k { font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: .14em; text-transform: uppercase; color: #9a8a6e; }
-  .note__v { margin: 0; font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
-  .note__v b { color: #2c2822; font-weight: 600; }
+    padding: var(--space-3) var(--space-5) var(--space-4); display: flex; flex-direction: column; }
+  .notes__title { margin: var(--space-3) 0 var(--space-1); font-family: "Manrope", sans-serif; font-weight: 700; font-size: var(--size-title); line-height: var(--lh-title); color: #2c2822; }
+  .acc { border-top: 1.5px solid #e6dfd2; }
+  .acc__head { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    padding: var(--space-4) 0; font-family: "Manrope", sans-serif; font-weight: 600; font-size: var(--size-body); line-height: var(--lh-body); color: #2c2822; }
+  .acc__head::-webkit-details-marker { display: none; }
+  .acc__chev { flex: none; color: #9a8a6e; transition: transform .2s var(--ease); }
+  .acc[open] .acc__chev { transform: rotate(180deg); }
+  .acc__body { padding: 0 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+  .acc__body p { margin: 0; font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
+  .acc__body b { color: #2c2822; font-weight: 600; }
+  .acc__steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-3); }
+  .acc__steps li { position: relative; padding-left: var(--space-6); font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
+  .acc__steps b { color: #2c2822; font-weight: 600; }
+  .acc__n { position: absolute; left: 0; top: 0; width: var(--space-5); height: var(--space-5); display: grid; place-items: center;
+    border-radius: 999px; background: #2c2822; color: #fbf8f2; font-size: var(--size-caption); font-weight: 700; }
+  .acc__did { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+  .acc__did li { position: relative; padding-left: var(--space-4); font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); color: #6f675b; }
+  .acc__did li::before { content: "—"; position: absolute; left: 0; color: #9a8a6e; }
+  .acc__did b { color: #2c2822; font-weight: 600; }
+  .acc__links { display: flex; flex-direction: column; gap: var(--space-4); }
+  .acc__lg { display: flex; flex-direction: column; gap: var(--space-1); }
+  .acc__lg h4 { margin: 0 0 var(--space-1); font-family: "Manrope", sans-serif; font-weight: 600; font-size: var(--size-caption); line-height: var(--lh-caption); letter-spacing: .14em; text-transform: uppercase; color: #9a8a6e; }
+  .acc__lg a { color: #2c2822; text-decoration: none; font-family: "Manrope", sans-serif; font-weight: 500; font-size: var(--size-body); line-height: var(--lh-body); }
+  .acc__lg a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -103,18 +122,78 @@
 
   <section class="notes" aria-label="О прототипе">
     <h2 class="notes__title">О прототипе</h2>
-    <div class="note">
-      <span class="note__k">Что это</span>
-      <p class="note__v">Интерактивный прототип без бэкенда. Работают переходы между экранами, вкладки объекта, точки маршрута, аудио-плеер и модалки. Данные — демонстрационные.</p>
-    </div>
-    <div class="note">
-      <span class="note__k">Доступные экраны</span>
-      <p class="note__v">Главная, страница гайда, страница объекта по документу заказчика (вкладки <b>About / Origins / Numbers / Visit</b>) и точки объекта с интересными фактами. Экран навигации по карте между объектами — заглушка, ещё в разработке.</p>
-    </div>
-    <div class="note">
-      <span class="note__k">Как смотреть</span>
-      <p class="note__v">Прототип рассчитан на телефон (ширина <b>390px</b>). На смартфоне открывается на весь экран; на десктопе показывается как макет телефона по центру. Переключатели концепта и палитры видны только на десктопе.</p>
-    </div>
+
+    <details class="acc" open>
+      <summary class="acc__head">Что это<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <p>Интерактивный прототип без бэкенда. Работают переходы между экранами, вкладки объекта, точки маршрута, аудио-плеер и модалки. Данные — демонстрационные.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc__head">Как пользоваться прототипом<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <p>Пройдите путь от главной до точки интереса, нажимая на карточки:</p>
+        <ol class="acc__steps">
+          <li><span class="acc__n">1</span><b>Главная</b> — нажмите <b>«Start a New Journey»</b> или любую карточку гайда в блоке Popular, чтобы открыть <b>страницу гайда</b>.</li>
+          <li><span class="acc__n">2</span><b>Страница гайда</b> — на карте маршрута нажмите точку или карточку локации под картой, чтобы открыть <b>страницу объекта</b>.</li>
+          <li><span class="acc__n">3</span><b>Страница объекта</b> — переключайте вкладки <b>About / Origins / Numbers / Visit</b>; в блоке Interesting Facts жмите <b>«+»</b>, чтобы раскрыть факт. Кнопка <b>«Step by Step»</b> открывает <b>точку интереса (POI)</b>.</li>
+          <li><span class="acc__n">4</span><b>Точка интереса</b> — слушайте аудиогид, открывайте факты; кнопкой <b>Next</b> переходите к следующей точке.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc__head">Доступные экраны<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <p>Главная, страница гайда, страница объекта по документу заказчика (вкладки <b>About / Origins / Numbers / Visit</b>) и точки объекта с интересными фактами. Экран навигации по карте между объектами — заглушка, ещё в разработке.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc__head">Ссылки на экраны концептов<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <div class="acc__links">
+          <div class="acc__lg">
+            <h4>Концепт A — Архивный</h4>
+            <a href="index-a.html">Главная — index-a.html</a>
+            <a href="guide-a.html">Гайд — guide-a.html</a>
+            <a href="object-a.html">Объект — object-a.html</a>
+          </div>
+          <div class="acc__lg">
+            <h4>Концепт B — Сервис</h4>
+            <a href="index.html">Главная — index.html</a>
+            <a href="guide.html">Гайд — guide.html</a>
+            <a href="object.html">Объект — object.html</a>
+          </div>
+          <div class="acc__lg">
+            <h4>Концепт C — Журнальный</h4>
+            <a href="index-c.html">Главная — index-c.html</a>
+            <a href="guide-c.html">Гайд — guide-c.html</a>
+            <a href="object-c.html">Объект — object-c.html</a>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc__head">Как смотреть<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <p>Прототип рассчитан на телефон (ширина <b>390px</b>). На смартфоне открывается на весь экран; на десктопе показывается как макет телефона по центру. Переключатели концепта и палитры видны только на десктопе.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc__head">Что было сделано<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="acc__body">
+        <ul class="acc__did">
+          <li>Разработано <b>3 разных визуальных концепта</b> — подробнее о них при встрече.</li>
+          <li>Разработана <b>айдентика бренда</b> — логотип и стилевые элементы.</li>
+          <li>Разработаны <b>креативы</b> для иллюстрации предоставленного заказчиком гайда.</li>
+          <li>Разработаны <b>аудиогиды</b> для каждой точки интереса.</li>
+        </ul>
+      </div>
+    </details>
   </section>
 </main>
 </body>
