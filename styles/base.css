@@ -504,8 +504,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
 @media (max-width: 760px) { .concept-nav { display: none; } }
 
-/* soft shadow lifts the content column off the canvas (see the html/body bg) */
-.screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
+/* soft shadow lifts the content column off the beige canvas — desktop demo only.
+   On the phone the column fills the width (no canvas to lift off), and the dark halo
+   would show as a strip along the edges on light palettes (invisible on dark ones,
+   which is why Concept A looked fine but Concept C didn't). */
+@media (min-width: 761px) { .screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); } }
 
 /* ---------- back to the concept-selection page (demo only) ----------
    Fixed pill, top-left, desktop-only — mirrors the concept-nav. */

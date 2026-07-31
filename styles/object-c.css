@@ -171,4 +171,6 @@
    stands out instead of blending into the browser page. Desktop demo only; on the
    phone the palette bg fills behind the column (see base.css). ---- */
 @media (min-width: 761px) { html, body { background: #d0c8ba; } }
-.screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
+/* column shadow: desktop demo only — on the phone it shows as an edge strip on the
+   light ivory palette (see base.css) */
+@media (min-width: 761px) { .screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); } }
