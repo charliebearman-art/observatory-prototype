@@ -1,30 +1,28 @@
 /* ============================================================================
    Concept C — Object & POI pages (object-c.html / poi-c.html / nav-c.html).
-   These reuse the shared object.css / poi.css structure + points.js behaviour,
-   but render in the Concept C identity: Manrope + the Ivory palette, flat
-   sections (no rounded surface cards), sharp media and bordered bands. Only the
-   deltas from the token-driven base live here — Figma nodes 1224-14498 (object)
-   and 1230-17982 (POI). The Concept B pages are untouched.
+   Reuse the shared object.css / poi.css structure + points.js behaviour, in the
+   Concept C identity: Manrope + Ivory palette, flat full-bleed panels on
+   --color-surface (no rounded cards), bordered bands. Deltas from the
+   token-driven base live here — Figma About tab 1235-18520 (object) / 1230-17982
+   (POI). The Concept B pages are untouched.
    ============================================================================ */
 
-/* ---- header: flat ivory bar (no rounded photo-reveal), hero sits flush below ---- */
-.ohead, .phead { background: var(--color-bg); border-radius: 0; }
-.ohero, .phero { margin-top: 0; }
+/* ---- header: flat surface bar, no rounded photo-reveal ---- */
+.ohead, .phead { border-radius: 0; }
 
-/* ---- hero POI hotspot: dark accent tile, inner-4 radius ---- */
-.hotspot { border-radius: var(--radius-inner-4); border-width: 1.5px; }
+/* ---- hero POI hotspot: dark accent tile, inner-4 radius (white 2px border) ---- */
+.hotspot { border-radius: var(--radius-inner-4); }
 
-/* ---- description: flat on the page — no surface card, no overlap ---- */
-.odesc, .pdesc { background: transparent; border-radius: 0; margin-top: 0; }
-.odesc { padding: var(--space-5) var(--space-4) var(--space-4); }
-.pdesc { padding: var(--space-6) var(--space-4) var(--space-4); }
-/* object + POI lead titles are Display (48) */
-.odesc__title, .pdesc__title { font-size: var(--size-display); line-height: var(--lh-display); }
-/* POI leads with the display title — the "01" eyebrow is dropped */
-.poi-eyebrow { display: none; }
+/* ---- description: flat surface panel (no rounded card). Title/body inset 16;
+   the More bar + audio bleed full-width. Title is H1 (40), not Display. ---- */
+.odesc, .pdesc { border-radius: 0; }
+.odesc { padding: var(--space-6) 0 0; gap: 0; }
+.odesc__head { gap: 0; }
+.odesc__title { font-size: var(--size-h1); line-height: var(--lh-h1); padding-inline: var(--space-4); }
+.odesc__body { padding-inline: var(--space-4); margin-top: var(--space-4); }
 
-/* ---- "More": a full-width bordered bar with a chevron tile (not a text button) ---- */
-.odesc__more { align-self: stretch; margin-inline: calc(var(--space-4) * -1);
+/* "More": full-width bar bordered top + bottom, with a chevron tile */
+.odesc__more { align-self: stretch; margin-top: var(--space-5); margin-inline: 0;
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
   padding: var(--space-4); border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);
   color: var(--color-text); }
@@ -32,36 +30,45 @@
 .odesc__more .icon { flex: none; box-sizing: border-box; width: 36px; height: 36px; padding: 6px;
   border: 1.5px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text); }
 
-/* ---- audio: borderless row, sharp accent play tile ---- */
-.audio { background: transparent; border: 0; border-radius: 0; padding: 0; gap: var(--space-4); }
+/* audio: borderless row directly under the More bar, closed by a bottom divider;
+   sharp accent play tile */
+.odesc__audiowrap { gap: 0; border-bottom: 1.5px solid var(--color-border); }
+.audio { background: transparent; border: 0; border-radius: 0; padding: var(--space-4); gap: var(--space-3); }
 .audio__play { border-radius: var(--radius-inner-4); }
 
-/* ---- info tabs: light active pill on a bordered track, dark selected text ---- */
-.tabs { border-color: var(--color-border); }
-.tabs__pill { background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 1px 2px rgba(44, 40, 34, 0.06); }
-.tabs__btn[aria-selected="true"] { color: var(--color-text); }
+/* ---- info tabs: full-bleed surface section, continuous with the description ---- */
+.otabs { margin-top: 0; padding: var(--space-6) 0 0; border-radius: 0; }
+/* tab bar: a band bordered top + bottom (no rounded container); the active tab is
+   a solid muted-brown rectangle with ivory text (no rounded pill) */
+.tabs { border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-radius: 0; }
+.tabs__pill { border-radius: 0; background: var(--color-text-muted); }
+.tabs__btn { height: 36px; border-radius: 0; }
+.tabs__btn[aria-selected="true"] { color: var(--color-on-accent); }
 
-/* ---- characteristics (About): vertical bordered list (label + value) ---- */
+/* characteristics: full-bleed vertical bordered list (surface rows, 16 padding) */
 .charslider { flex-direction: column; gap: 0; overflow: visible; margin-inline: 0; }
 .charslider > :first-child, .charslider > :last-child { margin-inline: 0; }
-.charcard { width: 100%; padding: var(--space-4) 0; background: transparent; border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; }
+.charcard { width: 100%; padding: var(--space-4); background: var(--color-surface); border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; }
+.charcard:last-child { border-bottom: 1.5px solid var(--color-border); }
 .charcard__v { white-space: normal; }
 
-/* ---- interesting facts: sharp cards, solid accent "+" tile ---- */
-.fact { border-radius: 0; }
-.fact__toggle { background: var(--color-accent); color: var(--color-on-accent); border: 0; border-radius: var(--radius-inner-4);
-  backdrop-filter: none; -webkit-backdrop-filter: none; }
+/* interesting facts: H2 title (inset 16), full-bleed bordered card rail. The "+"
+   badge keeps the default scrim-glass look from object.css. */
+.facts__title { font-size: var(--size-h2); line-height: var(--lh-h2); padding-inline: var(--space-4); }
+.facts__row { gap: 0; margin-inline: 0; }
+.facts__row > :first-child, .facts__row > :last-child { margin-inline: 0; }
+.fact { border-radius: 0; border-right: 1.5px solid var(--color-border); padding: var(--space-5) var(--space-4); }
 
-/* ---- Step by Step: full-width accent bar with a square arrow badge ---- */
+/* ---- Step by Step: accent bar, 76px tall, with a square inverse arrow badge ---- */
 .ostep { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
-.btn-step { width: 100%; border-radius: 0; justify-content: space-between; gap: var(--space-5); padding: var(--space-4); }
-/* the trailing arrow becomes an inverse tile (like the guide's cbar badge) */
+.btn-step { width: 100%; height: 76px; border-radius: 0; justify-content: space-between; gap: var(--space-5); padding: 0 var(--space-4); }
 .btn-step .icon { flex: none; box-sizing: border-box; width: 56px; height: 44px; padding: 10px 16px;
   background: var(--color-on-accent); color: var(--color-accent); border-radius: var(--radius-inner-4); }
 
-/* ---- next object: bordered flat row, rounded-square thumb ---- */
-.nextobj { background: transparent; border: 1.5px solid var(--color-border); border-radius: 0; }
-.nextobj__thumb { border-radius: var(--radius-inner-4); }
+/* ---- next object: flat surface row (no border), rounded-card thumb ---- */
+.nextobj-wrap { padding: 0; }
+.nextobj { background: var(--color-surface); border: 0; border-radius: 0; padding: var(--space-4); }
+.nextobj__thumb { border-radius: var(--radius-card); }
 .nextobj__eyebrow { text-transform: none; letter-spacing: 0; }
 
 /* ---- POI: where-card as a bordered band, sharp sticky switcher ---- */
@@ -69,23 +76,22 @@
   border-radius: 0; margin-inline: calc(var(--space-4) * -1); padding: var(--space-4); }
 .pswitch { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .pswitch__back, .pswitch__next { border-radius: 0; }
+.poi-eyebrow { display: none; }
 
 /* ---- Origins / Numbers / Visit: sharp media + bordered cards ---- */
 .org-figure__imgwrap, .arch-card__img, .numcard, .listrow { border-radius: 0; }
 .numcard, .listrow { border-color: var(--color-border); background: transparent; }
 .listrow__icon { border-radius: var(--radius-inner-4); }
 .listrow__k { text-transform: none; letter-spacing: 0; }
-/* timeline era thumb is a rounded square, dots keep the accent */
 .tl-era { border-radius: var(--radius-inner-4); }
 
-/* ---- fact modal: sharp-ish image, display-scale title, muted eyebrow ---- */
+/* ---- fact modal: sharp-ish image, H2 title, muted eyebrow ---- */
 .factmodal__eyebrow { color: var(--color-text-muted); }
 .factmodal__title { font-size: var(--size-h2); line-height: var(--lh-h2); }
 .factmodal__img { border-radius: var(--radius-inner-4); }
 
 /* ---- page canvas: a warm neutral behind the 390px column so the ivory mockup
-   stands out instead of blending into the browser page (matches the Concept C
-   home / guide). Only shows on the wider demo canvas; on the phone the column is
-   full-width. ---- */
+   stands out instead of blending into the browser page. Only on the wider demo
+   canvas; on the phone the column is full-width. ---- */
 html, body { background: #d0c8ba; }
 .screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
