@@ -7,7 +7,13 @@
    (POI). The Concept B pages are untouched.
    ============================================================================ */
 
-/* ---- header: flat surface bar, no rounded photo-reveal ---- */
+/* ---- Concept C uses the page Background for object/POI panels, not Surface
+   (per Figma 1224-14498 / 1230-17982). object.css/poi.css default these to
+   --color-surface; unify them to --color-bg. ---- */
+.ohead, .phead, .odesc, .pdesc, .otabs, .charcard, .numcard, .nextobj,
+.factmodal__sheet, .factmodal__nav { background: var(--color-bg); }
+
+/* ---- header: flat bar, no rounded photo-reveal ---- */
 .ohead, .phead { border-radius: 0; }
 /* the in-page POI overlay grows its header via clip-path; the shared keyframes
    round the bottom to radius-card — keep it square in Concept C. */
@@ -60,7 +66,7 @@
 /* characteristics: full-bleed vertical bordered list (surface rows, 16 padding) */
 .charslider { flex-direction: column; gap: 0; overflow: visible; margin-inline: 0; }
 .charslider > :first-child, .charslider > :last-child { margin-inline: 0; }
-.charcard { width: 100%; padding: var(--space-4); background: var(--color-surface); border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; }
+.charcard { width: 100%; padding: var(--space-4); background: var(--color-bg); border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; }
 .charcard:last-child { border-bottom: 1.5px solid var(--color-border); }
 .charcard__v { white-space: normal; }
 
@@ -141,7 +147,7 @@
    only — top border on every card, right border on the left column; no gap,
    no radius, no outer frame. Big number is H3 (24) accent (object.css). ---- */
 .numgrid { gap: 0; }
-.numcard { border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; background: var(--color-surface); }
+.numcard { border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; background: var(--color-bg); }
 .numcard:nth-child(odd) { border-right: 1.5px solid var(--color-border); }
 
 /* ---- Visit (Figma 1235-18940): full-bleed rows with a top border only (no
