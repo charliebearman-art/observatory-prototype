@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
-<link rel="stylesheet" href="styles/concept-c.css?v=5">
+<link rel="stylesheet" href="styles/concept-c.css?v=6">
 <style>
   /* first-load intro: the full Observatory logo animation (Lottie), recoloured to
      the palette accent. Wide frame so the "observatory TS" reveal fits; it then
@@ -37,29 +37,12 @@
 </head>
 <body>
 
-<!-- demo-only control: lets the client feel both axes live -->
-<div class="switch">
-  <div class="switch__panel">
-    <div class="switch__group">
-    <span class="switch__label">Concept</span>
-    <button data-set="concept" data-val="a">A</button>
-    <button data-set="concept" data-val="b">B</button>
-    <button data-set="concept" data-val="c" aria-pressed="true">C</button>
-  </div>
-  <div class="switch__group">
-    <span class="switch__label">Place</span>
-    <button data-set="palette" data-val="cosmos" aria-pressed="true">Cosmos</button>
-    <button data-set="palette" data-val="santorini">Santorini</button>
-    <button data-set="palette" data-val="terracotta">Rome</button>
-    <button data-set="palette" data-val="krem">Krem</button>
-    <button data-set="palette" data-val="duomo">Duomo</button>
-    <button data-set="palette" data-val="night">Night</button>
-  </div>
-  </div>
-  <button class="switch__toggle" aria-expanded="false" aria-label="Показать переключатель темы">
-    <svg class="icon"><use href="assets/icons.svg?v=3#i-grid"></use></svg>
-  </button>
-</div>
+<!-- concept switcher (demo): links to the real concept home pages -->
+<nav class="concept-nav" aria-label="Concept">
+  <a href="index-a.html">A</a>
+  <a href="index.html">B</a>
+  <a href="index-c.html" aria-current="page">C</a>
+</nav>
 
 <main class="screen">
 
@@ -106,7 +89,7 @@
   <!-- what is observatory -->
   <section class="cblock">
     <div class="cblock__head">
-      <p class="ceyebrow">How it works</p>
+      <p class="ceyebrow">How it Works</p>
       <h2 class="csect-title">What is Observatory?</h2>
       <p class="cblock__lead">Observatory turns a city into a story you can walk through — curated routes, real places, and the context that makes them matter.</p>
     </div>
@@ -176,9 +159,9 @@
   </section>
 
   <!-- featured guides -->
-  <section class="cblock cblock--surface cfeat">
+  <section class="cblock cfeat">
     <div class="cblock__head">
-      <p class="ceyebrow">Featured guides</p>
+      <p class="ceyebrow">Featured Guides</p>
       <h2 class="csect-title">Popular in Italy</h2>
     </div>
     <div class="cfeat__rail">
@@ -249,7 +232,7 @@
   <!-- the world, city by city -->
   <section class="cblock ccities">
     <div class="cblock__head">
-      <p class="ceyebrow">Around the world</p>
+      <p class="ceyebrow">Around the World</p>
       <h2 class="csect-title">The World,<br>City by City</h2>
     </div>
     <div class="ccities__grid">
@@ -484,26 +467,27 @@
   }
   syncThemeColor();
 
-  // the panel is collapsed on phones; the button reveals it
+  // the panel is collapsed on phones; the button reveals it (only if present —
+  // Concept C uses the concept-nav links instead of the full switch panel)
   (function () {
     var box = document.querySelector('.switch');
+    if (!box) return;
     var toggle = box.querySelector('.switch__toggle');
     toggle.addEventListener('click', function () {
       var open = box.classList.toggle('switch--open');
       toggle.setAttribute('aria-expanded', String(open));
     });
-  })();
-
-  document.querySelectorAll('.switch__panel button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var axis = b.dataset.set, val = b.dataset.val;
-      document.documentElement.setAttribute('data-' + axis, val);
-      syncThemeColor();
-      document.querySelectorAll('.switch__panel button[data-set="' + axis + '"]').forEach(function (x) {
-        x.setAttribute('aria-pressed', String(x === b));
+    document.querySelectorAll('.switch__panel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var axis = b.dataset.set, val = b.dataset.val;
+        document.documentElement.setAttribute('data-' + axis, val);
+        syncThemeColor();
+        document.querySelectorAll('.switch__panel button[data-set="' + axis + '"]').forEach(function (x) {
+          x.setAttribute('aria-pressed', String(x === b));
+        });
       });
     });
-  });
+  })();
 </script>
 </body>
 </html>

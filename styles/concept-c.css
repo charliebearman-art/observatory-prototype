@@ -5,8 +5,8 @@
    base.css; everything else here is Concept-C-specific.
    ============================================================================ */
 
-/* ---- menu: dark "Log in" pill + round outlined icon buttons ---- */
-.menu .icon-btn { border-radius: 50%; }
+/* ---- menu: dark "Log in" pill; icon buttons keep the default rounded-square
+   radius-button (12) — they are not circular in Concept C ---- */
 
 /* ---- hero: two-row photo collage → editorial lockup → dark CTA bar
    (Figma 1198-10838). Row 1 = 227px, Row 2 = 128px; left column fixed 128px. */
@@ -32,7 +32,7 @@
 .cblock { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
 .cblock--surface { background: var(--color-surface); }
 .cblock__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
-.ceyebrow { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text-muted); text-transform: uppercase; text-align: right; }
+.ceyebrow { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text-muted); text-align: right; }
 .csect-title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); }
 .cblock__lead { margin: 0; font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
 
@@ -48,14 +48,13 @@
 .cblock > .cbar { margin-top: calc(var(--space-6) * -1); }
 
 /* ---- What is Observatory: vertical benefit stack (reuses orbit/obs/und) ---- */
-/* Full-width benefit rows separated by top borders; odd rows sit on the surface,
-   even rows on the page bg (per Figma). The 260×207 animation slot is centred and
-   the text sits below it. */
+/* Full-width benefit rows on the page bg, separated by top borders (per Figma).
+   The card clips to its 390px width; the 260px animation slot itself does NOT clip
+   (overflow visible) so the animation can span the full card and isn't cut off. */
 .cbenefits { display: flex; flex-direction: column; }
 .cbenefit { width: 100%; flex: none; overflow: hidden; border-top: 1.5px solid var(--color-border); background: transparent; border-radius: 0; }
-.cbenefit:nth-child(odd) { background: var(--color-surface); }
 .cbenefit::after { display: none; }
-.cbenefit .benefit__slot { width: 260px; margin: 0 auto; background: transparent; border-radius: 0; }
+.cbenefit .benefit__slot { width: 260px; margin: 0 auto; overflow: visible; background: transparent; border-radius: 0; }
 .cbenefit__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-4); }
 .cbenefit__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-text); }
 .cbenefit__desc { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
@@ -68,9 +67,9 @@
   border-top: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); }
 .cguide__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .cguide__badge { position: relative; padding: var(--space-4); }
-.cguide .glass { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.cguide .glass { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); text-transform: uppercase; }
 .cguide__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 310px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
-.cguide__text { position: relative; background: var(--color-bg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.cguide__text { position: relative; background: var(--color-bg); padding: var(--space-5) var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
 .cguide__copy { display: flex; flex-direction: column; gap: var(--space-2); }
 .cguide__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
 .cguide__teaser { margin: 0; font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
@@ -90,7 +89,7 @@
 .ccity__name { font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
 
 /* ---- Footer: promo + lockup + nav → stacked CTA bars → language / legal ---- */
-.cfoot { background: var(--color-surface); display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-8) 0 var(--space-6); }
+.cfoot { background: var(--color-bg); display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-8) 0 var(--space-6); }
 .cfoot__promo { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); padding: 0 var(--space-4); }
 .cfoot__ready { margin: 0; text-align: center; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text-muted); }
 .cfoot__lockup { display: block; width: 100%; height: 56px; color: var(--color-text);
@@ -117,3 +116,10 @@
    out instead of blending into the page background */
 html, body { background: #d0c8ba; }
 .screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
+
+/* concept switcher — links to the real concept home pages (A/B/C).
+   Hidden on the phone view; visible on the desktop canvas around the mockup. */
+.concept-nav { position: fixed; left: var(--space-3); bottom: var(--space-3); z-index: 60; display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-button); background: color-mix(in oklab, var(--color-surface), transparent 8%); backdrop-filter: blur(10px); border: 1px solid var(--color-border); }
+.concept-nav a { width: 34px; height: 34px; display: grid; place-items: center; border-radius: var(--radius-inner-4); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); color: var(--color-text-muted); text-decoration: none; }
+.concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
+@media (max-width: 760px) { .concept-nav { display: none; } }
