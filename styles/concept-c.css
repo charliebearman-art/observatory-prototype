@@ -13,8 +13,11 @@
    fill the height left below the menu, so it resizes with the viewport. The 4
    cells morph between keyframes by animating the grid column/row tracks
    (Figma 1198-11471 variants 1–4). */
-.chero { display: flex; flex-direction: column; background: var(--color-bg); height: calc(100svh - var(--cmenu-h, 68px)); }
-.chero__grid { flex: 1 1 auto; min-height: 350px; max-height: 500px; display: grid; gap: 0;
+.chero { display: flex; flex-direction: column; background: var(--color-bg); }
+/* the collage fills the height left in the first screen (menu + collage + text +
+   CTA), clamped 350–500px — so the hero is its natural height and never leaves a
+   gap before the next block, while still fitting one screen. */
+.chero__grid { flex: none; height: clamp(350px, calc(100svh - var(--cmenu-h, 68px) - var(--chero-rest, 300px)), 500px); display: grid; gap: 0;
   grid-template-columns: 128fr 260fr; grid-template-rows: 227fr 128fr;
   transition: grid-template-columns 1.3s var(--ease), grid-template-rows 1.3s var(--ease); }
 .chero__cell { overflow: hidden; min-width: 0; min-height: 0; display: block; }
