@@ -44,5 +44,13 @@
 .charcard { width: 100%; }
 .charcard__v { white-space: normal; }
 
-/* tabs sit at the 36px Figma height */
+/* tabs sit at the 36px Figma height; the container is more rounded than the
+   active pill, which nests inside its 4px padding (concentric corners) */
 .tabs__btn { height: 36px; }
+.tabs { border-radius: var(--radius-input); }
+.tabs__pill, .tabs__btn { border-radius: var(--radius-button); }
+
+/* Interesting Facts cards: title is H3 (24, was 20); the "+" gets the 24px top
+   space and the title the 16px bottom space (per Figma) */
+.fact__title { font-size: var(--size-h3); line-height: var(--lh-h3); }
+.fact { padding: var(--space-5) var(--space-4) var(--space-4); }
