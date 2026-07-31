@@ -31,13 +31,14 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-/* bg on <html> too: the .screen column is centred, and without this the browser
-   canvas (white) shows beside it on viewports wider than the column / during
-   overscroll — the "white strip". */
-html { background: var(--color-bg); }
+/* The .screen column is centred; the page behind it is a warm neutral "canvas"
+   (not the palette bg) so the content column always stands out on viewports
+   wider than the column, in every concept, instead of blending into the page.
+   On the phone the column fills the width, so the canvas isn't visible. */
+html { background: #d0c8ba; }
 
 body {
-  background: var(--color-bg);
+  background: #d0c8ba;
   color: var(--color-text);
   font-family: var(--font-text);
   font-weight: var(--font-text-weight);
@@ -496,6 +497,24 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   color: var(--color-text-muted); text-decoration: none; }
 .concept-nav a[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
 @media (max-width: 760px) { .concept-nav { display: none; } }
+
+/* soft shadow lifts the content column off the canvas (see the html/body bg) */
+.screen, .stub-screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
+
+/* ---------- back to the concept-selection page (demo only) ----------
+   Fixed pill, top-left, desktop-only — mirrors the concept-nav. */
+.to-concepts {
+  position: fixed; left: var(--space-3); top: calc(var(--space-3) + env(safe-area-inset-top, 0px)); z-index: 60;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 40px; padding: 0 var(--space-4) 0 var(--space-3);
+  border-radius: var(--radius-button);
+  background: color-mix(in oklab, var(--color-bg), transparent 8%);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border); color: var(--color-text); text-decoration: none;
+  font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: 1;
+}
+.to-concepts .icon { width: 20px; height: 20px; }
+@media (max-width: 760px) { .to-concepts { display: none; } }
 
 /* ============================================================
    MOTION — hover, press, reveal
