@@ -17,15 +17,27 @@
 /* the collage fills the height left in the first screen (menu + collage + text +
    CTA), clamped 350–500px — so the hero is its natural height and never leaves a
    gap before the next block, while still fitting one screen. */
-.chero__grid { flex: none; height: clamp(350px, calc(100svh - var(--cmenu-h, 68px) - var(--chero-rest, 300px)), 500px); display: grid; gap: 0;
-  grid-template-columns: 128fr 260fr; grid-template-rows: 227fr 128fr;
-  transition: grid-template-columns 1.3s var(--ease), grid-template-rows 1.3s var(--ease); }
-.chero__cell { overflow: hidden; min-width: 0; min-height: 0; display: block; }
+/* --c = left column width, --r = top row height (as % of the block). The four
+   cells are absolutely positioned from those two vars and transition their
+   top/left/width/height — smooth in every browser (grid-template animation snaps
+   in Safari), and object-fit:cover scales mixed aspect ratios continuously so
+   they never jump. */
+.chero__grid { flex: none; position: relative; overflow: hidden;
+  height: clamp(350px, calc(100svh - var(--cmenu-h, 68px) - var(--chero-rest, 300px)), 500px);
+  --c: 33%; --r: 64%; --cmorph: 700ms; --cmorph-ease: cubic-bezier(0.65, 0, 0.35, 1); }
+.chero__cell { position: absolute; overflow: hidden;
+  transition: top var(--cmorph) var(--cmorph-ease), left var(--cmorph) var(--cmorph-ease),
+              width var(--cmorph) var(--cmorph-ease), height var(--cmorph) var(--cmorph-ease); }
+.chero__cell:nth-child(1) { top: 0; left: 0; width: var(--c); height: var(--r); }
+.chero__cell:nth-child(2) { top: 0; left: var(--c); width: calc(100% - var(--c)); height: var(--r); }
+.chero__cell:nth-child(3) { top: var(--r); left: 0; width: var(--c); height: calc(100% - var(--r)); }
+.chero__cell:nth-child(4) { top: var(--r); left: var(--c); width: calc(100% - var(--c)); height: calc(100% - var(--r)); }
 .chero__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* keyframe states (grid tracks morph between them) */
-.chero[data-cstate="2"] .chero__grid { grid-template-columns: 260fr 128fr; grid-template-rows: 128fr 227fr; }
-.chero[data-cstate="3"] .chero__grid { grid-template-columns: 260fr 128fr; grid-template-rows: 227fr 128fr; }
-.chero[data-cstate="4"] .chero__grid { grid-template-columns: 128fr 260fr; grid-template-rows: 128fr 227fr; }
+/* keyframe states — only --c / --r change; cells morph via their transitions */
+.chero[data-cstate="1"] .chero__grid { --c: 33%; --r: 64%; }
+.chero[data-cstate="2"] .chero__grid { --c: 67%; --r: 36%; }
+.chero[data-cstate="3"] .chero__grid { --c: 67%; --r: 64%; }
+.chero[data-cstate="4"] .chero__grid { --c: 33%; --r: 36%; }
 .chero__text { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-6); padding: var(--space-4); }
 .chero__lines { margin: 0; text-align: right; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-accent); }
 .chero__logo { display: block; width: 100%; height: 56px; color: var(--color-accent);
