@@ -51,13 +51,15 @@
 .ga-armed .ga-info,
 .ga-armed .ga-cover__top { opacity: 0; }
 
+/* smoother ease-in-out for the badge/symbol choreography */
+.ga-cover { --ga-smooth: cubic-bezier(0.65, 0, 0.3, 1); }
 .ga-cover.is-in .ga-cover__media  { animation: ga-r-img   1000ms var(--ease) both; }
-.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1300ms var(--ease) 200ms both; }
-.ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   440ms var(--ease) 700ms both; }
-.ga-cover.is-in .ga-cover__title  { animation: ga-r-rise   720ms var(--ease) 1200ms both; }
-.ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1320ms both; }
-.ga-cover.is-in .ga-info          { animation: ga-r-rise   720ms var(--ease) 1440ms both; }
-.ga-cover.is-in .ga-cover__top    { animation: ga-r-top    700ms var(--ease) 1300ms both; }
+.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1700ms var(--ga-smooth) 220ms both; }
+.ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   680ms var(--ga-smooth) 900ms both; }
+.ga-cover.is-in .ga-cover__title  { animation: ga-r-rise   720ms var(--ease) 1620ms both; }
+.ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1740ms both; }
+.ga-cover.is-in .ga-info          { animation: ga-r-rise   720ms var(--ease) 1860ms both; }
+.ga-cover.is-in .ga-cover__top    { animation: ga-r-top    700ms var(--ease) 1700ms both; }
 
 @keyframes ga-r-img {
   from { opacity: 0; filter: blur(18px); transform: scale(1.18); }
