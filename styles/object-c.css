@@ -9,6 +9,18 @@
 
 /* ---- header: flat surface bar, no rounded photo-reveal ---- */
 .ohead, .phead { border-radius: 0; }
+/* the in-page POI overlay grows its header via clip-path; the shared keyframes
+   round the bottom to radius-card — keep it square in Concept C. */
+.poiov.is-in .phead { animation-name: poi-head-grow-c; }
+.poiov.is-in.is-out .phead { animation-name: poi-head-shrink-c; }
+@keyframes poi-head-grow-c {
+  from { clip-path: inset(0 0 calc(var(--space-4) + var(--space-1)) 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes poi-head-shrink-c {
+  from { clip-path: inset(0 0 0 0); }
+  to   { clip-path: inset(0 0 calc(var(--space-4) + var(--space-1)) 0); }
+}
 
 /* ---- hero POI hotspot: dark accent tile, inner-4 radius (white 2px border) ---- */
 .hotspot { border-radius: var(--radius-inner-4); }
