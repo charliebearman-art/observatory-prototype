@@ -96,6 +96,7 @@
 .arch-cards { gap: 0; margin-inline: 0; }
 .arch-cards > :first-child, .arch-cards > :last-child { margin-inline: 0; }
 .arch-card { border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); padding-bottom: var(--space-4); }
+.arch-card:last-child { border-right: 0; }
 .arch-card__img { border-radius: 0; }
 .arch-card__text { padding-inline: var(--space-4); }
 .arch-card__title { font-size: var(--size-h3); line-height: var(--lh-h3); }
