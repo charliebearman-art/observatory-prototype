@@ -58,7 +58,11 @@
 .fact { padding: var(--space-5) var(--space-4) var(--space-4); }
 .fact__body { order: -1; z-index: 1; }  /* order -1 moves it before the media in paint order — lift it back on top */
 .fact__scrim { background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
-.fact.is-open .fact__scrim { background: linear-gradient(to top, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
+/* open: title + description (16/Body, so a taller block) sit at the top — darken the
+   whole upper band hard so white text stays readable on a light photo. */
+.fact.is-open .fact__scrim { background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.9) 100%); }
+/* description reads at Body (16), not Caption (12), in Concept A */
+.fact__reveal > .fact__text { font-size: var(--size-body); line-height: var(--lh-body); }
 
 /* ---- Object "Origins" tab — Concept A sizes & shapes (Figma 1198-8286) ---- */
 /* block headings ("Commissioned by…", "Six centuries…", "Not one architect…")

@@ -219,8 +219,10 @@
 .fact__reveal > .fact__text { min-height: 0; overflow: hidden; margin: 0; padding-top: var(--space-2); opacity: 0;
   font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--on-media-muted);
   transition: opacity calc(var(--dur-slow) * 1.2) var(--ease-slow); }
-/* open state: SAME size — the photo blurs, the text is revealed, + becomes × */
-.fact.is-open .fact__scrim { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: linear-gradient(to bottom, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.1) 61%, rgba(0,0,0,0.82) 100%); }
+/* open state: SAME size — the photo blurs, the text is revealed, + becomes ×.
+   The revealed text sits over the mid/lower band, so darken that band harder than
+   the collapsed scrim: white body text has to stay readable even on a light photo. */
+.fact.is-open .fact__scrim { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.48) 52%, rgba(0,0,0,0.9) 100%); }
 .fact.is-open .fact__reveal { grid-template-rows: 1fr; }
 .fact.is-open .fact__reveal > .fact__text { opacity: 1; }
 .fact.is-open .fact__toggle .icon { transform: rotate(45deg); }   /* + → × */
