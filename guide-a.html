@@ -11,9 +11,13 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=13">
 <link rel="stylesheet" href="styles/concept-a.css?v=23">
-<link rel="stylesheet" href="styles/guide-a.css?v=4">
+<link rel="stylesheet" href="styles/guide-a.css?v=6">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+  /* arm the first-load cover reveal before paint (skipped under reduced motion) */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('ga-armed');
+</script>
 </head>
 <body>
 
@@ -240,6 +244,25 @@
 </div>
 
 <script>
+  // cover reveal: on load, centre the MILAN badge group (--rc) then play the sequence
+  (function () {
+    if (!document.documentElement.classList.contains('ga-armed')) return;
+    var cover = document.querySelector('.ga-cover');
+    if (!cover) return;
+    var panel = cover.querySelector('.ga-cover__panel');
+    var badges = cover.querySelector('.ga-cover__badges');
+    function play() {
+      if (panel && badges) {
+        var cw = panel.clientWidth - 32;          // panel content width (minus 16px padding)
+        var gw = badges.offsetWidth;              // globe + MILAN group width
+        cover.style.setProperty('--rc', Math.max(0, Math.round((cw - gw) / 2)) + 'px');
+      }
+      cover.classList.add('is-in');
+    }
+    if (document.readyState === 'complete') play();
+    else window.addEventListener('load', play);
+  })();
+
   // hero photo parallax — the img lags the scroll while the cover is in view
   (function () {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

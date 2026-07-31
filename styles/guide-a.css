@@ -21,7 +21,7 @@
 /* surface panel overlaps the photo's bottom by 113px (photo 482 -> panel top 369) */
 .ga-cover__panel { position: relative; z-index: 1; margin-top: -113px; background: var(--color-surface); backdrop-filter: blur(4px); border-radius: var(--radius-card) var(--radius-card) 0 0; padding: var(--space-6) var(--space-4); display: flex; flex-direction: column; gap: var(--space-5); }
 .ga-cover__copy { display: flex; flex-direction: column; gap: var(--space-4); }
-.ga-cover__badges { display: flex; align-items: center; gap: var(--space-1); }
+.ga-cover__badges { display: flex; align-items: center; gap: var(--space-1); align-self: flex-start; }
 .ga-cover__mark { width: 32px; height: 32px; display: block; }
 .ga-city { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
 .ga-cover__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h1); line-height: var(--lh-h1); color: var(--color-text); }
@@ -38,6 +38,49 @@
 .ga-info__foot { border-top: 1.5px solid var(--color-border); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
 .ga-info__buy { width: 100%; }
 .ga-info__note { text-align: center; margin: 0; }
+
+/* ------------------------------------------------------ cover reveal --
+   First-load choreography (armed only when motion is allowed): the photo de-blurs and
+   scales down; the MILAN badge blooms in centred (--rc), then the globe spins in to its
+   left, then the pair shrink and settle; finally the copy rises in and the controls fade.
+   `.ga-armed` (set in <head>) hides the parts before paint; JS adds `.is-in` on load. */
+.ga-armed .ga-cover__media,
+.ga-armed .ga-cover__badges,
+.ga-armed .ga-cover__title,
+.ga-armed .ga-cover__sub,
+.ga-armed .ga-info,
+.ga-armed .ga-cover__top { opacity: 0; }
+
+.ga-cover.is-in .ga-cover__media  { animation: ga-r-img   1000ms var(--ease) both; }
+.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1400ms var(--ease) 250ms both; }
+.ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   560ms var(--ease) 640ms both; }
+.ga-cover.is-in .ga-cover__title  { animation: ga-r-rise   720ms var(--ease) 1200ms both; }
+.ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1330ms both; }
+.ga-cover.is-in .ga-info          { animation: ga-r-rise   720ms var(--ease) 1460ms both; }
+.ga-cover.is-in .ga-cover__top    { animation: ga-r-top    700ms var(--ease) 1350ms both; }
+
+@keyframes ga-r-img {
+  from { opacity: 0; filter: blur(16px); transform: scale(1.06); }
+  to   { opacity: 1; filter: blur(0);    transform: scale(1); }
+}
+@keyframes ga-r-badge {
+  0%   { opacity: 0; filter: blur(8px); transform: translateX(var(--rc, 0px)) scale(1.28); }
+  20%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.28); }
+  56%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.28); }
+  100% { opacity: 1; filter: blur(0);   transform: translateX(0) scale(1); }
+}
+@keyframes ga-r-mark {
+  0%   { opacity: 0; transform: rotate(-150deg) scale(0.4); }
+  100% { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes ga-r-rise {
+  from { opacity: 0; filter: blur(8px); transform: translateY(18px); }
+  to   { opacity: 1; filter: blur(0);   transform: translateY(0); }
+}
+@keyframes ga-r-top {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* ---------------------------------------------------------------- about --
    48 top/bottom, eyebrow · 16 · heading (40, 2 lines) · 16 · body (4-line clamp) · 16 · More */
