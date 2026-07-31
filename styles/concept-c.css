@@ -48,15 +48,17 @@
 .cblock > .cbar { margin-top: calc(var(--space-6) * -1); }
 
 /* ---- What is Observatory: vertical benefit stack (reuses orbit/obs/und) ---- */
-.cbenefits { display: flex; flex-direction: column; gap: var(--space-6); }
-/* strip the base .benefit card — Concept C benefits are full-width and transparent,
-   with just the 260×207 rounded animation slot centred and the text below it */
-.cbenefit { width: 100%; flex: none; background: transparent; border-radius: 0; overflow: visible; justify-content: flex-start; }
+/* Full-width benefit rows separated by top borders; odd rows sit on the surface,
+   even rows on the page bg (per Figma). The 260×207 animation slot is centred and
+   the text sits below it. */
+.cbenefits { display: flex; flex-direction: column; }
+.cbenefit { width: 100%; flex: none; overflow: hidden; border-top: 1.5px solid var(--color-border); background: transparent; border-radius: 0; }
+.cbenefit:nth-child(odd) { background: var(--color-surface); }
 .cbenefit::after { display: none; }
-.cbenefit .benefit__slot { width: 260px; margin: 0 auto; border-radius: var(--radius-card); }
-.cbenefit__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-4) 0; }
+.cbenefit .benefit__slot { width: 260px; margin: 0 auto; background: transparent; border-radius: 0; }
+.cbenefit__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-4); }
 .cbenefit__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-text); }
-.cbenefit__desc { margin: 0; font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+.cbenefit__desc { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
 
 /* ---- Featured guides: sharp bordered cards, image + glass badge + cream panel ---- */
 .cfeat__rail { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
@@ -105,3 +107,8 @@
 .cfoot__legal { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
 .cfoot__legallinks { display: inline-flex; gap: var(--space-3); }
 .cfoot__legal a { color: inherit; text-decoration: none; }
+
+/* body/description text is Manrope Medium (500). Without an explicit weight the
+   browser requests Manrope 400 (not loaded) and falls back to a system font. */
+.cblock__lead, .cguide__teaser, .cguide .glass, .ccity__name,
+.cfoot__nav a, .cfoot__lang, .cfoot__legal { font-weight: var(--font-text-weight); }
