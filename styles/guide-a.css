@@ -55,7 +55,7 @@
 /* smoother ease-in-out for the badge/symbol choreography */
 .ga-cover { --ga-smooth: cubic-bezier(0.65, 0, 0.3, 1); }
 .ga-cover.is-in .ga-cover__media  { animation: ga-r-img   1000ms var(--ease) both; }
-.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1700ms var(--ga-smooth) 220ms both; }
+.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 2130ms var(--ga-smooth) 220ms both; }
 .ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   680ms var(--ga-smooth) 900ms both; }
 .ga-cover.is-in .ga-cover__title  { animation: ga-r-rise   720ms var(--ease) 1620ms both; }
 .ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1740ms both; }
@@ -72,13 +72,16 @@
   /* gentle bloom in (ease-out, ~440ms) */
   0%   { opacity: 0; filter: blur(6px); transform: translateX(var(--rc-milan, 0px)) scale(0.55);
          animation-timing-function: cubic-bezier(0.33, 0.85, 0.4, 1); }
-  26%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5);
+  21%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5);
          animation-timing-function: linear; }
   /* hold */
-  46%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5);
+  37%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5);
          animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
-  /* re-centre as a group (ease-in-out) */
-  64%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.5);
+  /* re-centre as a group (ease-in-out) — MILAN meets the symbol at centre */
+  51%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.5);
+         animation-timing-function: linear; }
+  /* linger together in the centre a beat before settling */
+  72%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.5);
          animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
   /* settle: shrink + slide to rest, decelerating to a soft stop */
   100% { opacity: 1; filter: blur(0);   transform: translateX(0px) scale(1); }
