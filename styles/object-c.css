@@ -78,12 +78,33 @@
 .pswitch__back, .pswitch__next { border-radius: 0; }
 .poi-eyebrow { display: none; }
 
-/* ---- Origins / Numbers / Visit: sharp media + bordered cards ---- */
-.org-figure__imgwrap, .arch-card__img, .numcard, .listrow { border-radius: 0; }
-.numcard, .listrow { border-color: var(--color-border); background: transparent; }
+/* ---- Origins tab (Figma 1235-18677) ----
+   Block headings are H2 (32), inset 16; captions / intro copy inset 16. The
+   media (commissioner image, architect cards) bleeds edge-to-edge. */
+.oblock__h { font-size: var(--size-h2); line-height: var(--lh-h2); padding-inline: var(--space-4); }
+.oblock__text { padding-inline: var(--space-4); }
+/* divider line between the three blocks (centred in a 32 + 32 gap) */
+#tab-origins .oblock + .oblock { border-top: 1.5px solid var(--color-border); padding-top: var(--space-6); }
+/* commissioner image: full-bleed, sharp, 200 tall (object.css sizes it) */
+.org-figure__imgwrap { border-radius: 0; }
+/* timeline: inset 16; filled dots (9 / 12), era thumb radius-card */
+.timeline { padding-inline: var(--space-4); }
+.tl-dot { width: 9px; height: 9px; border: 0; background: var(--color-text-muted); }
+.tl-dot--accent { width: 12px; height: 12px; background: var(--color-accent); }
+.tl-era { border-radius: var(--radius-card); }
+/* architects: full-bleed bordered cards (no gap), sharp images, H3 titles / body copy */
+.arch-cards { gap: 0; margin-inline: 0; }
+.arch-cards > :first-child, .arch-cards > :last-child { margin-inline: 0; }
+.arch-card { border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); padding-bottom: var(--space-4); }
+.arch-card__img { border-radius: 0; }
+.arch-card__text { padding-inline: var(--space-4); }
+.arch-card__title { font-size: var(--size-h3); line-height: var(--lh-h3); }
+.arch-card__desc { font-size: var(--size-body); line-height: var(--lh-body); }
+
+/* ---- Numbers / Visit: sharp media + bordered cards ---- */
+.numcard, .listrow { border-radius: 0; border-color: var(--color-border); background: transparent; }
 .listrow__icon { border-radius: var(--radius-inner-4); }
 .listrow__k { text-transform: none; letter-spacing: 0; }
-.tl-era { border-radius: var(--radius-inner-4); }
 
 /* ---- fact modal: sharp-ish image, H2 title, muted eyebrow ---- */
 .factmodal__eyebrow { color: var(--color-text-muted); }
