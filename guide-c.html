@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
 <link rel="stylesheet" href="styles/concept-c.css?v=15">
-<link rel="stylesheet" href="styles/guide-c.css?v=2">
+<link rel="stylesheet" href="styles/guide-c.css?v=3">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
@@ -46,7 +46,7 @@
 
   <!-- cover: static 2×2 photo collage + ivory info panel (globe/city, title, stats, buy) -->
   <section class="gc-cover is-in" id="gcCover">
-    <div class="gc-collage" aria-hidden="true">
+    <div class="gc-collage" data-cstate="1" aria-hidden="true">
       <span class="gc-collage__cell"><img src="assets/img/c/hero-1.jpg" alt=""></span>
       <span class="gc-collage__cell"><img src="assets/img/c/hero-2.jpg" alt=""></span>
       <span class="gc-collage__cell"><img src="assets/img/c/hero-3.jpg" alt=""></span>
@@ -240,6 +240,21 @@
 </a>
 
 <script>
+  // cover collage — same morph as the Concept C home hero: cycle the four
+  // keyframe states (one divider moves per step). Starts after the cover reveal.
+  (function () {
+    var collage = document.querySelector('.gc-collage');
+    if (!collage) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var order = [1, 3, 2, 4], i = 0;
+    setTimeout(function () {
+      setInterval(function () {
+        i = (i + 1) % order.length;
+        collage.setAttribute('data-cstate', String(order[i]));
+      }, 1800);                                     // hold ~1.1s + 0.7s morph (matches home)
+    }, 1400);                                        // let the first-load cover reveal finish first
+  })();
+
   // floating menu — hidden at the very top, revealed as soon as the page scrolls
   (function () {
     var menu = document.getElementById('gcMenu');

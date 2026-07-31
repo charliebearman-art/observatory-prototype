@@ -13,9 +13,25 @@
    globe + city display, H3 title, muted lead, a 2×2 stats grid and the accent
    buy bar. */
 .gc-cover { position: relative; background: var(--color-bg); }
-.gc-collage { position: relative; display: grid; grid-template-columns: 128px 1fr; grid-template-rows: 227px 128px; height: 355px; }
-.gc-collage__cell { overflow: hidden; }
+/* The collage morphs exactly like the Concept C home hero: four absolutely
+   positioned cells driven by --c (left-column width) / --r (top-row height),
+   transitioning top/left/width/height between four keyframe states. Fixed 355px
+   tall here (the guide cover is not viewport-fit like the home hero). */
+.gc-collage { position: relative; overflow: hidden; height: 355px;
+  --c: 33%; --r: 64%; --cmorph: 700ms; --cmorph-ease: cubic-bezier(0.65, 0, 0.35, 1); }
+.gc-collage__cell { position: absolute; overflow: hidden;
+  transition: top var(--cmorph) var(--cmorph-ease), left var(--cmorph) var(--cmorph-ease),
+              width var(--cmorph) var(--cmorph-ease), height var(--cmorph) var(--cmorph-ease); }
+.gc-collage__cell:nth-child(1) { top: 0; left: 0; width: var(--c); height: var(--r); }
+.gc-collage__cell:nth-child(2) { top: 0; left: var(--c); width: calc(100% - var(--c)); height: var(--r); }
+.gc-collage__cell:nth-child(3) { top: var(--r); left: 0; width: var(--c); height: calc(100% - var(--r)); }
+.gc-collage__cell:nth-child(4) { top: var(--r); left: var(--c); width: calc(100% - var(--c)); height: calc(100% - var(--r)); }
 .gc-collage__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* keyframe states — only --c / --r change; cells morph via their transitions */
+.gc-collage[data-cstate="1"] { --c: 33%; --r: 64%; }
+.gc-collage[data-cstate="2"] { --c: 67%; --r: 36%; }
+.gc-collage[data-cstate="3"] { --c: 67%; --r: 64%; }
+.gc-collage[data-cstate="4"] { --c: 33%; --r: 36%; }
 
 .gc-cover__top { position: absolute; top: var(--space-5); left: var(--space-4); right: var(--space-4); z-index: 2; display: flex; align-items: center; justify-content: space-between; }
 /* scrim controls over the photo — static tokens, legible on any frame */
