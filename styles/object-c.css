@@ -72,12 +72,31 @@
 .nextobj__thumb { border-radius: var(--radius-card); }
 .nextobj__eyebrow { text-transform: none; letter-spacing: 0; }
 
-/* ---- POI: where-card as a bordered band, sharp sticky switcher ---- */
-.wherecard { background: transparent; border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);
-  border-radius: 0; margin-inline: calc(var(--space-4) * -1); padding: var(--space-4); }
-.pswitch { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.pswitch__back, .pswitch__next { border-radius: 0; }
+/* ---- POI page (Figma 1235-19063) ----
+   Flat surface description: H1 title + body inset 16; the audio and where-card
+   bleed full-width. The POI leads with the display title, no "01" eyebrow. */
 .poi-eyebrow { display: none; }
+.pdesc { padding: var(--space-6) 0 0; gap: var(--space-6); }
+.pdesc > .pdesc__block:not(.facts) { gap: 0; }
+.pdesc__head { padding-inline: var(--space-4); }
+.pdesc__title { font-size: var(--size-h1); line-height: var(--lh-h1); }
+/* audio sits 32 below the text, opened by its own top border; sharp accent tile */
+.pdesc .audio { margin-top: var(--space-6); border-top: 1.5px solid var(--color-border); }
+/* where-card: full-bleed bordered band (top + bottom) */
+.wherecard { background: transparent; border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);
+  border-radius: 0; margin-inline: 0; padding: var(--space-4); }
+
+/* bottom switcher: full-bleed 76px bars (accent Next / bg Back) with an inverse
+   arrow badge. On point 1 only Next renders (points.js), so it fills the width. */
+.pswitch { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; gap: 0; }
+.pswitch__back, .pswitch__next { flex: 1 1 0; height: 76px; border: 0; border-radius: 0; padding: var(--space-4); gap: var(--space-5); justify-content: space-between; }
+.pswitch:has(.pswitch__back) > .pswitch__back,
+.pswitch:has(.pswitch__back) > .pswitch__next { flex: 1 1 0; width: auto; }
+.pswitch__next { background: var(--color-accent); color: var(--color-on-accent); }
+.pswitch__back { background: var(--color-bg); color: var(--color-text); }
+.pswitch__back .icon, .pswitch__next .icon { flex: none; box-sizing: border-box; width: 56px; height: 44px; padding: 10px 16px; border-radius: var(--radius-inner-4); }
+.pswitch__next .icon { background: var(--color-on-accent); color: var(--color-accent); }
+.pswitch__back .icon { background: var(--color-accent); color: var(--color-on-accent); }
 
 /* ---- Origins tab (Figma 1235-18677) ----
    Block headings are H2 (32), inset 16; captions / intro copy inset 16. The
