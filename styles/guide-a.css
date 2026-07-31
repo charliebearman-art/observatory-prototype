@@ -52,25 +52,28 @@
 .ga-armed .ga-cover__top { opacity: 0; }
 
 .ga-cover.is-in .ga-cover__media  { animation: ga-r-img   1000ms var(--ease) both; }
-.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1400ms var(--ease) 250ms both; }
-.ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   560ms var(--ease) 640ms both; }
+.ga-cover.is-in .ga-cover__badges { animation: ga-r-badge 1300ms var(--ease) 200ms both; }
+.ga-cover.is-in .ga-cover__mark   { animation: ga-r-mark   440ms var(--ease) 700ms both; }
 .ga-cover.is-in .ga-cover__title  { animation: ga-r-rise   720ms var(--ease) 1200ms both; }
-.ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1330ms both; }
-.ga-cover.is-in .ga-info          { animation: ga-r-rise   720ms var(--ease) 1460ms both; }
-.ga-cover.is-in .ga-cover__top    { animation: ga-r-top    700ms var(--ease) 1350ms both; }
+.ga-cover.is-in .ga-cover__sub    { animation: ga-r-rise   720ms var(--ease) 1320ms both; }
+.ga-cover.is-in .ga-info          { animation: ga-r-rise   720ms var(--ease) 1440ms both; }
+.ga-cover.is-in .ga-cover__top    { animation: ga-r-top    700ms var(--ease) 1300ms both; }
 
 @keyframes ga-r-img {
-  from { opacity: 0; filter: blur(16px); transform: scale(1.06); }
+  from { opacity: 0; filter: blur(18px); transform: scale(1.18); }
   to   { opacity: 1; filter: blur(0);    transform: scale(1); }
 }
+/* MILAN grows in from a small scale, centred ON ITSELF (--rc-milan); the globe then joins
+   on its left and the pair re-centre as a group (--rc); finally they shrink and settle left. */
 @keyframes ga-r-badge {
-  0%   { opacity: 0; filter: blur(8px); transform: translateX(var(--rc, 0px)) scale(1.28); }
-  20%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.28); }
-  56%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.28); }
-  100% { opacity: 1; filter: blur(0);   transform: translateX(0) scale(1); }
+  0%   { opacity: 0; filter: blur(6px); transform: translateX(var(--rc-milan, 0px)) scale(0.55); }
+  14%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5); }
+  42%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc-milan, 0px)) scale(1.5); }
+  64%  { opacity: 1; filter: blur(0);   transform: translateX(var(--rc, 0px)) scale(1.5); }
+  100% { opacity: 1; filter: blur(0);   transform: translateX(0px) scale(1); }
 }
 @keyframes ga-r-mark {
-  0%   { opacity: 0; transform: rotate(-150deg) scale(0.4); }
+  0%   { opacity: 0; transform: rotate(-160deg) scale(0.35); }
   100% { opacity: 1; transform: rotate(0deg) scale(1); }
 }
 @keyframes ga-r-rise {

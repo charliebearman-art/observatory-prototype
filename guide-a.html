@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=13">
 <link rel="stylesheet" href="styles/concept-a.css?v=23">
-<link rel="stylesheet" href="styles/guide-a.css?v=6">
+<link rel="stylesheet" href="styles/guide-a.css?v=7">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
@@ -255,7 +255,14 @@
       if (panel && badges) {
         var cw = panel.clientWidth - 32;          // panel content width (minus 16px padding)
         var gw = badges.offsetWidth;              // globe + MILAN group width
+        var milan = badges.querySelector('.ga-city');
+        var mark = badges.querySelector('.ga-cover__mark');
+        var mw = milan ? milan.offsetWidth : 80;  // MILAN badge width
+        var kw = mark ? mark.offsetWidth : 32;    // globe chip width
+        var gap = 4;                              // badges gap (--space-1)
+        // centre the whole group, and (separately) centre the MILAN badge on its own
         cover.style.setProperty('--rc', Math.max(0, Math.round((cw - gw) / 2)) + 'px');
+        cover.style.setProperty('--rc-milan', Math.max(0, Math.round(cw / 2 - (kw + gap + mw / 2))) + 'px');
       }
       cover.classList.add('is-in');
     }
