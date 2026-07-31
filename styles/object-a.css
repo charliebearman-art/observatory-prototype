@@ -23,3 +23,26 @@
 /* Audio player — the play tile is a sharp accent square (per Figma), not a pill.
    It sits inside the 4px-padded bar, so it takes the inner-4 radius (= 0 in A). */
 .audio__play { border-radius: var(--radius-inner-4); }
+
+/* ---- Object "About" tab — Concept A sizes & layout (Figma 1198-8072) ----
+   The Concept B object.css uses smaller heading roles and a horizontal
+   characteristic slider; the Concept A design bumps the sizes and stacks the
+   characteristics vertically. */
+
+/* object title is H1 (40), not H2 (32) */
+.odesc__title { font-size: var(--size-h1); line-height: var(--lh-h1); }
+
+/* "Interesting Facts" heading is H2 (32), not H3 (24) */
+.facts__title { font-size: var(--size-h2); line-height: var(--lh-h2); }
+
+/* the two surface cards use the input radius (8) */
+.odesc, .otabs { border-radius: var(--radius-input); }
+
+/* characteristics: a vertical stack of full-width cards, not a horizontal slider */
+.charslider { flex-direction: column; overflow: visible; margin-inline: 0; }
+.charslider > :first-child, .charslider > :last-child { margin-inline: 0; }
+.charcard { width: 100%; }
+.charcard__v { white-space: normal; }
+
+/* tabs sit at the 36px Figma height */
+.tabs__btn { height: 36px; }
