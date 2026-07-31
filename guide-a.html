@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=16">
 <link rel="stylesheet" href="styles/concept-a.css?v=29">
+<script src="guide-card.js?v=1"></script>
 <link rel="stylesheet" href="styles/guide-a.css?v=13">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
@@ -161,53 +162,14 @@
         </a>
       </div>
     </div>
-    <div class="a-featured__rail">
-      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
-        <img class="a-guide__img" src="assets/img/guide-disappear.jpg" alt="">
-        <span class="a-guide__badge">Milan</span>
-        <div class="a-guide__scrim" aria-hidden="true"></div>
-        <div class="a-guide__text">
-          <div class="a-guide__texthead">
-            <h3 class="a-guide__title">Where Milan Goes to Disappear</h3>
-            <p class="a-guide__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
-          </div>
-          <div class="a-guide__foot">
-            <span class="a-guide__price">180 $</span>
-            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
-          </div>
-        </div>
-      </article>
-      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
-        <img class="a-guide__img" src="assets/img/guide-ritual.jpg" alt="">
-        <span class="a-guide__badge">Milan</span>
-        <div class="a-guide__scrim" aria-hidden="true"></div>
-        <div class="a-guide__text">
-          <div class="a-guide__texthead">
-            <h3 class="a-guide__title">The Six O’Clock Ritual</h3>
-            <p class="a-guide__teaser">Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
-          </div>
-          <div class="a-guide__foot">
-            <span class="a-guide__price">80 $</span>
-            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
-          </div>
-        </div>
-      </article>
-      <article class="a-guide"><a class="a-guide__link" href="guide-a.html" aria-label="Open guide"></a>
-        <img class="a-guide__img" src="assets/img/guide-rooftops.jpg" alt="">
-        <span class="a-guide__badge">Rome</span>
-        <div class="a-guide__scrim" aria-hidden="true"></div>
-        <div class="a-guide__text">
-          <div class="a-guide__texthead">
-            <h3 class="a-guide__title">Rome from the Rooftops</h3>
-            <p class="a-guide__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta.</p>
-          </div>
-          <div class="a-guide__foot">
-            <span class="a-guide__price">190 $</span>
-            <span class="icon-btn icon-btn--outline" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
-          </div>
-        </div>
-      </article>
-    </div>
+    <div class="a-featured__rail" id="aFeaturedRail"></div>
+    <script>
+      renderGuideCards('#aFeaturedRail', [
+        { img: 'assets/img/guide-disappear.jpg', city: 'Milan', title: 'Where Milan Goes to Disappear', teaser: 'Cross the water by ferry to the villas and gardens Milan built to escape itself.', price: '180 $' },
+        { img: 'assets/img/guide-ritual.jpg',    city: 'Milan', title: 'The Six O’Clock Ritual', teaser: 'Follow Milan’s evening ritual — bitter red, crowded counters, and the drink invented by mistake.', price: '80 $' },
+        { img: 'assets/img/guide-rooftops.jpg',  city: 'Rome',  title: 'Rome from the Rooftops', teaser: 'Read the city from its roofs — domes, bell towers and 2,000 years of terracotta.', price: '190 $' }
+      ]);
+    </script>
   </section>
 
   <!-- footer (reuse Concept A component) -->
