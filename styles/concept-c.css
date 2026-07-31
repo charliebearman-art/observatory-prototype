@@ -25,7 +25,8 @@
 .chero__cta { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: var(--color-accent); color: var(--color-on-accent); text-decoration: none; transition: background var(--dur) var(--ease); }
 .chero__cta:hover { background: var(--color-accent-hover); }
 .chero__cta-label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
-.chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid currentColor; border-radius: var(--radius-button); }
+/* solid badge, inverse of the (filled) bar: ivory tile + dark arrow */
+.chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-inner-4); background: var(--color-on-accent); color: var(--color-accent); }
 .chero__badge .icon { width: 24px; height: 24px; }
 
 /* ---- shared block scaffold: right-aligned muted eyebrow + display title ---- */
@@ -40,10 +41,13 @@
 .cbar { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: var(--color-accent); color: var(--color-on-accent); text-decoration: none; transition: background var(--dur) var(--ease); }
 .cbar:hover { background: var(--color-accent-hover); }
 .cbar__label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
-.cbar__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid currentColor; border-radius: var(--radius-button); }
+/* solid badge, inverse of the bar. Filled bar → ivory tile + dark arrow */
+.cbar__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-inner-4); background: var(--color-on-accent); color: var(--color-accent); }
 .cbar__badge .icon { width: 24px; height: 24px; }
 .cbar--ghost { background: transparent; color: var(--color-text); border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); }
 .cbar--ghost:hover { background: var(--color-accent-subtle); }
+/* ghost bar → dark badge + ivory arrow */
+.cbar--ghost .cbar__badge { background: var(--color-accent); color: var(--color-on-accent); }
 /* a CTA bar that closes a block sits flush against the content above it */
 .cblock > .cbar { margin-top: calc(var(--space-6) * -1); }
 
