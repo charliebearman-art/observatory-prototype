@@ -93,6 +93,7 @@
 .gc-rcard { flex: 0 0 210px; width: 210px; scroll-snap-align: start; cursor: pointer; display: flex; flex-direction: column; background: transparent;
   border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border);
   transition: background var(--dur) var(--ease); }
+.gc-rcard:last-child { border-right: 0; }
 .gc-rcard.is-active { background: var(--color-surface); }
 .gc-rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }
 .gc-rcard__text { padding: var(--space-5) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
