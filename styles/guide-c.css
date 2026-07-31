@@ -1,0 +1,143 @@
+/* ============================================================================
+   Concept C — guide page (guide-c.html). Built 1:1 from Figma node 1198-13259 in
+   the Concept C identity (all-Manrope type + Ivory palette). Structure mirrors the
+   guide: cover collage + info panel → about → gallery mosaic → route (map + stop
+   rail) + formats → featured guides → footer. Shared Concept-C components
+   (menu pills, .cbar, .cguide, .cfoot, .ceyebrow, .csect-title) come from
+   concept-c.css; only guide-specific pieces live here.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------- cover --
+   Static 2×2 photo collage (row1 227 [128 | 1fr], row2 128 [128 | 1fr]) over the
+   page bg, with scrim back / language controls, then an ivory info panel:
+   globe + city display, H3 title, muted lead, a 2×2 stats grid and the accent
+   buy bar. */
+.gc-cover { position: relative; background: var(--color-bg); }
+.gc-collage { position: relative; display: grid; grid-template-columns: 128px 1fr; grid-template-rows: 227px 128px; height: 355px; }
+.gc-collage__cell { overflow: hidden; }
+.gc-collage__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.gc-cover__top { position: absolute; top: var(--space-5); left: var(--space-4); right: var(--space-4); z-index: 2; display: flex; align-items: center; justify-content: space-between; }
+/* scrim controls over the photo — static tokens, legible on any frame */
+.gc-scrimbtn { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1.5px solid var(--on-media-border); color: var(--on-media); }
+.gc-scrimbtn .icon { width: 24px; height: 24px; }
+.gc-lang { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); text-transform: uppercase; }
+.gc-lang .icon { width: 24px; height: 24px; }
+
+.gc-cover__panel { display: flex; flex-direction: column; gap: var(--space-5); padding-top: var(--space-6); }
+.gc-cover__intro { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.gc-cover__head { display: flex; align-items: center; justify-content: space-between; }
+.gc-cover__globe { flex: none; width: 48px; height: 48px; color: var(--color-text); }
+.gc-cover__globe .icon { width: 48px; height: 48px; }
+.gc-cover__city { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); text-align: right; }
+.gc-cover__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
+.gc-cover__sub { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+
+/* 2×2 stats grid: top border on all cells, left border on the right column → cross */
+.gc-stats { display: grid; grid-template-columns: 1fr 1fr; }
+.gc-stat { display: flex; flex-direction: column; justify-content: center; gap: var(--space-1); min-width: 80px; padding: var(--space-2) var(--space-4); border-top: 1.5px solid var(--color-border); }
+.gc-stat:nth-child(even) { border-left: 1.5px solid var(--color-border); }
+.gc-stat__label { font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.gc-stat__value { font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+
+/* ---------------------------------------------------------------- about --
+   48 top, eyebrow · display heading · body (4-line clamp) · full-width More bar. */
+.gc-about { display: flex; flex-direction: column; gap: var(--space-4); padding-top: var(--space-8); }
+.gc-about__intro { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.gc-about__body { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+.gc-about__body--clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.gc-about__body--anim { overflow: hidden; transition: max-height var(--dur-slow) var(--ease); }
+/* More: a full-width toggle bar bordered top+bottom, chevron in an outlined tile */
+.gc-more { width: 100%; display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: transparent; border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); text-align: left; cursor: pointer; }
+.gc-more:hover { background: var(--color-accent-subtle); }
+.gc-more__label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+.gc-more__badge { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: var(--radius-button); border: 1.5px solid var(--color-border); color: var(--color-text); transition: transform var(--dur) var(--ease); }
+.gc-more__badge .icon { width: 24px; height: 24px; }
+.gc-more[aria-expanded="true"] .gc-more__badge { transform: rotate(180deg); }
+
+/* -------------------------------------------------------------- gallery --
+   Flush mosaic (no gaps, sharp corners): [2-up 191] · [wide 214] · [2-up] · [wide]. */
+.gc-gallery { display: flex; flex-direction: column; }
+.gc-gallery__row { display: grid; grid-template-columns: 1fr 1fr; }
+.gc-gallery__cell { height: 191px; overflow: hidden; }
+.gc-gallery__wide { height: 214px; overflow: hidden; }
+.gc-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------------------------------------------------------------- route --
+   head · full-bleed map (293) · horizontal stop rail. */
+.gc-route { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
+.gc-route__map { position: relative; height: 293px; overflow: hidden; background: var(--color-surface); }
+.gc-rcards { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
+.gc-rcards::-webkit-scrollbar { display: none; }
+/* image top + number/title/teaser below; a thin divider between cards */
+.gc-rcard { flex: 0 0 195px; width: 195px; scroll-snap-align: start; cursor: pointer; display: flex; flex-direction: column; background: transparent; border-top: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); transition: background var(--dur) var(--ease); }
+.gc-rcard.is-active { background: var(--color-surface); }
+.gc-rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }
+.gc-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.gc-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.gc-rcard.is-active .gc-rcard__num { color: var(--color-accent); }
+.gc-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
+.gc-rcard__desc { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+
+/* map markers — accent-ringed photo bubbles (shared with the Concept A guide) */
+.mpoi { width: 36px; height: 36px; cursor: pointer; }
+.mpoi__inner { position: relative; width: 100%; height: 100%; transition: transform var(--dur) var(--ease); }
+.mpoi.is-active { z-index: 3; }
+.mpoi.is-active .mpoi__inner { transform: scale(1.28); }
+.mpoi.is-active .poi__glow { opacity: 0.55; }
+.poi__photo { width: 100%; height: 100%; border-radius: var(--radius-pill); object-fit: cover; border: 1.5px solid var(--color-accent); display: block; }
+.poi__num { position: absolute; right: -4px; bottom: -4px; min-width: 16px; height: 16px; padding: 0 4px; display: grid; place-items: center; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-on-accent); font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: 10px; line-height: 1; }
+.poi__glow { position: absolute; inset: -8px; border-radius: var(--radius-pill); box-shadow: 0 0 0 2px var(--color-accent), 0 0 16px 2px var(--color-accent); opacity: 0; transition: opacity var(--dur) var(--ease); }
+
+/* -------------------------------------------------------------- formats --
+   head · vertical list of rows (accent icon tile + title + sub), divided by borders. */
+.gc-formats { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); padding-bottom: var(--space-8); }
+.gc-formats__list { display: flex; flex-direction: column; }
+.gc-format { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-top: 1.5px solid var(--color-border); }
+.gc-format:last-child { border-bottom: 1.5px solid var(--color-border); }
+.gc-format__icon { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); }
+.gc-format__icon .icon { width: 24px; height: 24px; }
+.gc-format__text { display: flex; flex-direction: column; gap: var(--space-1); }
+.gc-format__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
+.gc-format__sub { font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+
+/* --------------------------------------------------------- floating menu --
+   A full-width Concept-C bar, hidden at the top (the cover carries its own
+   back / language controls) and sliding in the moment the page scrolls. */
+.gc-menu { position: fixed; top: 0; left: 50%; z-index: 40; width: 390px; max-width: 100%; display: flex; align-items: center; justify-content: space-between; padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) var(--space-4) var(--space-4); background: color-mix(in oklab, var(--color-bg), transparent 6%); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1.5px solid var(--color-border); opacity: 0; transform: translateX(-50%) translateY(-100%); pointer-events: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.gc-menu.is-shown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+/* ------------------------------------------------------------- buy bar --
+   Sticky accent bar (matches the cover's Buy bar) that slides up once the cover's
+   buy bar has scrolled past, and tucks away again at the footer. Reuses .cbar. */
+.gc-buybar { position: fixed; left: 50%; bottom: 0; z-index: 45; width: 390px; max-width: 100%; transform: translateX(-50%) translateY(100%); transition: transform var(--dur-slow) var(--ease); }
+.gc-buybar.is-shown { transform: translateX(-50%) translateY(0); }
+
+/* ------------------------------------------------------- cover reveal --
+   First-load choreography (armed only when motion is allowed): the collage cells
+   fade/scale in one after another, then the panel content rises. `.gc-armed`
+   (set in <head>) hides the parts before paint; JS adds `.is-in` on load. */
+.gc-armed .gc-collage__cell,
+.gc-armed .gc-cover__top,
+.gc-armed .gc-cover__intro > *,
+.gc-armed .gc-stats,
+.gc-armed .gc-cover__buy { opacity: 0; }
+.gc-armed .gc-cover.is-in .gc-collage__cell { animation: gc-cell 720ms var(--ease) both; }
+.gc-armed .gc-cover.is-in .gc-collage__cell:nth-child(1) { animation-delay: 40ms; }
+.gc-armed .gc-cover.is-in .gc-collage__cell:nth-child(2) { animation-delay: 140ms; }
+.gc-armed .gc-cover.is-in .gc-collage__cell:nth-child(3) { animation-delay: 240ms; }
+.gc-armed .gc-cover.is-in .gc-collage__cell:nth-child(4) { animation-delay: 340ms; }
+.gc-armed .gc-cover.is-in .gc-cover__top { animation: gc-fade 600ms var(--ease) 520ms both; }
+.gc-armed .gc-cover.is-in .gc-cover__intro > * { animation: gc-rise 640ms var(--ease) both; }
+.gc-armed .gc-cover.is-in .gc-cover__intro > *:nth-child(1) { animation-delay: 560ms; }
+.gc-armed .gc-cover.is-in .gc-cover__intro > *:nth-child(2) { animation-delay: 640ms; }
+.gc-armed .gc-cover.is-in .gc-cover__intro > *:nth-child(3) { animation-delay: 720ms; }
+.gc-armed .gc-cover.is-in .gc-stats { animation: gc-rise 640ms var(--ease) 800ms both; }
+.gc-armed .gc-cover.is-in .gc-cover__buy { animation: gc-rise 640ms var(--ease) 880ms both; }
+@keyframes gc-cell { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
+@keyframes gc-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gc-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-armed .gc-collage__cell, .gc-armed .gc-cover__top, .gc-armed .gc-cover__intro > *, .gc-armed .gc-stats, .gc-armed .gc-cover__buy { opacity: 1; }
+}

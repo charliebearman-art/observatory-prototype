@@ -103,6 +103,8 @@
 .cguide__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-accent); }
 .cguide__go { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border: 1.5px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text); }
 .cguide__go .icon { width: 24px; height: 24px; }
+/* stretched link makes the whole card clickable (the arrow tile is decorative) */
+.cguide__link { position: absolute; inset: 0; z-index: 2; }
 
 /* ---- The World, City by City: two-column bordered grid of thumb + name ---- */
 .ccities__grid { display: flex; flex-wrap: wrap; }
