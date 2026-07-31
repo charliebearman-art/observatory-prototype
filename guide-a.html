@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=13">
 <link rel="stylesheet" href="styles/concept-a.css?v=23">
-<link rel="stylesheet" href="styles/guide-a.css?v=2">
+<link rel="stylesheet" href="styles/guide-a.css?v=4">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 </head>
@@ -26,40 +26,45 @@
 
 <main class="screen a-screen">
 
-  <!-- cover: hero image + panel (badge, title, sub) + price card -->
+  <!-- cover: hero photo + frosted surface panel (badge, title, sub) + price card -->
   <section class="ga-cover" id="gaCover">
     <div class="ga-cover__media" aria-hidden="true"><img class="ga-cover__bg" src="assets/img/guide/guide-cover.jpg?v=2" alt=""></div>
-    <div class="ga-cover__fade" aria-hidden="true"></div>
     <div class="ga-cover__top">
       <a class="icon-btn icon-btn--scrim" href="index-a.html" aria-label="Back">
         <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-left"></use></svg>
       </a>
       <button class="ga-lang" aria-label="Language: English">ENGLISH
-        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-down"></use></svg>
+        <svg class="icon"><use href="assets/icons.svg?v=3#i-chevron-down"></use></svg>
       </button>
     </div>
 
     <div class="ga-cover__panel">
-      <div class="ga-cover__badges">
-        <span class="ga-cover__mark logo logo--globe" aria-hidden="true"></span>
-        <span class="ga-city">MILAN</span>
+      <div class="ga-cover__copy">
+        <div class="ga-cover__badges">
+          <img class="ga-cover__mark" src="assets/img/a/globe-chip.svg" alt="" aria-hidden="true">
+          <span class="ga-city">MILAN</span>
+        </div>
+        <h1 class="ga-cover__title">The City You Don’t Understand at First</h1>
+        <p class="ga-cover__sub">Seven landmarks, one square mile, six hundred years. Milan’s centre — slowed down until it finally makes sense.</p>
       </div>
-      <h1 class="ga-cover__title">The City You Don’t Understand at First</h1>
-      <p class="ga-cover__sub t-body">Seven landmarks, one square mile, six hundred years. Milan’s centre — slowed down until it finally makes sense.</p>
 
       <!-- price card -->
       <div class="ga-info" id="gaInfo">
-        <div class="ga-info__metrics">
-          <div class="ga-info__price">210 $</div>
-          <div class="ga-metric"><span class="ga-metric__label">Duration</span><span class="ga-metric__value">1h 40m</span></div>
-          <div class="ga-metric"><span class="ga-metric__label">Distance</span><span class="ga-metric__value">2.4 km</span></div>
-          <div class="ga-metric"><span class="ga-metric__label">Stops</span><span class="ga-metric__value">9</span></div>
-          <div class="ga-metric"><span class="ga-metric__label">Level</span><span class="ga-metric__value">Easy</span></div>
+        <div class="ga-info__top">
+          <span class="ga-info__price">210 $</span>
+          <div class="ga-info__metrics">
+            <div class="ga-metric"><span class="ga-metric__label">Duration</span><span class="ga-metric__value">1h 40m</span></div>
+            <div class="ga-metric"><span class="ga-metric__label">Distance</span><span class="ga-metric__value">2.4 km</span></div>
+            <div class="ga-metric"><span class="ga-metric__label">Stops</span><span class="ga-metric__value">9</span></div>
+            <div class="ga-metric"><span class="ga-metric__label">Level</span><span class="ga-metric__value">Easy</span></div>
+          </div>
         </div>
-        <a class="btn btn--primary btn--large ga-info__buy" href="nav.html">Buy guide
-          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-        </a>
-        <p class="ga-info__note t-caption t-muted">one-time · lifetime access</p>
+        <div class="ga-info__foot">
+          <a class="btn btn--primary btn--large ga-info__buy" href="nav.html">Buy guide
+            <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
+          </a>
+          <p class="ga-info__note t-caption t-muted">one-time · lifetime access</p>
+        </div>
       </div>
     </div>
   </section>
