@@ -22,6 +22,29 @@
 .phero__media { position: relative; width: 100%; aspect-ratio: 390 / 440; overflow: hidden; }
 .phero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* hero preloader (standalone POI pages): while the large hero photo decodes, the
+   slot shows a palette placeholder + a soft shimmer sweep instead of a blank gap;
+   the photo fades in once ready. JS toggles .is-loaded (wireHero). Cached photos
+   arrive already-complete → revealed instantly, so quick Back/Next never flashes. */
+.phero__media { background: var(--color-surface); }
+.phero__media img { opacity: 0; transition: opacity var(--dur-slow) var(--ease); }
+.phero__media.is-loaded img { opacity: 1; }
+.phero__media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(128,128,128,0.16) 50%, transparent 70%);
+  background-size: 200% 100%; animation: phero-shimmer 1.3s var(--ease) infinite;
+  transition: opacity var(--dur) var(--ease);
+}
+.phero__media.is-loaded::after { opacity: 0; animation: none; }
+@keyframes phero-shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
+@media (prefers-reduced-motion: reduce) { .phero__media::after { animation: none; } }
+
+/* the in-object POI overlay renders the same .poi-screen but reveals the hero with
+   its own poi-hero-in animation — opt it out of the skeleton so it isn't hidden */
+.poiov .phero__media { background: transparent; }
+.poiov .phero__media img { opacity: 1; }
+.poiov .phero__media::after { content: none; }
+
 /* opaque content sheet that slides over the pinned hero (BFC so pdesc keeps its
    own -16px overlap; bg covers the hero in the gaps between cards) */
 .psheet { position: relative; z-index: 1; background: var(--color-bg); display: flow-root; }

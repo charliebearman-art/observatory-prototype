@@ -224,6 +224,25 @@
   };
   window.wireAudioIn = function (scope) { (scope || document).querySelectorAll('.audio').forEach(window.wireAudio); };
 
+  // Hero preloader: the point's hero photo is large and loads after the HTML, so its
+  // slot shows a palette placeholder + shimmer (CSS) until the image is decoded, then
+  // fades in. Cached images are already .complete → we reveal instantly, no flash.
+  // A cap guards against a stalled/failed request so the shimmer never spins forever.
+  window.wireHero = function (scope) {
+    var media = (scope || document).querySelector('.phero__media');
+    if (!media) return;
+    var img = media.querySelector('img');
+    if (!img) { media.classList.add('is-loaded'); return; }
+    var cap;
+    function done() { clearTimeout(cap); media.classList.add('is-loaded'); }
+    if (img.complete && img.naturalWidth > 0) { done(); return; }   // already cached → instant
+    cap = setTimeout(done, 6000);                                    // network stall / error fallback
+    // the load event is the reliable trigger (img.decode() can stay pending); on error we
+    // still reveal so the shimmer never spins forever
+    img.addEventListener('load', done);
+    img.addEventListener('error', done);
+  };
+
   // opening a fact opens the modal on that fact within its group (same .facts__row),
   // so the modal can page prev/next through the group
   window.wireFacts = function (scope, open) {

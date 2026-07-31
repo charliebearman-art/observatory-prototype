@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=16">
 <link rel="stylesheet" href="styles/object.css?v=37">
-<link rel="stylesheet" href="styles/poi.css?v=14">
+<link rel="stylesheet" href="styles/poi.css?v=15">
 <link rel="stylesheet" href="styles/object-c.css?v=10">
 </head>
 <body>
@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<script src="points.js?v=8"></script>
+<script src="points.js?v=10"></script>
 <script>
   // pick the point from ?p=N (1-based), clamp to range
   var params = new URLSearchParams(location.search);
@@ -56,6 +56,7 @@
   var modal = initFactModal(document.getElementById('factModal'));
   wireFacts(screen, modal.open);
   wireAudioIn(screen);
+  wireHero(screen);
 
   // navigation: header back → object; prev/next → adjacent points (edges → object / nav)
   function go(np) { if (np < 1) { location.href = 'object-c.html'; } else if (np > total) { location.href = 'nav-c.html'; } else { location.href = 'poi-c.html?p=' + np; } }
