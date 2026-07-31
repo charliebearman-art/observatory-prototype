@@ -49,6 +49,20 @@
 .chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-inner-4); background: var(--color-on-accent); color: var(--color-accent); }
 .chero__badge .icon { width: 24px; height: 24px; }
 
+/* first-load hero reveal (home). Gated by the intro splash (afterIntro): parts are
+   armed hidden, then .chero--in plays them — the photo collage scales + blurs in
+   while the text lines, logo and CTA bar rise (shared [data-reveal] system). The
+   grid morph is held until the reveal by JS, so it settles at state 1 first. */
+.chero--armed .chero__grid { opacity: 0; }
+.chero--in .chero__grid { animation: chero-media-in 900ms var(--ease-slow) both; }
+@keyframes chero-media-in {
+  from { opacity: 0; filter: blur(16px); transform: scale(1.08); }
+  to   { opacity: 1; filter: blur(0);   transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chero--in .chero__grid { animation: reveal-fade 300ms var(--ease) both; }
+}
+
 /* ---- shared block scaffold: right-aligned muted eyebrow + display title ---- */
 .cblock { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
 .cblock--surface { background: var(--color-surface); }
