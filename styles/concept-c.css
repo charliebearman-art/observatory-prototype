@@ -1,13 +1,15 @@
 /* ============================================================================
-   Concept C — home (index-c.html). Reuses the Concept B home markup and
-   animations under the Concept C identity: all-Manrope type + the Ivory palette
-   (see tokens.css [data-concept="c"] and [data-palette="ivory"]). Only the
-   Concept-C-specific pieces live here — chiefly the photo-collage hero.
+   Concept C — home (index-c.html). Built 1:1 from Figma node 1198-10836 in the
+   Concept C identity: all-Manrope type + the Ivory palette (tokens.css). The
+   editorial benefit animations (orbit / obs / und) are reused from the shared
+   base.css; everything else here is Concept-C-specific.
    ============================================================================ */
 
+/* ---- menu: dark "Log in" pill + round outlined icon buttons ---- */
+.menu .icon-btn { border-radius: 50%; }
+
 /* ---- hero: two-row photo collage → editorial lockup → dark CTA bar
-   (Figma 1198-10838). Row 1 is 227px, Row 2 is 128px; the left column of each
-   row is a fixed 128px, the right column fills the rest. ---- */
+   (Figma 1198-10838). Row 1 = 227px, Row 2 = 128px; left column fixed 128px. */
 .chero { display: flex; flex-direction: column; background: var(--color-bg); }
 .chero__grid { display: flex; flex-direction: column; }
 .chero__row { display: flex; align-items: stretch; }
@@ -16,16 +18,90 @@
 .chero__cell { flex: 1 1 0; min-width: 0; overflow: hidden; display: block; }
 .chero__cell--sm { flex: 0 0 128px; }
 .chero__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* right-aligned Explore/Observe/Understand + the full observatory-TS lockup */
 .chero__text { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-6); padding: var(--space-4); }
 .chero__lines { margin: 0; text-align: right; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-accent); }
 .chero__logo { display: block; width: 100%; height: 56px; color: var(--color-accent);
   -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: left center; mask-position: left center; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
-
-/* dark CTA bar: label + outlined arrow badge (accent bg, ivory foreground) */
 .chero__cta { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: var(--color-accent); color: var(--color-on-accent); text-decoration: none; transition: background var(--dur) var(--ease); }
 .chero__cta:hover { background: var(--color-accent-hover); }
 .chero__cta-label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
-.chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid var(--color-on-accent); border-radius: var(--radius-button); }
+.chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid currentColor; border-radius: var(--radius-button); }
 .chero__badge .icon { width: 24px; height: 24px; }
+
+/* ---- shared block scaffold: right-aligned muted eyebrow + display title ---- */
+.cblock { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
+.cblock--surface { background: var(--color-surface); }
+.cblock__head { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
+.ceyebrow { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text-muted); text-transform: uppercase; text-align: right; }
+.csect-title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); }
+.cblock__lead { margin: 0; font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+
+/* ---- the repeated full-width CTA bar ("Button C"): filled + ghost variants ---- */
+.cbar { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: var(--color-accent); color: var(--color-on-accent); text-decoration: none; transition: background var(--dur) var(--ease); }
+.cbar:hover { background: var(--color-accent-hover); }
+.cbar__label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
+.cbar__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid currentColor; border-radius: var(--radius-button); }
+.cbar__badge .icon { width: 24px; height: 24px; }
+.cbar--ghost { background: transparent; color: var(--color-text); border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); }
+.cbar--ghost:hover { background: var(--color-accent-subtle); }
+/* a CTA bar that closes a block sits flush against the content above it */
+.cblock > .cbar { margin-top: calc(var(--space-6) * -1); }
+
+/* ---- What is Observatory: vertical benefit stack (reuses orbit/obs/und) ---- */
+.cbenefits { display: flex; flex-direction: column; gap: var(--space-6); }
+/* strip the base .benefit card — Concept C benefits are full-width and transparent,
+   with just the 260×207 rounded animation slot centred and the text below it */
+.cbenefit { width: 100%; flex: none; background: transparent; border-radius: 0; overflow: visible; justify-content: flex-start; }
+.cbenefit::after { display: none; }
+.cbenefit .benefit__slot { width: 260px; margin: 0 auto; border-radius: var(--radius-card); }
+.cbenefit__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-4) 0; }
+.cbenefit__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-text); }
+.cbenefit__desc { margin: 0; font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
+
+/* ---- Featured guides: sharp bordered cards, image + glass badge + cream panel ---- */
+.cfeat__rail { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
+.cfeat__rail::-webkit-scrollbar { display: none; }
+.cguide { position: relative; flex: 0 0 318px; width: 318px; height: 500px; overflow: hidden; scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-top: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); }
+.cguide__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cguide__badge { position: relative; padding: var(--space-4); }
+.cguide .glass { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-4); border-radius: var(--radius-button); background: var(--scrim); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1px solid var(--on-media-border); color: var(--on-media); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.cguide__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 310px; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
+.cguide__text { position: relative; background: var(--color-bg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.cguide__copy { display: flex; flex-direction: column; gap: var(--space-2); }
+.cguide__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
+.cguide__teaser { margin: 0; font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.cguide__foot { display: flex; align-items: center; justify-content: space-between; }
+.cguide__price { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h2); line-height: var(--lh-h2); color: var(--color-accent); }
+.cguide__go { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border: 1.5px solid var(--color-border); border-radius: var(--radius-button); color: var(--color-text); }
+.cguide__go .icon { width: 24px; height: 24px; }
+
+/* ---- The World, City by City: two-column bordered grid of thumb + name ---- */
+.ccities__grid { display: flex; flex-wrap: wrap; }
+.ccity { flex: 1 1 150px; min-width: 150px; display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-5) var(--space-2) var(--space-4);
+  border-top: 1.5px solid var(--color-border); text-decoration: none; }
+.ccity:nth-child(odd) { border-right: 1.5px solid var(--color-border); }
+.ccity__photo { flex: none; width: 48px; height: 48px; border-radius: var(--radius-inner-4); overflow: hidden; }
+.ccity__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ccity__name { font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
+
+/* ---- Footer: promo + lockup + nav → stacked CTA bars → language / legal ---- */
+.cfoot { background: var(--color-surface); display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-8) 0 var(--space-6); }
+.cfoot__promo { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); padding: 0 var(--space-4); }
+.cfoot__ready { margin: 0; text-align: center; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text-muted); }
+.cfoot__lockup { display: block; width: 100%; height: 56px; color: var(--color-text);
+  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: center; mask-position: center; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+.cfoot__nav { display: flex; flex-wrap: wrap; justify-content: center; column-gap: var(--space-4); }
+.cfoot__nav a { padding: var(--space-2) 0; font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); text-decoration: none; }
+.cfoot__bars { display: flex; flex-direction: column; }
+.cfoot__meta { display: flex; flex-direction: column; gap: var(--space-5); padding: 0 var(--space-4); }
+.cfoot__row { display: flex; align-items: center; justify-content: space-between; }
+.cfoot__lang { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--lh-body); }
+.cfoot__lang .icon { width: 24px; height: 24px; }
+.cfoot__social { display: inline-flex; align-items: center; gap: var(--space-2); }
+.cfoot__social .icon-btn { width: 36px; height: 36px; color: var(--color-text); }
+.cfoot__legal { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-text); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
+.cfoot__legallinks { display: inline-flex; gap: var(--space-3); }
+.cfoot__legal a { color: inherit; text-decoration: none; }

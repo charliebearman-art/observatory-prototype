@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400;500;600&family=Golos+Text:wght@400;500;600&family=Jost:wght@400;500&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
-<link rel="stylesheet" href="styles/concept-c.css?v=1">
+<link rel="stylesheet" href="styles/concept-c.css?v=3">
 <style>
   /* first-load intro: the full Observatory logo animation (Lottie), recoloured to
      the palette accent. Wide frame so the "observatory TS" reveal fits; it then
@@ -104,18 +104,15 @@
   </section>
 
   <!-- what is observatory -->
-  <section class="block">
-    <div class="block__title">
-      <p class="t-eyebrow t-muted">How it works</p>
-      <h2 class="t-h2">What is Observatory?</h2>
-      <p class="t-body t-muted">Observatory turns a city into a story you can walk through — curated routes, real places, and the context that makes them matter.</p>
-      <a class="text-btn" href="#"><span>Learn more</span>
-        <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-      </a>
+  <section class="cblock">
+    <div class="cblock__head">
+      <p class="ceyebrow">How it works</p>
+      <h2 class="csect-title">What is Observatory?</h2>
+      <p class="cblock__lead">Observatory turns a city into a story you can walk through — curated routes, real places, and the context that makes them matter.</p>
     </div>
 
-    <div class="rail">
-      <article class="benefit">
+    <div class="cbenefits">
+      <article class="benefit cbenefit">
         <div class="benefit__slot">
           <div class="orbit" aria-hidden="true">
             <div class="orbit__wheel">
@@ -131,13 +128,13 @@
           <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.5)">PRAGUE</span>
           <span class="anim-label t-body t-muted" style="--phase:calc(var(--orbit-cycle) * -0.25)">SANTORINI</span>
         </div>
-        <div class="benefit__body">
-          <h3 class="t-h3">Explore.</h3>
-          <p class="t-body t-muted">Pick a travel guide crafted by people who know it — every route curated, never auto-generated.</p>
+        <div class="cbenefit__body">
+          <h3 class="cbenefit__title">Explore.</h3>
+          <p class="cbenefit__desc">Pick a travel guide crafted by people who know it — every route curated, never auto-generated.</p>
         </div>
       </article>
 
-      <article class="benefit">
+      <article class="benefit cbenefit">
         <div class="benefit__slot">
           <div class="obs" aria-hidden="true">
             <img class="obs__route" src="assets/img/obs-path.svg" alt="">
@@ -147,13 +144,13 @@
             <span class="obs__pin obs__pin--lead" style="--obs-track:obs-lead"><img src="assets/img/obs-duomo.jpg" alt=""></span>
           </div>
         </div>
-        <div class="benefit__body">
-          <h3 class="t-h3">Observe.</h3>
-          <p class="t-body t-muted">Follow it at your own pace and notice the streets, corners and details you'd usually walk past.</p>
+        <div class="cbenefit__body">
+          <h3 class="cbenefit__title">Observe.</h3>
+          <p class="cbenefit__desc">Follow it at your own pace and notice the streets, corners and details you'd usually walk past.</p>
         </div>
       </article>
 
-      <article class="benefit">
+      <article class="benefit cbenefit">
         <div class="benefit__slot">
           <div class="und" aria-hidden="true">
             <span class="und__hero"><img src="assets/img/und-duomo.jpg" alt=""></span>
@@ -168,173 +165,136 @@
             </span>
           </div>
         </div>
-        <div class="benefit__body">
-          <h3 class="t-h3">Understand.</h3>
-          <p class="t-body t-muted">Hear the story behind each place — the history and the meaning. Leave knowing the city, not just seeing it.</p>
+        <div class="cbenefit__body">
+          <h3 class="cbenefit__title">Understand.</h3>
+          <p class="cbenefit__desc">Hear the story behind each place — the history and the meaning. Leave knowing the city, not just seeing it.</p>
         </div>
       </article>
     </div>
+
+    <a class="cbar" href="#"><span class="cbar__label">Learn More</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
   </section>
 
   <!-- featured guides -->
-  <section class="block">
-    <div class="block__head">
-      <p class="t-eyebrow t-muted">Featured guides</p>
-      <div class="row row--between row--baseline">
-        <h2 class="t-h3">Popular in Italy</h2>
-        <a class="text-btn" href="#"><span>All</span>
-          <svg class="icon icon--20"><use href="assets/icons.svg?v=3#i-chevron-right"></use></svg>
-        </a>
-      </div>
+  <section class="cblock cblock--surface cfeat">
+    <div class="cblock__head">
+      <p class="ceyebrow">Featured guides</p>
+      <h2 class="csect-title">Popular in Italy</h2>
     </div>
-
-    <div class="rail">
-      <a class="excursion" href="guide.html">
-        <img class="excursion__media" src="assets/img/guide-quarter.jpg" alt="">
-        <div class="excursion__top"><span class="badge">MILAN</span></div>
-        <div class="excursion__scrim"></div>
-        <div class="excursion__body">
-          <div class="excursion__text">
-            <h3 class="excursion__title">The City You Don’t Understand at First</h3>
-            <p class="excursion__teaser">Slip past the galleries into the hidden cortili where Milan still paints</p>
+    <div class="cfeat__rail">
+      <article class="cguide">
+        <img class="cguide__img" src="assets/img/guide-disappear.jpg" alt="">
+        <div class="cguide__badge"><span class="glass">Milan</span></div>
+        <div class="cguide__scrim" aria-hidden="true"></div>
+        <div class="cguide__text">
+          <div class="cguide__copy">
+            <h3 class="cguide__title">The City You Don't Understand at First</h3>
+            <p class="cguide__teaser">Slip past the galleries into the hidden cortili where Milan still paints</p>
           </div>
-          <div class="excursion__foot">
-            <span class="excursion__price">210 $</span>
-            <span class="icon-btn icon-btn--media">
-              <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-            </span>
+          <div class="cguide__foot">
+            <span class="cguide__price">210 $</span>
+            <span class="cguide__go"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
-      </a>
-
-      <a class="excursion" href="#">
-        <img class="excursion__media" src="assets/img/guide-disappear.jpg" alt="">
-        <div class="excursion__top"><span class="badge">MILAN</span></div>
-        <div class="excursion__scrim"></div>
-        <div class="excursion__body">
-          <div class="excursion__text">
-            <h3 class="excursion__title">Where Milan Goes to Disappear</h3>
-            <p class="excursion__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
+      </article>
+      <article class="cguide">
+        <img class="cguide__img" src="assets/img/guide-ritual.jpg" alt="">
+        <div class="cguide__badge"><span class="glass">Milan</span></div>
+        <div class="cguide__scrim" aria-hidden="true"></div>
+        <div class="cguide__text">
+          <div class="cguide__copy">
+            <h3 class="cguide__title">Where Milan Goes to Disappear</h3>
+            <p class="cguide__teaser">Cross the water by ferry to the villas and gardens Milan built to escape itself.</p>
           </div>
-          <div class="excursion__foot">
-            <span class="excursion__price">180 $</span>
-            <span class="icon-btn icon-btn--media">
-              <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-            </span>
+          <div class="cguide__foot">
+            <span class="cguide__price">180 $</span>
+            <span class="cguide__go"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
-      </a>
-
-      <a class="excursion" href="#">
-        <img class="excursion__media" src="assets/img/guide-ritual.jpg" alt="">
-        <div class="excursion__top"><span class="badge">MILAN</span></div>
-        <div class="excursion__scrim"></div>
-        <div class="excursion__body">
-          <div class="excursion__text">
-            <h3 class="excursion__title">The Six O'Clock Ritual</h3>
-            <p class="excursion__teaser">Follow Milan's evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
+      </article>
+      <article class="cguide">
+        <img class="cguide__img" src="assets/img/guide-cover.jpg" alt="">
+        <div class="cguide__badge"><span class="glass">Milan</span></div>
+        <div class="cguide__scrim" aria-hidden="true"></div>
+        <div class="cguide__text">
+          <div class="cguide__copy">
+            <h3 class="cguide__title">The Six O'Clock Ritual</h3>
+            <p class="cguide__teaser">Follow Milan's evening ritual — bitter red, crowded counters, and the drink invented by mistake.</p>
           </div>
-          <div class="excursion__foot">
-            <span class="excursion__price">80 $</span>
-            <span class="icon-btn icon-btn--media">
-              <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-            </span>
+          <div class="cguide__foot">
+            <span class="cguide__price">80 $</span>
+            <span class="cguide__go"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
-      </a>
-
-      <a class="excursion" href="#">
-        <img class="excursion__media" src="assets/img/guide-rooftops.jpg" alt="">
-        <div class="excursion__top"><span class="badge">ROME</span></div>
-        <div class="excursion__scrim"></div>
-        <div class="excursion__body">
-          <div class="excursion__text">
-            <h3 class="excursion__title">Rome from the Rooftops</h3>
-            <p class="excursion__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta</p>
+      </article>
+      <article class="cguide">
+        <img class="cguide__img" src="assets/img/guide/poi-1.jpg" alt="">
+        <div class="cguide__badge"><span class="glass">Rome</span></div>
+        <div class="cguide__scrim" aria-hidden="true"></div>
+        <div class="cguide__text">
+          <div class="cguide__copy">
+            <h3 class="cguide__title">Rome from the Rooftops</h3>
+            <p class="cguide__teaser">Read the city from its roofs — domes, bell towers and 2,000 years of terracotta</p>
           </div>
-          <div class="excursion__foot">
-            <span class="excursion__price">190 $</span>
-            <span class="icon-btn icon-btn--media">
-              <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-            </span>
+          <div class="cguide__foot">
+            <span class="cguide__price">190 $</span>
+            <span class="cguide__go"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span>
           </div>
         </div>
-      </a>
+      </article>
     </div>
+    <a class="cbar" href="#"><span class="cbar__label">Show All</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
   </section>
 
-  <!-- cities -->
-  <section class="block">
-    <div class="block__title">
-      <p class="t-eyebrow t-muted">Guides around the world</p>
-      <h2 class="t-h2">The World, City by City</h2>
+  <!-- the world, city by city -->
+  <section class="cblock ccities">
+    <div class="cblock__head">
+      <p class="ceyebrow">Around the world</p>
+      <h2 class="csect-title">The World,<br>City by City</h2>
     </div>
-
-    <div class="tags">
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-milan.jpg" alt=""></span><span class="t-body">Milan</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-rome.jpg" alt=""></span><span class="t-body">Rome</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-lisbon.jpg" alt=""></span><span class="t-body">Lisbon</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-paris.jpg" alt=""></span><span class="t-body">Paris</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-tokyo.jpg" alt=""></span><span class="t-body">Tokyo</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-athens.jpg" alt=""></span><span class="t-body">Athens</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-porto.jpg" alt=""></span><span class="t-body">Porto</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-vienna.jpg" alt=""></span><span class="t-body">Vienna</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-seville.jpg" alt=""></span><span class="t-body">Seville</span></a>
-      <a class="chip" href="#"><span class="chip__photo"><img src="assets/img/city-oslo.jpg" alt=""></span><span class="t-body">Oslo</span></a>
-      <a class="chip chip--more" href="#"><span class="t-body">+24 more</span></a>
+    <div class="ccities__grid">
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-milan.jpg" alt=""></span><span class="ccity__name">Milan</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-rome.jpg" alt=""></span><span class="ccity__name">Rome</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-lisbon.jpg" alt=""></span><span class="ccity__name">Lisbon</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-paris.jpg" alt=""></span><span class="ccity__name">Paris</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-tokyo.jpg" alt=""></span><span class="ccity__name">Tokyo</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-athens.jpg" alt=""></span><span class="ccity__name">Athens</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-porto.jpg" alt=""></span><span class="ccity__name">Porto</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-vienna.jpg" alt=""></span><span class="ccity__name">Vienna</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-seville.jpg" alt=""></span><span class="ccity__name">Seville</span></a>
+      <a class="ccity" href="#"><span class="ccity__photo"><img src="assets/img/city-oslo.jpg" alt=""></span><span class="ccity__name">Oslo</span></a>
     </div>
+    <a class="cbar cbar--ghost" href="#"><span class="cbar__label">Show More</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
   </section>
 
   <!-- footer -->
-  <footer class="footer">
-    <div class="divider"></div>
-
-    <div class="footer__group">
-      <div class="footer__promo">
-        <a class="logo logo--full" href="#" aria-label="Observatory TS"></a>
-        <h2 class="t-h3 t-center t-balance">Ready to Start a New Journey?</h2>
-        <a class="btn btn--primary btn--large" href="#">Let’s go
-          <svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-        </a>
-      </div>
-
-      <nav class="footer__nav">
-        <a class="t-body" href="#">About</a>
-        <a class="t-body" href="#">Guides</a>
-        <a class="t-body" href="#">How it works</a>
-        <a class="t-body" href="#">Contact</a>
+  <footer class="cfoot">
+    <div class="cfoot__promo">
+      <p class="cfoot__ready">Ready to Start a New Journey?</p>
+      <span class="logo logo--full cfoot__lockup" role="img" aria-label="Observatory TS"></span>
+      <nav class="cfoot__nav">
+        <a href="#">About</a><a href="#">Guides</a><a href="#">How it works</a><a href="#">Contact</a>
       </nav>
-
-      <a class="btn btn--secondary btn--compact" href="#">Log in
-        <svg class="icon icon--16"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg>
-      </a>
     </div>
-
-    <div class="footer__group" style="gap:var(--space-5)">
-      <div class="divider"></div>
-
-      <div class="row row--between" style="width:100%">
-        <span class="row" style="gap:var(--space-2)">
-          <svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg>
-          <span class="t-body">English</span>
-        </span>
-        <span class="row" style="gap:var(--space-2)">
-          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></a>
-          <a class="icon-btn icon-btn--ghost icon-btn--36" href="#" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></a>
+    <div class="cfoot__bars">
+      <a class="cbar" href="#"><span class="cbar__label">Let's go</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
+      <a class="cbar cbar--ghost" href="#"><span class="cbar__label">Log in</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
+    </div>
+    <div class="cfoot__meta">
+      <div class="cfoot__row">
+        <span class="cfoot__lang"><svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg><span>English</span></span>
+        <span class="cfoot__social">
+          <button class="icon-btn" aria-label="Telegram"><svg class="icon"><use href="assets/icons.svg?v=3#i-telegram"></use></svg></button>
+          <button class="icon-btn" aria-label="Instagram"><svg class="icon"><use href="assets/icons.svg?v=3#i-instagram"></use></svg></button>
         </span>
       </div>
-
-      <div class="divider"></div>
-
-      <div class="footer__legal">
-        <span class="t-caption t-muted">© 2026 Observatory</span>
-        <span class="row" style="gap:var(--space-3)">
-          <a class="t-caption t-muted" href="#">Terms</a>
-          <a class="t-caption t-muted" href="#">Privacy</a>
-        </span>
+      <div class="cfoot__legal">
+        <span>© 2026 Observatory</span>
+        <span class="cfoot__legallinks"><a href="#">Terms</a><a href="#">Privacy</a></span>
       </div>
     </div>
   </footer>
+
 
 </main>
 
