@@ -141,8 +141,9 @@
 .cfoot__nav a, .cfoot__lang, .cfoot__legal { font-weight: var(--font-text-weight); }
 
 /* page canvas: a warm neutral behind the 390px column so the ivory mockup stands
-   out instead of blending into the page background */
-html, body { background: #d0c8ba; }
+   out instead of blending into the page background — desktop demo only; on the
+   phone the palette bg fills behind the column (see base.css). */
+@media (min-width: 761px) { html, body { background: #d0c8ba; } }
 .screen { box-shadow: 0 0 48px rgba(44, 40, 34, 0.10); }
 
 /* concept switcher — links to the real concept home pages (A/B/C).

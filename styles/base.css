@@ -34,11 +34,15 @@ html, body { margin: 0; padding: 0; }
 /* The .screen column is centred; the page behind it is a warm neutral "canvas"
    (not the palette bg) so the content column always stands out on viewports
    wider than the column, in every concept, instead of blending into the page.
-   On the phone the column fills the width, so the canvas isn't visible. */
-html { background: #d0c8ba; }
+   On the phone (<=760px) the column fills the width — but real phones are 393-430
+   CSS px, wider than the 390px column, and the top safe-area sits above it, so a
+   sliver of canvas would show at the edges and under the status bar. There it must
+   be the palette bg, not beige: a beige seam is invisible on a light palette but
+   glaring on a dark one (Concept A). So beige is the DESKTOP-only demo canvas. */
+html { background: var(--color-bg); }
 
 body {
-  background: #d0c8ba;
+  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-text);
   font-weight: var(--font-text-weight);
@@ -47,6 +51,8 @@ body {
   -webkit-font-smoothing: antialiased;
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
+
+@media (min-width: 761px) { html, body { background: #d0c8ba; } }
 
 img { display: block; }
 a { color: inherit; text-decoration: none; }
