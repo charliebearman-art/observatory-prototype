@@ -114,10 +114,10 @@
 
   --font-display: "Manrope", system-ui, sans-serif;
   --font-display-weight: 700;
-  --font-text: "EB Garamond", Georgia, serif;
+  --font-text: "Manrope", system-ui, sans-serif;
   --font-text-weight: 500;
   --font-ui: "Manrope", system-ui, sans-serif;
-  --font-ui-weight: 500;
+  --font-ui-weight: 600;
 
   --radius-card: 14px;
   --radius-button: 12px;
@@ -208,4 +208,18 @@
   --color-border: #e8e7e4;
   --color-accent-hover: #333230;
   --color-accent-subtle: #efeeeb;
+}
+
+/* Ivory — the warm editorial palette introduced with Concept C. Accent is the
+   dark neutral (#2c2822) with ivory text on it, on a cream page. */
+[data-palette="ivory"] {
+  --color-bg: #f4efe6;
+  --color-surface: #fbf8f2;
+  --color-text: #2c2822;
+  --color-text-muted: #9a8a6e;
+  --color-accent: #2c2822;
+  --color-on-accent: #f4efe6;
+  --color-border: #e6dfd2;
+  --color-accent-hover: #423c33;
+  --color-accent-subtle: #eae2d4;
 }

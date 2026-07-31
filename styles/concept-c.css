@@ -1,0 +1,31 @@
+/* ============================================================================
+   Concept C — home (index-c.html). Reuses the Concept B home markup and
+   animations under the Concept C identity: all-Manrope type + the Ivory palette
+   (see tokens.css [data-concept="c"] and [data-palette="ivory"]). Only the
+   Concept-C-specific pieces live here — chiefly the photo-collage hero.
+   ============================================================================ */
+
+/* ---- hero: two-row photo collage → editorial lockup → dark CTA bar
+   (Figma 1198-10838). Row 1 is 227px, Row 2 is 128px; the left column of each
+   row is a fixed 128px, the right column fills the rest. ---- */
+.chero { display: flex; flex-direction: column; background: var(--color-bg); }
+.chero__grid { display: flex; flex-direction: column; }
+.chero__row { display: flex; align-items: stretch; }
+.chero__row--1 { height: 227px; }
+.chero__row--2 { height: 128px; }
+.chero__cell { flex: 1 1 0; min-width: 0; overflow: hidden; display: block; }
+.chero__cell--sm { flex: 0 0 128px; }
+.chero__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* right-aligned Explore/Observe/Understand + the full observatory-TS lockup */
+.chero__text { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-6); padding: var(--space-4); }
+.chero__lines { margin: 0; text-align: right; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-accent); }
+.chero__logo { display: block; width: 100%; height: 56px; color: var(--color-accent);
+  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: left center; mask-position: left center; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+
+/* dark CTA bar: label + outlined arrow badge (accent bg, ivory foreground) */
+.chero__cta { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-4); background: var(--color-accent); color: var(--color-on-accent); text-decoration: none; transition: background var(--dur) var(--ease); }
+.chero__cta:hover { background: var(--color-accent-hover); }
+.chero__cta-label { flex: 1 1 auto; min-width: 0; font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); }
+.chero__badge { flex: none; width: 56px; height: 44px; display: grid; place-items: center; border: 1.5px solid var(--color-on-accent); border-radius: var(--radius-button); }
+.chero__badge .icon { width: 24px; height: 24px; }
