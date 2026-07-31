@@ -58,6 +58,7 @@
 .facts__row { gap: 0; margin-inline: 0; }
 .facts__row > :first-child, .facts__row > :last-child { margin-inline: 0; }
 .fact { border-radius: 0; border-right: 1.5px solid var(--color-border); padding: var(--space-5) var(--space-4); }
+.facts__row > .fact:last-child { border-right: 0; }
 
 /* ---- Step by Step: accent bar, 76px tall, with a square inverse arrow badge ---- */
 .ostep { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
@@ -89,7 +90,7 @@
    fixed %s (calibrated for the narrower Concept B width) which distorts it at
    full-bleed — use object-fit: cover so it keeps its aspect ratio. */
 .org-figure__imgwrap { border-radius: 0; }
-.org-figure__img { inset: 0; width: 100%; height: 100%; top: auto; object-fit: cover; object-position: center 28%; }
+.org-figure__img { inset: 0; width: 100%; height: 100%; top: auto; object-fit: cover; object-position: center 12%; }
 /* timeline: inset 16; filled dots (9 / 12), era thumb radius-card */
 .timeline { padding-inline: var(--space-4); }
 .tl-dot { width: 9px; height: 9px; border: 0; background: var(--color-text-muted); }
@@ -105,10 +106,24 @@
 .arch-card__title { font-size: var(--size-h3); line-height: var(--lh-h3); }
 .arch-card__desc { font-size: var(--size-body); line-height: var(--lh-body); }
 
-/* ---- Numbers / Visit: sharp media + bordered cards ---- */
-.numcard, .listrow { border-radius: 0; border-color: var(--color-border); background: transparent; }
-.listrow__icon { border-radius: var(--radius-inner-4); }
-.listrow__k { text-transform: none; letter-spacing: 0; }
+/* ---- Numbers (Figma 1235-18828): full-bleed grid, cards divided by borders
+   only — top border on every card, right border on the left column; no gap,
+   no radius, no outer frame. Big number is H3 (24) accent (object.css). ---- */
+.numgrid { gap: 0; }
+.numcard { border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; background: var(--color-surface); }
+.numcard:nth-child(odd) { border-right: 1.5px solid var(--color-border); }
+
+/* ---- Visit (Figma 1235-18940): full-bleed rows with a top border only (no
+   radius, no gap); labels keep the uppercase eyebrow and icon tiles the
+   radius-button (object.css). The "Buy" CTA is a ghost bar with an inverse
+   arrow badge, flush under the ticket list. ---- */
+.visit-list { gap: 0; }
+.listrow { border: 0; border-top: 1.5px solid var(--color-border); border-radius: 0; padding: var(--space-4); }
+.visit-block > .btn { width: 100%; height: auto; margin-top: calc(var(--space-5) * -1);
+  border: 0; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-radius: 0;
+  background: transparent; color: var(--color-text); justify-content: space-between; gap: var(--space-5); padding: var(--space-4); }
+.visit-block > .btn .icon { flex: none; box-sizing: border-box; width: 56px; height: 44px; padding: 10px 16px;
+  background: var(--color-accent); color: var(--color-on-accent); border-radius: var(--radius-inner-4); }
 
 /* ---- fact modal: sharp-ish image, H2 title, muted eyebrow ---- */
 .factmodal__eyebrow { color: var(--color-text-muted); }
