@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/tokens.css?v=7">
 <link rel="stylesheet" href="styles/base.css?v=14">
 <link rel="stylesheet" href="styles/concept-c.css?v=15">
-<link rel="stylesheet" href="styles/guide-c.css?v=1">
+<link rel="stylesheet" href="styles/guide-c.css?v=2">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
@@ -64,7 +64,7 @@
     <div class="gc-cover__panel">
       <div class="gc-cover__intro">
         <div class="gc-cover__head">
-          <span class="gc-cover__globe" aria-hidden="true"><svg class="icon"><use href="assets/icons.svg?v=3#i-globe"></use></svg></span>
+          <img class="gc-cover__globe" src="assets/img/c/globe-mark.svg" alt="" aria-hidden="true">
           <h1 class="gc-cover__city">Milan</h1>
         </div>
         <p class="gc-cover__title">The City You Don’t Understand at First</p>
@@ -119,6 +119,7 @@
       <h2 class="csect-title">7 stops, one afternoon</h2>
     </div>
 
+    <div class="gc-route__body">
     <div class="gc-route__map" id="routeMap"></div>
 
     <div class="gc-rcards" id="routeCards">
@@ -129,6 +130,7 @@
       <article class="gc-rcard" data-stop="5"><img class="gc-rcard__img" src="assets/img/guide/poi-5.jpg" alt=""><div class="gc-rcard__text"><span class="gc-rcard__num">05</span><h3 class="gc-rcard__title">Piazza dei Mercanti</h3><p class="gc-rcard__desc">The medieval heart, from when the city was a handful of streets.</p></div></article>
       <article class="gc-rcard" data-stop="6"><img class="gc-rcard__img" src="assets/img/guide/poi-6.jpg" alt=""><div class="gc-rcard__text"><span class="gc-rcard__num">06</span><h3 class="gc-rcard__title">Santa Maria presso San Satiro</h3><p class="gc-rcard__desc">Step in and the church runs deep — except it doesn’t.</p></div></article>
       <article class="gc-rcard" data-stop="7"><img class="gc-rcard__img" src="assets/img/guide/poi-7.jpg" alt=""><div class="gc-rcard__text"><span class="gc-rcard__num">07</span><h3 class="gc-rcard__title">Pinacoteca Ambrosiana</h3><p class="gc-rcard__desc">A courtyard, and Leonardo’s notebooks in the rooms beyond.</p></div></article>
+    </div>
     </div>
   </section>
 
@@ -211,7 +213,7 @@
       </nav>
     </div>
     <div class="cfoot__bars">
-      <a class="cbar" href="#"><span class="cbar__label">Log in</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
+      <a class="cbar cbar--ghost" href="#"><span class="cbar__label">Log in</span><span class="cbar__badge"><svg class="icon"><use href="assets/icons.svg?v=3#i-arrow-right"></use></svg></span></a>
     </div>
     <div class="cfoot__meta">
       <div class="cfoot__row">

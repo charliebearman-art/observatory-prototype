@@ -27,8 +27,9 @@
 .gc-cover__panel { display: flex; flex-direction: column; gap: var(--space-5); padding-top: var(--space-6); }
 .gc-cover__intro { display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-4); }
 .gc-cover__head { display: flex; align-items: center; justify-content: space-between; }
-.gc-cover__globe { flex: none; width: 48px; height: 48px; color: var(--color-text); }
-.gc-cover__globe .icon { width: 48px; height: 48px; }
+/* Observatory brand mark (solid disc + globe knockout) — a two-colour SVG asset,
+   so it renders as an <img> rather than a recoloured single-colour icon */
+.gc-cover__globe { flex: none; display: block; width: 48px; height: 48px; }
 .gc-cover__city { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-display); line-height: var(--lh-display); color: var(--color-text); text-align: right; }
 .gc-cover__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-h3); line-height: var(--lh-h3); color: var(--color-text); }
 .gc-cover__sub { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text-muted); }
@@ -66,16 +67,20 @@
 /* ---------------------------------------------------------------- route --
    head · full-bleed map (293) · horizontal stop rail. */
 .gc-route { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
+/* map + cards sit flush against each other (no gap), per Figma */
+.gc-route__body { display: flex; flex-direction: column; }
 .gc-route__map { position: relative; height: 293px; overflow: hidden; background: var(--color-surface); }
 .gc-rcards { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
 .gc-rcards::-webkit-scrollbar { display: none; }
-/* image top + number/title/teaser below; a thin divider between cards */
-.gc-rcard { flex: 0 0 195px; width: 195px; scroll-snap-align: start; cursor: pointer; display: flex; flex-direction: column; background: transparent; border-top: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border); transition: background var(--dur) var(--ease); }
+/* image top + number/title/teaser below; bordered band (top+bottom) with a
+   vertical divider (right) between cards */
+.gc-rcard { flex: 0 0 210px; width: 210px; scroll-snap-align: start; cursor: pointer; display: flex; flex-direction: column; background: transparent;
+  border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border); border-right: 1.5px solid var(--color-border);
+  transition: background var(--dur) var(--ease); }
 .gc-rcard.is-active { background: var(--color-surface); }
 .gc-rcard__img { width: 100%; aspect-ratio: 2752 / 1536; object-fit: cover; display: block; }
-.gc-rcard__text { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
-.gc-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
-.gc-rcard.is-active .gc-rcard__num { color: var(--color-accent); }
+.gc-rcard__text { padding: var(--space-5) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.gc-rcard__num { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-caption); line-height: var(--lh-label); color: var(--color-accent); }
 .gc-rcard__title { margin: 0; font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
 .gc-rcard__desc { margin: 0; font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
 
@@ -91,14 +96,16 @@
 
 /* -------------------------------------------------------------- formats --
    head · vertical list of rows (accent icon tile + title + sub), divided by borders. */
-.gc-formats { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); padding-bottom: var(--space-8); }
+/* pt only — no bottom padding, so the gap to the next block is one block's 48 */
+.gc-formats { display: flex; flex-direction: column; gap: var(--space-6); padding-top: var(--space-8); }
 .gc-formats__list { display: flex; flex-direction: column; }
-.gc-format { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-top: 1.5px solid var(--color-border); }
+.gc-format { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-5) var(--space-4) var(--space-4); border-top: 1.5px solid var(--color-border); }
 .gc-format:last-child { border-bottom: 1.5px solid var(--color-border); }
-.gc-format__icon { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: var(--radius-button); background: var(--color-accent); color: var(--color-on-accent); }
+/* accent tile, 24px icon + 12px padding = 48px, inner-4 radius (nested control) */
+.gc-format__icon { flex: none; display: grid; place-items: center; padding: var(--space-3); border-radius: var(--radius-inner-4); background: var(--color-accent); color: var(--color-on-accent); }
 .gc-format__icon .icon { width: 24px; height: 24px; }
 .gc-format__text { display: flex; flex-direction: column; gap: var(--space-1); }
-.gc-format__title { font-family: var(--font-display); font-weight: var(--font-display-weight); font-size: var(--size-title); line-height: var(--lh-title); color: var(--color-text); }
+.gc-format__title { font-family: var(--font-ui); font-weight: var(--font-ui-weight); font-size: var(--size-body); line-height: var(--lh-body); color: var(--color-text); }
 .gc-format__sub { font-family: var(--font-text); font-weight: var(--font-text-weight); font-size: var(--size-caption); line-height: var(--lh-caption); color: var(--color-text-muted); }
 
 /* --------------------------------------------------------- floating menu --
