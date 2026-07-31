@@ -136,9 +136,16 @@
    buy bar has scrolled past, and tucks away again at the footer. Reuses .cbar. */
 .gc-buybar { position: fixed; left: 50%; bottom: 0; z-index: 45; width: 390px; max-width: 100%; transform: translateX(-50%) translateY(100%); transition: transform var(--dur-slow) var(--ease); }
 .gc-buybar.is-shown { transform: translateX(-50%) translateY(0); }
-/* on the phone the pinned bars fill the width, matching the full-width column
-   (a centred 390 bar left a strip beside it on wider phones) */
-@media (max-width: 760px) { .gc-menu, .gc-buybar { width: 100%; } }
+/* on the phone the pinned bars fill the width, matching the full-width column.
+   Pin flush to the edges (left:0 + width:100%) rather than centring with
+   left:50% + translateX(-50%) — the centring rounds off by a sub-pixel and left a
+   hairline strip on the left. Only translateY drives the show/hide here. */
+@media (max-width: 760px) {
+  .gc-menu   { left: 0; width: 100%; max-width: none; transform: translateY(-100%); }
+  .gc-menu.is-shown   { transform: translateY(0); }
+  .gc-buybar { left: 0; width: 100%; max-width: none; transform: translateY(100%); }
+  .gc-buybar.is-shown { transform: translateY(0); }
+}
 
 /* ------------------------------------------------------- cover reveal --
    First-load choreography (armed only when motion is allowed): the collage cells
